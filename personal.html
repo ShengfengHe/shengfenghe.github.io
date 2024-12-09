@@ -47,21 +47,8 @@
     <!-- start of customer header -->
 
 	<meta name="baidu-site-verification" content="knTZG2oAgt" />
-<!-- 啄木鸟 -->
-<script type="text/javascript">
-  var _paq = window._paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//t22.qifeiye.com/";
-    _paq.push(['setTrackerUrl', u+'js/tracker.php']);
-    _paq.push(['setSiteId', '504']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'js/tracker.php'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<!-- End 啄木鸟 Code -->
+
+
 
 <script>
 (function(){
@@ -126,7 +113,7 @@
 
 <link rel="apple-touch-icon" href="images/012cf5199798321d75d29eaa374a4a74.png" />
 
-<link rel="stylesheet" href="https://gfonts.qifeiye.com/css?family=Droid+Serif|Droid+Sans" type="text/css" media="all">		<style type="text/css" >
+
 </style>
 
 		<script type="text/javascript">
@@ -340,12 +327,12 @@
             AmCharts.ready(function() {
                 map                  = new AmCharts.AmMap();
                 map.pathToImages     = "http://www.amcharts.com/lib/3/images/";
-                map.panEventsEnabled = true;
+                map.panEventsEnabled = false;
                 map.backgroundColor  = "#64A8AD";
                 map.backgroundAlpha  = 1;
 
-                map.zoomControl.panControlEnabled  = true;
-                map.zoomControl.zoomControlEnabled = true;
+                map.zoomControl.panControlEnabled  = false;
+                map.zoomControl.zoomControlEnabled = false;
 
                 var dataProvider     = {
                     mapVar          : AmCharts.maps.worldHigh,
@@ -371,7 +358,7 @@
                 map.dataProvider     = dataProvider;
 
                 map.areasSettings    = {
-                    autoZoom             : true,
+                    autoZoom             : false,
                     color                : "#CDCDCD",
                     colorSolid           : "#DE6060",
                     selectedColor        : "#DE6060",
