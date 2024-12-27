@@ -10,13 +10,24 @@
 
       <changefreq>monthly</changefreq>
 
-      <priority>0.8</priority>
+      <priority>1.0</priority>
+
+   </url>
+
+   <url>
+      <loc>https://shengfenghe.github.io/index</loc>
+      
+      <lastmod>2024-12-27</lastmod>
+
+      <changefreq>weekly</changefreq>
 
    </url>
 
    <url>
 
       <loc>https://shengfenghe.github.io/publications</loc>
+
+      <lastmod>2024-12-27</lastmod>
 
       <changefreq>weekly</changefreq>
 
@@ -37,8 +48,6 @@
       <loc>https://shengfenghe.github.io/contact</loc>
 
       <lastmod>2024-12-27</lastmod>
-
-      <priority>0.3</priority>
 
    </url>
 
