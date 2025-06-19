@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.shengfenghe.com/sitemap.xml
+Sitemap: https://shengfenghe.github.io/sitemap.xml
