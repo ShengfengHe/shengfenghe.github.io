@@ -388,7 +388,7 @@
 
       const filtered = {
         ...data,
-        features: data.features.filter(f => f.properties.name !== 'Antarctica')
+        //features: data.features.filter(f => f.properties.name !== 'Antarctica')
       };
 
       geojson = L.geoJSON(filtered, {
@@ -396,14 +396,14 @@
         onEachFeature: onEachFeature
       }).addTo(map);
 
-      map.setView([30, 30], 2.1);
+      map.setView([45, 30], 1.9);
 
       setTimeout(() => {
         map.invalidateSize();
       }, 200);
 
       map.setMaxBounds([
-        [-60, -180],
+        [-80, -180],
         [85, 180]
       ]);
 
