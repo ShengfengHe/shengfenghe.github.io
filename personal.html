@@ -297,93 +297,115 @@
 
 
 
+<!-- Leaflet local assets -->
+<link rel="stylesheet" href="leaflet/leaflet.css" />
+<script src="leaflet/leaflet.js"></script>
 
-<section  data-fixheight="" class="qfy-row-2-67446bb7edd0d568038 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_gy2f5"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
-    <style class="row_class qfy_style_class">
-        @media only screen and (min-width: 992px){
-        section.section.qfy-row-2-67446bb7edd0d568038{padding-left:0;padding-right:0;padding-top:20px;padding-bottom:0;margin-top:0;margin-bottom:0;}}
-        
-        @media only screen and (max-width: 992px){
-        .bit-html section.section.qfy-row-2-67446bb7edd0d568038{padding-left:15px;padding-right:15px;padding-top:20px;padding-bottom:;margin-top:0;margin-bottom: !important;}}
-            </style>
-        
-
-            <div  class="section-background-overlay background-overlay grid-overlay-0 " style="background-color: transparent;"></div>
-        <div class="container">
-        <div class="row qfe_row  ">
-            
-
-<div   data-animaleinbegin="90%" data-animalename="qfyfadeInUp"  data-duration="" data-delay=""  class=" qfy-column-2-67446bb7edee7926775 qfy-column-inner  vc_span12  text-default small-screen-default fullrow"  data-dw="1/1" data-fixheight="" ><div style=";position:relative;" class="column_inner " ><div   class=" background-overlay grid-overlay-" style="background-color: transparent;width:100%;"></div><div class="column_containter" style="z-index:3;position:relative;" >
-
-
-	<div  m-padding="0px 0px 0px 0px"  p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_raw_js_bvrl3"  class="qfy-element qfe_raw_code qfe_raw_js" style="margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
-		<div class="qfe_wrapper">
-			<div><div id="577427770999579880" align="center" style="width: 100%; overflow-y: hidden;" class="wcustomhtml">        <script src="js/ammap.js" type="text/javascript"></script>
-        <script src="js/worldHigh.js" type="text/javascript"></script>
-        <div id="mapdiv" style="width: 900px; height: 450px;"></div>​
-
-        <script type="text/javascript">
-            var map;
-            AmCharts.ready(function() {
-                map                  = new AmCharts.AmMap();
-                map.pathToImages     = "http://www.amcharts.com/lib/3/images/";
-                map.panEventsEnabled = true;
-                map.backgroundColor  = "#64A8AD";
-                map.backgroundAlpha  = 1;
-
-                map.zoomControl.panControlEnabled  = true;
-                map.zoomControl.zoomControlEnabled = true;
-
-                var dataProvider     = {
-                    mapVar          : AmCharts.maps.worldHigh,
-                    getAreasFromMap : true,
-                    areas           : [
-{ id: 'FR', showAsSelected: true },
-{ id: 'CH', showAsSelected: true },
-{ id: 'JP', showAsSelected: true },
-{ id: 'ID', showAsSelected: true },
-{ id: 'SG', showAsSelected: true },
-{ id: 'US', showAsSelected: true },
-{ id: 'CN', showAsSelected: true },
-{ id: 'HK', showAsSelected: true },
-{ id: 'MY', showAsSelected: true },
-{ id: 'TH', showAsSelected: true },
-{ id: 'AU', showAsSelected: true },
-{ id: 'MO', showAsSelected: true },
-{ id: 'IT', showAsSelected: true },
-{ id: 'TW', showAsSelected: true }
-                    ]
-                };
-
-                map.dataProvider     = dataProvider;
-
-                map.areasSettings    = {
-                    autoZoom             : false,
-                    color                : "#CDCDCD",
-                    colorSolid           : "#DE6060",
-                    selectedColor        : "#DE6060",
-                    outlineColor         : "#666666",
-                    rollOverColor        : "#CFAD00",
-                    rollOverOutlineColor : "#FFFFFF"
-                };
-
-                map.write("mapdiv");
-            });
-        </script>
-        </div>
-
-
-
+<div style="max-width: 1050px; margin: 0 auto; padding: 10px;">
+  <div id="mapdiv" style="width: 100%; height: 600px; border-radius: 8px;"></div>
 </div>
-		</div> 
-	</div> 
 
-</div></div></div><style class="column_class qfy_style_class">.qfy-column-2-67446bb7edee7926775 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-2-67446bb7edee7926775 {}}@media only screen and (max-width: 992px){.qfy-column-2-67446bb7edee7926775 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-2-67446bb7edee7926775 {}.qfy-column-2-67446bb7edee7926775 > .column_inner> .background-overlay,.qfy-column-2-67446bb7edee7926775 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>
+<style>
+  #mapdiv {
+    overflow: invisible;
+    background: #f4f6f8;
+  }
+</style>
 
-        </div>
-    </div>
+<script>
+  const selected = new Set([
+    'FR','CH','JP','ID','SG','US','CN','HK','MY','TH','AU','MO','IT',
+    'TW','TWN'
+  ]);
 
-</section>
+  const map = L.map('mapdiv', {
+    zoomControl: true,
+    attributionControl: false,
+    zoomSnap: 0.25
+  });
+
+  function getCode(feature) {
+    return (
+      feature.properties.iso_a2 ||
+      feature.properties.ISO_A2 ||
+      feature.properties.iso_a3 ||
+      feature.properties.ISO_A3
+    );
+  }
+
+  function isTaiwan(feature) {
+    const name = (feature.properties.name || "").toLowerCase();
+    const code = getCode(feature);
+    return name.includes("taiwan") || code === "TWN" || code === "TW";
+  }
+
+  function style(feature) {
+    const code = getCode(feature);
+    const isVisited = selected.has(code) || isTaiwan(feature);
+
+    return {
+      color: "#999",
+      weight: isVisited ? 1.5 : 0.8,
+      fillColor: isVisited ? "#E45756" : "#E0E0E0",
+      fillOpacity: isVisited ? 0.95 : 0.7
+    };
+  }
+
+  function highlight(e) {
+    e.target.setStyle({
+      fillColor: "#FFB703",
+      weight: 2
+    });
+  }
+
+  function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+  }
+
+  function onEachFeature(feature, layer) {
+    const name = feature.properties.name;
+    layer.bindTooltip(name, {
+      sticky: true,
+      opacity: 0.9
+    });
+
+    layer.on({
+      mouseover: highlight,
+      mouseout: resetHighlight
+    });
+  }
+
+  let geojson;
+
+  fetch('./data/world_clean.geojson')
+    .then(res => res.json())
+    .then(data => {
+
+      const filtered = {
+        ...data,
+        features: data.features.filter(f => f.properties.name !== 'Antarctica')
+      };
+
+      geojson = L.geoJSON(filtered, {
+        style: style,
+        onEachFeature: onEachFeature
+      }).addTo(map);
+
+      // better framing (focus on populated regions)
+      map.setView([30, 30], 1.9);
+
+      // fix rendering
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 200);
+
+      map.setMaxBounds([
+        [-60, -180],
+        [85, 180]
+      ]);
+
+    });
+</script>
 
 
 
