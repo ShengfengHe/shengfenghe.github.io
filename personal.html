@@ -310,42 +310,30 @@
     background: #f4f6f8;
   }
 
-  /* 🔑 remove click selection box (critical fix) */
   .leaflet-interactive:focus {
     outline: none !important;
   }
 </style>
 
 <script>
+  // ✅ use country names only
   const selected = new Set([
-    'FR','CH','JP','ID','SG','US','CN','HK','MY','TH','AU','MO','IT',
-    'TW','TWN'
+    'France','Switzerland','Japan','Indonesia','Singapore',
+    'United States of America','China','Hong Kong',
+    'Malaysia','Thailand','Australia','Macao','Italy','Taiwan'
   ]);
 
   const map = L.map('mapdiv', {
     zoomControl: true,
     attributionControl: false,
-    zoomSnap: 0.25
+    zoomSnap: 0.25,
+	minZoom: 1.8,
+	maxZoom: 3.5
   });
 
-  function getCode(feature) {
-    return (
-      feature.properties.iso_a2 ||
-      feature.properties.ISO_A2 ||
-      feature.properties.iso_a3 ||
-      feature.properties.ISO_A3
-    );
-  }
-
-  function isTaiwan(feature) {
-    const name = (feature.properties.name || "").toLowerCase();
-    const code = getCode(feature);
-    return name.includes("taiwan") || code === "TWN" || code === "TW";
-  }
-
   function style(feature) {
-    const code = getCode(feature);
-    const isVisited = selected.has(code) || isTaiwan(feature);
+    const name = feature.properties.name;
+    const isVisited = selected.has(name);
 
     return {
       color: "#999",
@@ -382,7 +370,7 @@
 
   let geojson;
 
-  fetch('./data/world_clean.geojson')
+  fetch('./data/world.geojson')
     .then(res => res.json())
     .then(data => {
 
@@ -396,7 +384,13 @@
         onEachFeature: onEachFeature
       }).addTo(map);
 
-      map.setView([45, 30], 1.9);
+      setTimeout(() => {
+        map.invalidateSize();
+
+        // 🔑 apply view AFTER invalidateSize (prevents jump)
+        map.setView([45, 30], 1.9);
+
+      }, 100);
 
       setTimeout(() => {
         map.invalidateSize();
@@ -409,7 +403,6 @@
 
     });
 </script>
-
 
 
 
