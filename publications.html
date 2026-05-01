@@ -391,6 +391,20 @@
 
 <!-- Simplified publication records: generated from the original repeated QFY publication blocks. -->
 <style id="publication-record-template-style">
+  /*
+    Publication font controls.
+    Change these values only if you want to adjust the publication list font size.
+  */
+  :root {
+    --publication-font-size: 14px;
+    --publication-title-font-size: 14px;
+    --publication-line-height: 1.5em;
+    --publication-year-font-size: 20px;
+    --publication-mobile-font-size: 14px;
+    --publication-mobile-year-font-size: 14px;
+    --publication-note-color: rgb(226, 80, 65);
+  }
+
   .pub-year-heading {
     display: flex;
     align-items: center;
@@ -400,7 +414,7 @@
     margin-bottom: 0;
     color: #333333;
     font-family: 微软雅黑, Arial, sans-serif;
-    font-size: 20px;
+    font-size: var(--publication-year-font-size);
     font-weight: normal;
     white-space: nowrap;
   }
@@ -409,7 +423,7 @@
     content: "";
     display: inline-block;
     flex: 1 1 auto;
-    min-width: 40px;
+    min-width: 30px;
     max-width: 455px;
     border-bottom: 1px solid #e2e2e2;
   }
@@ -426,11 +440,11 @@
   .pub-record .row.qfe_row { display: flex; align-items: center; }
   /* Stronger selectors are needed because the original site CSS also styles .qfe_row .vc_span_class. */
   .pub-record .qfe_row > .pub-image-col.vc_span_class {
-    width: 19.46659528907923% !important;
+    width: 13.46659528907923% !important;
     padding: 0 !important;
   }
   .pub-record .qfe_row > .pub-info-col.vc_span_class {
-    width: 80.5% !important;
+    width: 86.5% !important;
     padding: 0 !important;
   }
   .pub-record .column_inner {
@@ -453,20 +467,44 @@
     background-repeat: no-repeat;
   }
   .pub-image-wrap img { max-width: 100%; }
-  .pub-info h2 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 1.5em;
-  }
+
   .pub-info {
     position: relative;
-    line-height: 1.5em;
+    line-height: var(--publication-line-height);
     background-position: center center;
     background-repeat: no-repeat;
     margin: 0;
     padding: 0;
     border-radius: 0;
+    font-size: var(--publication-font-size);
   }
+  .pub-info .pub-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: var(--publication-line-height);
+    font-size: var(--publication-title-font-size) !important;
+    font-weight: normal;
+  }
+  .pub-info .pub-authors,
+  .pub-info .pub-venue,
+  .pub-info .pub-note,
+  .pub-info .pub-links {
+    font-size: var(--publication-font-size) !important;
+    line-height: var(--publication-line-height);
+  }
+  .pub-info .pub-note {
+    color: var(--publication-note-color);
+  }
+  .pub-info a,
+  .pub-info strong,
+  .pub-info em,
+  .pub-info span {
+    font-size: inherit;
+  }
+  .pub-info sup {
+    font-size: 75%;
+  }
+
   @media only screen and (max-width: 992px) {
     .bit-html .pub-record {
       padding-left: 15px;
@@ -476,7 +514,18 @@
       margin-top: 0;
       min-height: 0;
     }
-    .pub-year-heading { padding-left: 15px; font-size: 14px; }
+    .pub-year-heading {
+      padding-left: 15px;
+      font-size: var(--publication-mobile-year-font-size);
+    }
+    .pub-info,
+    .pub-info .pub-title,
+    .pub-info .pub-authors,
+    .pub-info .pub-venue,
+    .pub-info .pub-note,
+    .pub-info .pub-links {
+      font-size: var(--publication-mobile-font-size) !important;
+    }
   }
 </style>
 
@@ -594,22 +643,6 @@ const publicationRecords = [
     title: "SCOPE: Spatially Ordered Continual Learning for 3D Segmentation",
     authors: "Wenhao Xu, Huaidong Zhang, Weipeng Zhang, Qianle Zhang, and <strong>Shengfeng He</strong>",
     venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition Findings Track (<strong>CVPR Findings</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
-  },
-  {
-    year: "2026",
-    image: ["images/ICML26a.jpg", "images/icml_logo.png"],
-    title: "PolarDepth: Monocular Transparent Object Depth from Polar-Physics Priors",
-    authors: "Wen Dong, Haiyang Mei, Yinglian Ji, Zijun Zhang, Wenyuan Zhang, Pengwei Luo, Bo Dong, <strong>Shengfeng He</strong>, and Xin Yang",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
-  },
-  {
-    year: "2026",
-    image: ["images/ICML26b.jpg", "images/icml_logo.png"],
-    title: "SABER: Continual Learning with Representation Conflict Management",
-    authors: "Xuandi Luo, Huaidong Zhang, Yi Xie, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2026",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -1467,7 +1500,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/59934b2f3904d1e92f6f63abfdf65e6b.gif", alt: "dif3d" },
-      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 40, alt: "LogoICCV23V04" }
+      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 30, alt: "LogoICCV23V04" }
     ],
     title: "Diffuse3D: Wide-Angle 3D Photography via Bilateral Diffusion",
     authors: "Yutao Jiang, Yang Zhou, Yuan Liang , Wenxi Liu, Jianbo Jiao, Yuhui Quan, and<strong>&nbsp;Shengfeng He</strong>",
@@ -1478,7 +1511,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/0573e70b8927371de7e437879492f755.jpg", alt: "3" },
-      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 40, alt: "LogoICCV23V04" }
+      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 30, alt: "LogoICCV23V04" }
     ],
     title: "CIRI: Curricular Inactivation for Residue-aware One-shot Video Inpainting",
     authors: "Weiying Zheng, Cheng Xu, Xuemiao Xu, Wenxi Liu, and<strong>&nbsp;Shengfeng He</strong>",
@@ -1489,7 +1522,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/2a4d551b529557771a90a1cc5347159c.jpg", alt: "rigid", srcset: "images/2a4d551b529557771a90a1cc5347159c.jpg 1x,images/9d63005450abd5d53531608917a02c9b.jpg 2x" },
-      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 40, alt: "LogoICCV23V04" }
+      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 30, alt: "LogoICCV23V04" }
     ],
     title: "RIGID: Recurrent GAN Inversion and Editing of Real Face Videos",
     authors: "Yangyang Xu,&nbsp;<strong>Shengfeng He, </strong>Kwan-Yee Wong, and Ping Luo",
@@ -1500,7 +1533,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/6354ff2a561e1bfb3e83e08674a753bb.jpg", alt: "de" },
-      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 40, alt: "LogoICCV23V04" }
+      { src: "images/bc4104beeb98153564d41edc1f8e6063.svg", height: 30, alt: "LogoICCV23V04" }
     ],
     title: "Deep Video Demoiréing via Compact Invertible Dyadic Decomposition",
     authors: "Yuhui Quan, Haoran Huang, <strong>Shengfeng He</strong>, and Ruotao Xu",
@@ -1511,7 +1544,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/0ef6885abd5d6996503bc9fc6557645a.jpg", alt: "QQ截图20230407113735", srcset: "images/0ef6885abd5d6996503bc9fc6557645a.jpg 1x,images/c1a6bb07a2e8d53d8942f3b443de3db2.jpg 2x" },
-      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 40, alt: "DDD_CVPR-2023" }
+      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 30, alt: "DDD_CVPR-2023" }
     ],
     title: "Where is My Spot? Few-shot Image Generation via Latent Subspace Optimization",
     authors: "Chenxi Zheng, Bangzhen Liu, Huaidong Zhang, Xuemiao Xu, and<strong>&nbsp;Shengfeng He</strong>",
@@ -1522,7 +1555,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/d707fbca3fc3615b4d8dd70403a82b79.jpg", alt: "QQ截图20230407114205" },
-      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 40, alt: "DDD_CVPR-2023" }
+      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 30, alt: "DDD_CVPR-2023" }
     ],
     title: "Towards a Smaller Student: Capacity Dynamic Distillation for Efficient Image Retrieval",
     authors: "Yi Xie, Huaidong Zhang, Xuemiao Xu, Jianqing Zhu, and<strong>&nbsp;Shengfeng He</strong>",
@@ -1533,7 +1566,7 @@ const publicationRecords = [
     year: "2023",
     image: [
       { src: "images/59e675af2d1ff726605165a61c758bd4.jpg", alt: "QQ截图20230407114413" },
-      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 40, alt: "DDD_CVPR-2023" }
+      { src: "images/c414bf8e5f9e1f39739d84169718aba9.png", height: 30, alt: "DDD_CVPR-2023" }
     ],
     title: "Curricular Contrastive Regularization for Physics-aware Single Image Dehazing",
     authors: "Yu Zheng, Jiahui Zhan, <strong>Shengfeng He</strong>, Junyu Dong, and Yong Du",
@@ -2599,7 +2632,7 @@ function normalizeImage(image, index) {
 
 function renderPubImage(image, index) {
   const img = normalizeImage(image, index);
-  const height = img.height || (index === 0 ? 100 : 40);
+  const height = img.height || (index === 0 ? 100 : 30);
   const radius = img.radius || 10;
   const style = img.style || `border-radius: ${radius}px; max-height: ${height}px; object-fit: cover;`;
   const href = img.href ? ` href="${escapeAttr(img.href)}"` : "";
@@ -2624,8 +2657,8 @@ function renderLinks(links) {
     .map(link => {
       const label = link[0];
       const url = link[1];
-      if (!url) return `[<span style="font-size: 15px;">${label}</span>]`;
-      return `[<a href="${escapeAttr(url)}" rel="" target="_blank"><span style="font-size: 15px;">${label}</span></a>]`;
+      if (!url) return `[<span class="pub-link-label">${label}</span>]`;
+      return `[<a class="pub-link" href="${escapeAttr(url)}" rel="" target="_blank">${label}</a>]`;
     })
     .join(" ");
 }
@@ -2633,14 +2666,14 @@ function renderLinks(links) {
 function renderPublicationInfo(pub) {
   const linkHtml = renderLinks(pub.links);
   const noteHtml = pub.notes && pub.notes.length
-    ? pub.notes.map(note => `<div><span style="font-size: 15px; color: rgb(226, 80, 65);">${note}</span></div>`).join("")
+    ? pub.notes.map(note => `<div class="pub-note">${note}</div>`).join("")
     : "";
   return `
-    <h2><span style="font-size: 15px;">${pub.title}</span></h2>
-    <div><span style="font-size: 15px;"><em>${pub.authors}</em></span></div>
-    <div><span style="font-size: 15px;">${pub.venue}</span></div>
+    <h2 class="pub-title">${pub.title}</h2>
+    <div class="pub-authors"><em>${pub.authors}</em></div>
+    <div class="pub-venue">${pub.venue}</div>
     ${noteHtml}
-    ${linkHtml ? `<div><span style="font-size: 15px;">${linkHtml}</span></div>` : ""}`;
+    ${linkHtml ? `<div class="pub-links">${linkHtml}</div>` : ""}`;
 }
 
 function renderYearHeading(year) {
