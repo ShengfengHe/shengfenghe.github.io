@@ -793,9 +793,9 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 <style id="group-card-template-style">
   /* Edit these values to adjust the visual style of all group cards. */
   :root {
-    --group-card-font-size: 14px;
-    --group-card-small-font-size: 12px;
-    --member-photo-size: 92px;
+    --group-card-font-size: 13px;
+    --group-card-small-font-size: 11px;
+    --member-photo-size: 72px;
     --alumni-photo-size: 58px;
     --group-card-radius: 14px;
     --group-card-border: rgba(0, 0, 0, 0.08);
@@ -812,8 +812,9 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 
   .current-card-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    /* Desktop: three current-student cards per row in each lab column. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .person-card {
@@ -833,8 +834,8 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
   }
 
   .member-card {
-    min-height: 190px;
-    padding: 16px 12px 14px;
+    min-height: 146px;
+    padding: 11px 8px 10px;
     text-align: center;
   }
 
@@ -854,7 +855,7 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     width: var(--member-photo-size);
     height: var(--member-photo-size);
     border-radius: 50%;
-    margin: 0 auto 10px;
+    margin: 0 auto 8px;
   }
 
   .alumni-avatar {
@@ -898,8 +899,8 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 6px;
-    margin-top: 10px;
+    gap: 4px;
+    margin-top: 7px;
   }
 
   .person-badge {
@@ -909,7 +910,7 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     color: #444444;
     font-size: var(--group-card-small-font-size);
     line-height: 1.2em;
-    padding: 4px 8px;
+    padding: 3px 7px;
     white-space: nowrap;
   }
 
@@ -1500,7 +1501,7 @@ const groupRecords = {
       graduation: "2024",
       program: "Master at SCUT",
       award: "",
-      current: "Xiaomi"
+      current: "Sensetime"
     },
     {
       image: "images/7f756b92fda502d595f0454fc72c9337.jpg",
