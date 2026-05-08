@@ -104,326 +104,7 @@
 			
 		</script>
 
-		
-
-<!-- Home page visual refresh: conservative CSS-only layout improvements plus a few small helper blocks. -->
-<style id="home-visual-refresh">
-  :root {
-    --home-text: #172033;
-    --home-muted: #607086;
-    --home-border: #e6ebf2;
-    --home-soft: #f7f9fc;
-    --home-blue: #2f6fbb;
-    --home-green: #00a885;
-    --home-orange: #f7a23b;
-    --home-radius: 24px;
-  }
-
-  body.home #main {
-    background: #ffffff;
-  }
-
-  body.home a {
-    transition: color .18s ease, background-color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
-  }
-
-  /* Hero */
-  body.home section#bit_fcfto {
-    position: relative;
-    overflow: hidden;
-    color: var(--home-text) !important;
-  }
-
-  @media only screen and (min-width: 992px) {
-    body.home section#bit_fcfto.qfy-row-1-67446abc69b0c159828 {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      padding-top: 36px !important;
-      padding-bottom: 34px !important;
-      min-height: 0 !important;
-    }
-    body.home section#bit_fcfto.qfy-row-1-67446abc69b0c159828 > .container {
-      max-width: 1120px !important;
-      padding: 0 !important;
-    }
-  }
-
-  body.home section#bit_fcfto > .section-background-overlay {
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-  }
-
-  body.home section#bit_fcfto > .container {
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    box-sizing: border-box;
-  }
-
-  body.home section#bit_fcfto .row.qfe_row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 56px;
-  }
-
-  @media only screen and (min-width: 992px) {
-    body.home section#bit_fcfto .qfe_row .vc_span_class.qfy-column-1-67446abc69d66400099 {
-      width: 52% !important;
-    }
-    body.home section#bit_fcfto .qfe_row .vc_span_class.qfy-column-2-67446abc6a32b796621 {
-      width: 40% !important;
-    }
-  }
-
-  body.home section#bit_fcfto .qfy-column-1-67446abc69d66400099 > .column_inner {
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  body.home section#bit_fcfto .qfy-column-2-67446abc6a32b796621 > .column_inner {
-    margin-left: 0 !important;
-    text-align: center;
-  }
-
-  body.home section#bit_fcfto h3 {
-    margin: 0 0 10px 0 !important;
-    line-height: 1.12 !important;
-    font-size: 36px !important;
-    letter-spacing: -.4px;
-    color: #111827;
-    white-space: nowrap;
-  }
-
-  body.home section#bit_fcfto .qfy-text-35911 {
-    padding-top: 2px !important;
-    padding-bottom: 12px !important;
-  }
-
-  body.home section#bit_fcfto .qfy-text-35911 span[style*="font-size: 16px"] {
-    font-size: 17px !important;
-    color: var(--home-muted);
-    line-height: 1.65;
-  }
-
-
-  body.home section#bit_fcfto .bitButton {
-    border-radius: 999px !important;
-    padding: 7px 15px !important;
-    min-height: 28px;
-    border: 1px solid #d8e1ee !important;
-    background: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(23,32,51,.08) !important;
-  }
-
-  body.home section#bit_fcfto .bitButton:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(23,32,51,.13) !important;
-  }
-
-  body.home section#bit_fcfto .bitButton .iconText {
-    font-size: 13px !important;
-    color: #1f2937 !important;
-  }
-
-  body.home section#bit_fcfto img[src*="Homepage_high"] {
-    width: min(330px, 100%) !important;
-    height: auto !important;
-    border-radius: 18px !important;
-    box-shadow: none !important;
-    border: 0 !important;
-  }
-
-  body.home section#bit_fcfto .Thumbnail_text {
-    border-radius: 0 0 22px 22px;
-  }
-
-
-  /* Align the hover caption exactly with the visible portrait image. */
-  body.home section#bit_fcfto .single_two_images {
-    width: min(330px, 100%) !important;
-    max-width: min(330px, 100%) !important;
-    display: inline-block !important;
-    position: relative !important;
-    overflow: hidden !important;
-    border-radius: 18px !important;
-    line-height: 0 !important;
-    vertical-align: top;
-  }
-
-  body.home section#bit_fcfto .single_two_images img[src*="Homepage_high"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    border-radius: 0 !important;
-  }
-
-  body.home section#bit_fcfto .single_two_images .Thumbnail_text {
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    border-radius: 0 0 18px 18px !important;
-  }
-
-  /* Opening + Bio */
-  @media only screen and (min-width: 992px) {
-    body.home section#bit_tam5s.qfy-row-2-67446abc6acfd653891 {
-      padding-top: 24px !important;
-      padding-bottom: 38px !important;
-    }
-    body.home section#bit_tam5s.qfy-row-2-67446abc6acfd653891 > .container {
-      max-width: 1120px !important;
-    }
-  }
-
-  body.home section#bit_tam5s .qfy-text-84894 {
-    background: linear-gradient(135deg, #fffaf1 0%, #ffffff 100%) !important;
-    border: 1px solid #f2dfc2;
-    border-left: 5px solid var(--home-orange);
-    border-radius: 18px;
-    padding: 16px 18px !important;
-    margin-bottom: 24px !important;
-    box-shadow: 0 8px 24px rgba(178,111,26,.08);
-    color: #313946;
-  }
-
-  body.home section#bit_tam5s #vc_header_67446abc6b56e763 .header_title {
-    font-size: 22px !important;
-    font-weight: 600 !important;
-    color: #111827 !important;
-    padding-bottom: 6px !important;
-  }
-
-  body.home section#bit_tam5s #vc_header_67446abc6b56e763 .header_title::after {
-    content: "";
-    display: block;
-    width: 42px;
-    height: 3px;
-    margin-top: 8px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--home-blue), var(--home-green));
-  }
-
-  body.home section#bit_tam5s .qfy-text-3126 {
-    background: #ffffff;
-    border: 1px solid var(--home-border);
-    border-radius: 22px;
-    padding: 22px 24px !important;
-    box-shadow: 0 12px 32px rgba(23,32,51,.06);
-  }
-
-  body.home section#bit_tam5s .qfy-text-3126 div[style*="text-align: justify"] {
-    font-size: 16px !important;
-    line-height: 1.72 !important;
-    color: #2d3748;
-  }
-
-  body.home section#bit_tam5s .qfy-text-3126 p {
-    margin-top: 0;
-    margin-bottom: 14px;
-  }
-
-  body.home section#bit_tam5s .qfy-text-3126 a,
-  body.home section#bit_tam5s .qfy-text-84894 a {
-    color: #2367a8;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(35,103,168,.25);
-  }
-
-  body.home section#bit_tam5s .qfy-text-3126 a:hover,
-  body.home section#bit_tam5s .qfy-text-84894 a:hover {
-    color: #0f4e88;
-    border-bottom-color: rgba(15,78,136,.55);
-  }
-
-  /* Logo strip */
-  body.home section#bit_6m7ei {
-    position: relative;
-  }
-
-  @media only screen and (min-width: 992px) {
-    body.home section#bit_6m7ei.qfy-row-3-67446abc6b81b280189 {
-      padding-top: 12px !important;
-      padding-bottom: 26px !important;
-    }
-    body.home section#bit_6m7ei.qfy-row-3-67446abc6b81b280189 > .container {
-      max-width: 980px !important;
-    }
-  }
-
-  body.home .home-logo-heading {
-    text-align: center;
-    margin: 0 auto 14px auto;
-    color: #7b8798;
-    font-size: 13px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  body.home section#bit_6m7ei > .container {
-    background: #ffffff;
-    border: 1px solid var(--home-border);
-    border-radius: 20px;
-    padding: 18px 24px 14px 24px;
-    box-shadow: 0 10px 28px rgba(23,32,51,.05);
-  }
-
-  body.home section#bit_6m7ei img {
-    max-height: 58px;
-    object-fit: contain;
-    filter: grayscale(8%);
-    opacity: .93;
-  }
-
-  body.home section#bit_6m7ei img:hover {
-    opacity: 1;
-    filter: none;
-  }
-
-  @media only screen and (max-width: 992px) {
-    body.home section#bit_fcfto .row.qfe_row {
-      flex-direction: column-reverse;
-      gap: 22px;
-    }
-    body.home section#bit_fcfto h3 {
-      font-size: 30px !important;
-      text-align: center;
-      white-space: normal;
-    }
-    body.home section#bit_fcfto .qfy-column-1-67446abc69d66400099,
-    body.home section#bit_fcfto .qfy-column-2-67446abc6a32b796621 {
-      width: 100% !important;
-    }
-    body.home section#bit_fcfto .qfy-text-35911,
-    body.home section#bit_fcfto .qfy-text-50204 {
-      text-align: center;
-    }
-    body.home section#bit_fcfto img[src*="Homepage_high"] {
-      width: min(260px, 82vw) !important;
-    }
-    body.home section#bit_fcfto .single_two_images {
-      width: min(260px, 82vw) !important;
-      max-width: min(260px, 82vw) !important;
-    }
-    body.home section#bit_fcfto > .container {
-      padding: 0 !important;
-      border-radius: 0;
-    }
-    body.home section#bit_tam5s .qfy-text-3126 {
-      padding: 18px 18px !important;
-    }
-    body.home section#bit_6m7ei > .container {
-      padding: 16px 14px;
-    }
-  }
-</style>
-
-</head>
+		</head>
 
 
 
@@ -598,6 +279,10 @@
 </div>
 		</div> 
 	</div> 
+
+
+
+
 	<div  m-padding="0px 0px 0px 0px"  p-padding="0 6px 0 0" css_animation_delay="0" qfyuuid="qfy_column_text_qikcq-c-bs" data-anitime='0.7' data-ani_iteration_count='1'  class="qfy-element qfy-text qfy-text-50204 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-color: #ffffff;background-position:center center;background-repeat: no-repeat;;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:6px;padding-left:0;border-radius:0px;" >
 		<div class="qfe_wrapper ">
 			<div>
@@ -614,7 +299,7 @@
 
 	<div id="vc_img_67446abc6ac11477" style="padding:0px;margin:0px;clear:both;position:relative;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-position:0 0;background-repeat: no-repeat;"     m-padding="0px 0px 0px 0px"  p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_single_image_n16x7-c-bs" data-anitime='0.7' data-ani_iteration_count='1'  class="qfy-element bitImageControlDiv " ><style>@media only screen and (max-width: 768px) {.single_image_text-67446abc6ac30551 .head{font-size: 16px !important;}.single_image_text-67446abc6ac30551 .content{font-size: 16px !important;}}</style><a class="bitImageAhover   inlineblock " >
 	<div class="bitImageParentDiv qfe_single_image qfe_content_element vc_align_center">
-		<div class="qfe_wrapper"><span></span><span class='single_two_images ' style='display:inline-block;max-width:100%;font-size:0;position:relative;'><img width="959" height="959" src="images/Homepage_high.jpg" class="front_image vc_box_rounded attachment-full" alt="homepage" title="" description="I am the older one." data-title="homepage" src-img="" style='border-radius: 15px;' /><div  class="single_image_text-67446abc6ac30551 Thumbnail_text  hoverclass  MenuAnimIn5 " style="overflow:hidden;background-color:rgba(12,12,12,0.3);color: #fff;padding: 15px 15px 15px 15px;" ><div class="" ><div class="content" style="font-size: 16px;">I am the older one.</div></div></div><i></i></span></div> 
+		<div class="qfe_wrapper"><span></span><span class='single_two_images ' style='display:inline-block;max-width:100%;font-size:0;position:relative;'><img width="959" height="959" src="images/Homepage_high.jpg" class="front_image vc_box_rounded attachment-full" alt="homepage" title="" description="I am the older one." data-title="homepage" src-img="" style='border-radius: 15px;' /><div  class="single_image_text-67446abc6ac30551 Thumbnail_text  hoverclass  MenuAnimIn5 " style="overflow:hidden;background-color:rgba(12,12,12,0.3);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">I am the older one.</div></div></div><i></i></span></div> 
 	</div> 
 	</div> </a>
 
@@ -690,7 +375,7 @@
 					at <a href="http://www.gatech.edu/" target="_blank">Georgia Institute of Technology</a>, 
 					working with Prof. <a href="http://rehg.org/" target="_blank">James Regh</a>.
 					Originally, I am from 
-					<a href="https://en.wikipedia.org/wiki/Guangzhou" target="_blank">Guangzhou (Canton)</a>, 
+					<a href="http://en.wikipedia.org/wiki/Guangzhou" target="_blank">Guangzhou (Canton)</a>, 
 					a beautiful city in southern China.
 				</p>
 				<p>
@@ -736,8 +421,6 @@
         
 
             <div  class="section-background-overlay background-overlay grid-overlay-0 " style="background-color: transparent;border-radius:5px;"></div>
-        <div class="home-logo-heading">Affiliations &amp; Education</div>
-
         <div class="container">
         <div class="row qfe_row  ">
             
@@ -897,7 +580,7 @@
 </style>
 	<div  class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-size-md vc_icon_element-style- vc_icon_element-background-color-">
 				<span class="vc_icon_element-icon glyphicon glyphicon-icon-linkedin" style="color:#1e73be;"></span>
-				<a class="vc_icon_element-link" href="https://www.linkedin.com/in/shengfenghe/" target="_blank"></a></div>
+				<a class="vc_icon_element-link" href="https://www.linkedin.com/in/shengfenghe/" target=" target="_blank""></a></div>
 
 
 </div>
@@ -914,7 +597,7 @@
 </style>
 	<div  class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-size-md vc_icon_element-style- vc_icon_element-background-color-">
 				<span class="vc_icon_element-icon glyphicon glyphicon-icon-envelope" style="color:#000;"></span>
-				<a class="vc_icon_element-link" href="email" target="_blank"></a></div>
+				<a class="vc_icon_element-link" href="email" target=" target="_blank""></a></div>
 
 
 </div>
@@ -931,7 +614,7 @@
 </style>
 	<div  class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-size-md vc_icon_element-style- vc_icon_element-background-color-">
 				<span class="vc_icon_element-icon glyphicon glyphicon-icon-youtube-play" style="color:#dd3333;"></span>
-				<a class="vc_icon_element-link" href="https://www.youtube.com/channel/UCfbSY4IWlCSYNFHQ0k2DRWQ" target="_blank"></a></div>
+				<a class="vc_icon_element-link" href="https://www.youtube.com/channel/UCfbSY4IWlCSYNFHQ0k2DRWQ" target=" target="_blank""></a></div>
 
 
 </div>
@@ -948,7 +631,7 @@
 </style>
 	<div  class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-size-md vc_icon_element-style- vc_icon_element-background-color-">
 				<span class="vc_icon_element-icon glyphicon glyphicon-icon-twitter" style="color:#5c99ce;"></span>
-				<a class="vc_icon_element-link" href="https://twitter.com/ShengfengHe" target="_blank"></a></div>
+				<a class="vc_icon_element-link" href="https://twitter.com/ShengfengHe" target=" target="_blank""></a></div>
 
 
 </div>
