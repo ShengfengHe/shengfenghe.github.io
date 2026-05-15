@@ -1028,12 +1028,13 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
   .lab-heading-card {
     box-sizing: border-box;
     width: 100%;
+    height: 270px;
     margin: 0 0 16px;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 9px;
     text-align: center;
     border: 0;
@@ -1089,8 +1090,10 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     .current-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .alumni-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .lab-heading-card {
+      height: auto;
       margin-bottom: 14px;
       gap: 8px;
+      justify-content: center;
     }
     .lab-logo-panel {
       width: fit-content;
