@@ -897,10 +897,21 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 
   .person-badges {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 7px;
+  }
+
+  .person-meta-row,
+  .person-program-row {
+    display: flex;
+    align-items: center;
     justify-content: center;
     gap: 4px;
-    margin-top: 7px;
+    flex-wrap: nowrap;
+    min-height: 22px;
   }
 
   .person-badge {
@@ -916,6 +927,44 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 
   .lab-cvl .person-badge.program-badge { background: rgba(0, 168, 133, 0.10); color: #08765e; }
   .lab-vug .person-badge.program-badge { background: rgba(41, 105, 176, 0.10); color: #2969b0; }
+
+  .person-avatar-link,
+  .person-name-link {
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .person-avatar-link:hover,
+  .person-name-link:hover {
+    text-decoration: none;
+  }
+
+  .person-name-link:hover .person-name {
+    color: #2969b0;
+  }
+
+  .person-badge.previous-badge {
+    background: rgba(245, 158, 11, 0.13);
+    color: #b45309;
+  }
+
+
+  /* Keep linked current-member photos above names, even when homepage links are added. */
+  .member-card .person-avatar-link {
+    display: block;
+    width: var(--member-photo-size);
+    height: var(--member-photo-size);
+    margin: 0 auto 8px;
+  }
+
+  .member-card .person-avatar-link .member-avatar {
+    margin: 0;
+  }
+
+  .member-card .person-name-link {
+    display: block;
+  }
 
   .alumni-card-grid {
     display: grid;
@@ -1154,76 +1203,108 @@ const groupRecords = {
     }
   ],
 
+  // Optional VUG fields:
+  // homepage: link to the student's homepage. If provided, both photo and name are clickable.
+  // beforeVUG: previous university or institution. If provided, it appears as a colored badge.
   vug: [
+    {
+      image: "images/zhilu.jpg",
+      name: "Zhilu Zhang",
+      chineseName: "张志路",
+      intake: "2026",
+      program: "Postdoc",
+      homepage: "https://cszhilu1998.github.io/",
+      beforeVUG: "PhD (HIT)"
+    },
     {
       image: "images/xucheng.jpg",
       name: "Cheng Xu",
       chineseName: "徐成",
       intake: "2026",
-      program: "Postdoc"
+      program: "Postdoc",
+      homepage: "https://cschengxu.github.io/",
+      beforeVUG: "PhD (SCUT)"
     },
     {
       image: "images/shangwei.jpg",
       name: "Wei Shang",
       chineseName: "尚玮",
       intake: "2026",
-      program: "Postdoc"
+      program: "Postdoc",
+      homepage: "https://shangwei5.github.io/",
+      beforeVUG: "PhD (HIT & CityU HK)"
     },
     {
       image: "images/7f756b92fda502d595f0454fc72c9337.jpg",
       name: "Chenshu Xu",
       chineseName: "徐晨舒",
       intake: "2023",
-      program: "PhD"
+      program: "PhD",
+      homepage: "https://scholar.google.com/citations?user=7wVcyQwAAAAJ&hl",
+      beforeVUG: "MSc (SCUT)"
     },
     {
       image: "images/8dbabc0cc512a2c8ab81322f7404ba84.jpg",
       name: "Yifei Yang",
       chineseName: "杨逸飞",
       intake: "2023",
-      program: "PhD"
+      program: "PhD",
+      homepage: "https://scholar.google.com/citations?user=sNtkntwAAAAJ&hl",
+      beforeVUG: "MSc (ECNU)"
     },
     {
       image: "images/c5f94d5b902fcc8f38b58feea9dce9db.jpg",
       name: "Cheng Ching Lam",
       chineseName: "鄭靖霖",
       intake: "2024",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      homepage: "",
+      beforeVUG: "BSc (HKU)"
     },
     {
       image: "images/vincent.jpg",
       name: "Alexander Vincent Lewi",
       chineseName: "",
       intake: "2026",
-      program: "PhD"
+      program: "PhD",
+      homepage: "https://scholar.google.com/citations?user=cHcyzMkAAAAJ&hl",
+      beforeVUG: "BSc (SMU)"
     },
     {
       image: "images/jingtaowang.jpg",
       name: "Jingtao Wang",
       chineseName: "王京涛",
       intake: "2025",
-      program: "CSC PhD"
+      program: "CSC PhD from NJUST",
+      homepage: "",
+      beforeVUG: ""
     },
     {
       image: "images/wendong.jpg",
       name: "Wen Dong",
       chineseName: "董文",
       intake: "2025",
-      program: "CSC PhD"
+      program: "CSC PhD from DLUT",
+      homepage: "",
+      beforeVUG: ""
     },
     {
       image: "images/xiaohewu.png",
       name: "Xiaohe Wu",
       chineseName: "武小荷",
       intake: "2025",
-      program: "CSC Visiting Professor"
+      program: "CSC Visiting Professor from HIT",
+      homepage: "",
+      beforeVUG: ""
     },
     {
       image: "images/a200bc887e5ca2513d8f5e9acf97e243.png",
       name: "Yong Du",
       chineseName: "都勇",
       intake: "2025",
-      program: "CSC Visiting Professor"
+      program: "CSC Visiting Professor from OUC",
+      homepage: "",
+      beforeVUG: ""
     }
   ],
 
@@ -1235,7 +1316,7 @@ const groupRecords = {
       name: "Junhui Yin",
       chineseName: "尹军辉",
       graduation: "2025",
-      program: "CSC Postdoc at SMU",
+      program: "CSC Postdoc at SMU from BUPT",
       award: "",
       current: "Assistant Professor at USTB"
     },
@@ -1244,7 +1325,7 @@ const groupRecords = {
       name: "Guixu Lin",
       chineseName: "林贵旭",
       graduation: "2025",
-      program: "Visiting PhD at SMU",
+      program: "Visiting PhD at SMU from U-Tokyo",
       award: "",
       current: "Shanda AI Research Tokyo"
     },
@@ -1253,7 +1334,7 @@ const groupRecords = {
       name: "Luigi Sigillo",
       chineseName: "",
       graduation: "2025",
-      program: "Visiting PhD at SMU",
+      program: "Visiting PhD at SMU from Uni-Roma",
       award: "",
       current: "Postdoctoral Fellow at the European Molecular Biology Laboratory"
     },
@@ -1262,7 +1343,7 @@ const groupRecords = {
       name: "Guanzhou Ke",
       chineseName: "柯冠舟",
       graduation: "2025",
-      program: "CSC PhD at SMU",
+      program: "CSC PhD at SMU from BJTU",
       award: "",
       current: "Research Scientist at Autel Intelligent Tech"
     },
@@ -1289,7 +1370,7 @@ const groupRecords = {
       name: "Yu Guo",
       chineseName: "郭彧",
       graduation: "2024",
-      program: "CSC PhD at SMU",
+      program: "CSC PhD at SMU from WUST",
       award: "",
       current: "Second PhD at CityU HK"
     },
@@ -1298,7 +1379,7 @@ const groupRecords = {
       name: "Huilin Zhu",
       chineseName: "朱慧琳",
       graduation: "2024",
-      program: "CSC PhD at SMU",
+      program: "CSC PhD at SMU from WUST",
       award: "",
       current: "Postdoc at WUST"
     },
@@ -1307,7 +1388,7 @@ const groupRecords = {
       name: "Hao Tang",
       chineseName: "唐昊",
       graduation: "2024",
-      program: "Visiting PhD at SMU",
+      program: "Visiting PhD at SMU from NJUST",
       award: "",
       current: "Postdoc at PolyU HK"
     },
@@ -1779,41 +1860,66 @@ function initials(name) {
     .toUpperCase() || "?";
 }
 
+function getHomepage(person) {
+  return String(person.homepage || "").trim();
+}
+
+function getBeforeVUG(person) {
+  return String(person.beforeVUG || person.previousInstitution || person.graduatedFrom || "").trim();
+}
+
+function maybeLink(person, html, className) {
+  const homepage = getHomepage(person);
+  if (!homepage) return html;
+  return `<a class="${className}" href="${escapeHtml(homepage)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
+}
+
 function renderAvatar(person, avatarClass) {
   const name = escapeHtml(person.name);
   const image = escapeHtml(person.image);
   const fallback = escapeHtml(initials(person.name));
-  return `
+  const avatar = `
     <div class="person-avatar ${avatarClass}">
       <img src="${image}" alt="${name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <span class="avatar-fallback">${fallback}</span>
     </div>
   `;
+  return maybeLink(person, avatar, "person-avatar-link");
 }
 
 function renderNameBlock(person, extraClass = "") {
   const cn = person.chineseName ? `<div class="person-cn">${escapeHtml(person.chineseName)}</div>` : "";
-  return `
+  const nameBlock = `
     <div class="${extraClass}">
       <div class="person-name">${escapeHtml(person.name)}</div>
       ${cn}
     </div>
   `;
+  return maybeLink(person, nameBlock, "person-name-link");
 }
 
 function renderCurrentCards(containerId, people) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  container.innerHTML = people.map(person => `
-    <article class="person-card member-card">
-      ${renderAvatar(person, "member-avatar")}
-      ${renderNameBlock(person)}
-      <div class="person-badges">
-        <span class="person-badge intake-badge">${escapeHtml(person.intake)}</span>
-        <span class="person-badge program-badge">${escapeHtml(person.program)}</span>
-      </div>
-    </article>
-  `).join("");
+  container.innerHTML = people.map(person => {
+    const beforeVUG = getBeforeVUG(person);
+    const beforeBadge = beforeVUG ? `<span class="person-badge previous-badge">${escapeHtml(beforeVUG)}</span>` : "";
+    return `
+      <article class="person-card member-card">
+        ${renderAvatar(person, "member-avatar")}
+        ${renderNameBlock(person)}
+        <div class="person-badges">
+          <div class="person-meta-row">
+            <span class="person-badge intake-badge">${escapeHtml(person.intake)}</span>
+            ${beforeBadge}
+          </div>
+          <div class="person-program-row">
+            <span class="person-badge program-badge">${escapeHtml(person.program)}</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
 function inferAlumniCategory(person) {
