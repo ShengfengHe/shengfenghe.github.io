@@ -932,6 +932,38 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     color: #b45309;
   }
 
+  .member-extra-lines {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .member-extra-line {
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 999px;
+    padding: 3px 7px;
+    font-size: var(--group-card-small-font-size);
+    line-height: 1.25em;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .member-extra-line.award-line {
+    background: rgba(234, 179, 8, 0.13);
+    color: #9a6700;
+  }
+
+  .member-extra-line.internship-line {
+    background: rgba(99, 102, 241, 0.10);
+    color: #4f46e5;
+  }
+
 
   /* Keep linked current-member photos above names, even when homepage links are added. */
   .member-card .person-avatar-link {
@@ -1115,172 +1147,223 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 <script id="group-record-template-script">
 const groupRecords = {
   cvl: [
+    // Optional CVL fields:
+    // award: award or honor information. Leave empty to hide.
+    // internship: internship or visiting experience. Leave empty to hide.
     {
       image: "images/0729285c361b8895f3e17c9c8d4daeb6.jpg",
       name: "Yang Zhou",
       chineseName: "周洋",
       intake: "2022",
-      program: "PhD"
+      program: "PhD",
+      award: "",
+      internship: "Intern at Alibaba"
     },
     {
       image: "images/22400107a7afe27e3d97badc9d5c124c.jpg",
       name: "Yuqin Lu",
       chineseName: "卢育钦",
       intake: "2022",
-      program: "PhD"
+      program: "PhD",
+      award: "",
+      internship: "Intern at Alibaba"
     },
     {
       image: "images/yihong.jpg",
       name: "Yihong Lin",
       chineseName: "林一鸿",
       intake: "2025",
-      program: "PhD"
+      program: "PhD",
+      award: "",
+      internship: ""
     },
     {
       image: "images/621460995369c06f647b20ac3b4d4725.jpg",
       name: "Yi Xie",
       chineseName: "谢懿",
       intake: "2022",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      award: "",
+      internship: ""
     },
     {
       image: "images/zikai.jpg",
       name: "Zikai Huang",
       chineseName: "黄梓楷",
       intake: "2022",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      award: "",
+      internship: "Intern at Tencent"
     },
     {
       image: "images/haoxin.jpg",
       name: "Haoxin Yang",
       chineseName: "杨灏鑫",
       intake: "2022",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      award: "",
+      internship: ""
     },
     {
       image: "images/0cd8fc664cd3ad773e9200aa14ae8535.jpg",
       name: "Chenxi Zheng",
       chineseName: "郑晨熙",
       intake: "2023",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      award: "",
+      internship: ""
     },
     {
       image: "images/292c3686011a42c50b9bbaebbc873789.jpg",
       name: "Yuyang Yu",
       chineseName: "余宇炀",
       intake: "2024",
-      program: "Co-supervised PhD"
+      program: "Co-supervised PhD",
+      award: "",
+      internship: ""
     },
     {
       image: "images/1584f7ec54c732a9e1ceec762e2ed060.jpg",
       name: "Yiyi Long",
       chineseName: "龙依依",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/68ab39b381429a448b3fd19696da640d.jpg",
       name: "Tianle Zhang",
       chineseName: "张天乐",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/b7d05fa5d827432386a4612de273dfa2.jpg",
       name: "Jingxin Liang",
       chineseName: "梁靖欣",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/d486b6f8bcc74eeab8d591a36cf467f3.jpg",
       name: "Yuhui Deng",
       chineseName: "邓宇晖",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/5e912792ec3f4b14c4a6085927fbe901.jpg",
       name: "Ziming Sun",
       chineseName: "孙梓铭",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/ad74a3194ee7ecac516ab37b70964d07.jpg",
       name: "Junhang Li",
       chineseName: "李君航",
       intake: "2023",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/98a805ac10c81a142a527d084c85de9f.jpg",
       name: "Jingdan Kang",
       chineseName: "康静丹",
       intake: "2023",
-      program: "Co-supervised Master"
+      program: "Co-supervised Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/f669b06e6a02511c22b24f01daa15f3e.jpg",
       name: "Molan Sun",
       chineseName: "孙莫楠",
       intake: "2023",
-      program: "Co-supervised Master"
+      program: "Co-supervised Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/05a29c888d7f9c7757ffdc9f87fea1dc.jpg",
       name: "Zhihu Wen",
       chineseName: "文志湖",
       intake: "2024",
-      program: "Co-supervised Master"
+      program: "Co-supervised Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/552e7d522e2d17689f77f4c806889660.png",
       name: "Zongchi Tu",
       chineseName: "涂宗驰",
       intake: "2024",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: ""
     },
     {
       image: "images/ruilintang.jpg",
       name: "Ruilin Tang",
       chineseName: "唐瑞林",
       intake: "2025",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: "Intern at Tencent"
     },
     {
       image: "images/ruisiye.png",
       name: "Ruisi Ye",
       chineseName: "叶锐思",
       intake: "2025",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: "Intern at Tencent"
     },
     {
       image: "images/ziwenwang.jpg",
       name: "Ziwen Wang",
       chineseName: "王子文",
       intake: "2025",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: "Intern at Autel Intell. Tech."
     },
     {
       image: "images/zemingliu.jpg",
       name: "Zeming Liu",
       chineseName: "刘泽铭",
       intake: "2025",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: "Intern at Alibaba"
     },
     {
       image: "images/jiahuanxu.jpg",
       name: "Jiahuan Xu",
       chineseName: "许佳桓",
       intake: "2025",
-      program: "Master"
+      program: "Master",
+      award: "",
+      internship: "Intern at Tencent"
     }
   ],
 
   // Optional VUG fields:
   // homepage: link to the student's homepage. If provided, both photo and name are clickable.
   // beforeVUG: previous university or institution. If provided, it appears as a colored badge.
+  // award: award or honor information. Leave empty to hide.
+  // internship: internship or visiting experience. Leave empty to hide.
   vug: [
     {
       image: "images/zhilu.jpg",
@@ -1289,7 +1372,9 @@ const groupRecords = {
       intake: "2026",
       program: "Postdoc",
       homepage: "https://cszhilu1998.github.io/",
-      beforeVUG: "PhD (HIT)"
+      beforeVUG: "PhD (HIT)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/xucheng.jpg",
@@ -1298,7 +1383,9 @@ const groupRecords = {
       intake: "2026",
       program: "Postdoc",
       homepage: "https://cschengxu.github.io/",
-      beforeVUG: "PhD (SCUT)"
+      beforeVUG: "PhD (SCUT)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/shangwei.jpg",
@@ -1307,7 +1394,9 @@ const groupRecords = {
       intake: "2026",
       program: "Postdoc",
       homepage: "https://shangwei5.github.io/",
-      beforeVUG: "PhD (HIT & CityU HK)"
+      beforeVUG: "PhD (HIT & CityU HK)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/7f756b92fda502d595f0454fc72c9337.jpg",
@@ -1316,7 +1405,9 @@ const groupRecords = {
       intake: "2023",
       program: "PhD",
       homepage: "https://scholar.google.com/citations?user=7wVcyQwAAAAJ&hl",
-      beforeVUG: "MSc (SCUT)"
+      beforeVUG: "MSc (SCUT)",
+      award: "CGRS Fellowship Awards (2024)",
+      internship: ""
     },
     {
       image: "images/8dbabc0cc512a2c8ab81322f7404ba84.jpg",
@@ -1325,7 +1416,9 @@ const groupRecords = {
       intake: "2023",
       program: "PhD",
       homepage: "https://scholar.google.com/citations?user=sNtkntwAAAAJ&hl",
-      beforeVUG: "MSc (ECNU)"
+      beforeVUG: "MSc (ECNU)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/c5f94d5b902fcc8f38b58feea9dce9db.jpg",
@@ -1334,7 +1427,9 @@ const groupRecords = {
       intake: "2024",
       program: "Co-supervised PhD",
       homepage: "",
-      beforeVUG: "BSc (HKU)"
+      beforeVUG: "BSc (HKU)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/vincent.jpg",
@@ -1343,7 +1438,9 @@ const groupRecords = {
       intake: "2026",
       program: "PhD",
       homepage: "https://scholar.google.com/citations?user=cHcyzMkAAAAJ&hl",
-      beforeVUG: "BSc (SMU)"
+      beforeVUG: "BSc (SMU)",
+      award: "",
+      internship: ""
     },
     {
       image: "images/jingtaowang.jpg",
@@ -1352,7 +1449,9 @@ const groupRecords = {
       intake: "2025",
       program: "CSC PhD from NJUST",
       homepage: "",
-      beforeVUG: ""
+      beforeVUG: "",
+      award: "",
+      internship: ""
     },
     {
       image: "images/wendong.jpg",
@@ -1361,7 +1460,9 @@ const groupRecords = {
       intake: "2025",
       program: "CSC PhD from DLUT",
       homepage: "",
-      beforeVUG: ""
+      beforeVUG: "",
+      award: "",
+      internship: ""
     },
     {
       image: "images/xiaohewu.png",
@@ -1370,7 +1471,9 @@ const groupRecords = {
       intake: "2025",
       program: "CSC Visiting Professor from HIT",
       homepage: "",
-      beforeVUG: ""
+      beforeVUG: "",
+      award: "",
+      internship: ""
     },
     {
       image: "images/a200bc887e5ca2513d8f5e9acf97e243.png",
@@ -1379,7 +1482,9 @@ const groupRecords = {
       intake: "2025",
       program: "CSC Visiting Professor from OUC",
       homepage: "",
-      beforeVUG: ""
+      beforeVUG: "",
+      award: "",
+      internship: ""
     }
   ],
 
@@ -1973,12 +2078,24 @@ function renderNameBlock(person, extraClass = "") {
   return maybeLink(person, nameBlock, "person-name-link");
 }
 
+function renderOptionalMemberDetail(person, field, className) {
+  const raw = person[field];
+  if (!raw) return "";
+  const values = Array.isArray(raw) ? raw.filter(Boolean) : [raw];
+  if (!values.length) return "";
+  const content = values.map(value => escapeHtml(value)).join(" · ");
+  return `<span class="member-extra-line ${className}">${content}</span>`;
+}
+
 function renderCurrentCards(containerId, people) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = people.map(person => {
     const beforeVUG = getBeforeVUG(person);
     const beforeBadge = beforeVUG ? `<span class="person-badge previous-badge">${escapeHtml(beforeVUG)}</span>` : "";
+    const awardLine = renderOptionalMemberDetail(person, "award", "award-line");
+    const internshipLine = renderOptionalMemberDetail(person, "internship", "internship-line");
+    const extraLines = (awardLine || internshipLine) ? `<div class="member-extra-lines">${awardLine}${internshipLine}</div>` : "";
     return `
       <article class="person-card member-card">
         ${renderAvatar(person, "member-avatar")}
@@ -1992,6 +2109,7 @@ function renderCurrentCards(containerId, people) {
             <span class="person-badge program-badge">${escapeHtml(person.program)}</span>
           </div>
         </div>
+        ${extraLines}
       </article>
     `;
   }).join("");
