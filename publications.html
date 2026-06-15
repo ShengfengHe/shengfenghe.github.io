@@ -481,6 +481,23 @@
     background-repeat: no-repeat;
   }
   .pub-image-wrap img { max-width: 100%; }
+  .pub-image-placeholder {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    background-image: url("images/loading.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    vertical-align: middle;
+    opacity: 0.82;
+  }
+  .pub-image-placeholder::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   .pub-lazy-image { transition: opacity 0.18s ease; }
   .pub-lazy-image:not(.pub-lazy-loaded) { opacity: 0.92; }
 
@@ -2679,6 +2696,7 @@ function normalizeImage(image, index) {
 }
 
 const PUB_IMAGE_PLACEHOLDER = "images/loading.jpg";
+let publicationLazyObserver = null;
 
 function renderPubImage(image, index) {
   const img = normalizeImage(image, index);
@@ -2690,49 +2708,102 @@ function renderPubImage(image, index) {
   const dataSrcset = img.srcset ? ` data-srcset="${escapeAttr(img.srcset)}"` : "";
   const alt = img.alt || (index === 0 ? "snapshot" : "logo");
   const actualSrc = img.src || PUB_IMAGE_PLACEHOLDER;
-  const placeholderSrc = img.placeholder || PUB_IMAGE_PLACEHOLDER;
+  const placeholderStyle = `${style}; height: ${height}px; min-height: ${height}px;`;
   return `
     <div class="pub-image-wrap qfy-element bitImageControlDiv">
       <a class="bitImageAhover"${href}${target}>
         <div class="bitImageParentDiv qfe_single_image qfe_content_element widthfull vc_align_center">
-          <div class="qfe_wrapper"><span></span><img class="front_image ag_image pub-lazy-image" src="${escapeAttr(placeholderSrc)}" data-src="${escapeAttr(actualSrc)}"${dataSrcset} alt="${escapeAttr(alt)}" style="${escapeAttr(style)}" loading="lazy" decoding="async" /></div>
+          <div class="qfe_wrapper"><span></span><span class="front_image ag_image pub-lazy-image pub-image-placeholder" data-src="${escapeAttr(actualSrc)}"${dataSrcset} data-style="${escapeAttr(style)}" data-alt="${escapeAttr(alt)}" style="${escapeAttr(placeholderStyle)}" role="img" aria-label="${escapeAttr(alt)}"></span></div>
         </div>
       </a>
     </div>`;
 }
 
-
-function loadPublicationImage(img) {
-  if (!img || img.dataset.pubLoaded === "1") return;
-  const actualSrc = img.getAttribute("data-src");
+function loadPublicationImage(node) {
+  if (!node || node.dataset.pubLoaded === "1") return;
+  const actualSrc = node.getAttribute("data-src");
   if (!actualSrc) return;
-  const actualSrcset = img.getAttribute("data-srcset");
+  node.dataset.pubLoaded = "1";
+
+  const img = new Image();
+  img.className = "front_image ag_image pub-loaded-image";
+  img.alt = node.getAttribute("data-alt") || "publication image";
+  // Important: this off-DOM image is created only after the placeholder is near the viewport.
+  // Do NOT mark it as loading="lazy" here; some browsers postpone off-DOM lazy images,
+  // which leaves the placeholder visible forever.
+  img.loading = "eager";
+  img.decoding = "async";
+  img.setAttribute("style", node.getAttribute("data-style") || "");
+
+  const actualSrcset = node.getAttribute("data-srcset");
   if (actualSrcset) img.setAttribute("srcset", actualSrcset);
-  img.setAttribute("src", actualSrc);
-  img.dataset.pubLoaded = "1";
-  img.classList.add("pub-lazy-loaded");
+
+  function swapInImage() {
+    if (node.parentNode) node.parentNode.replaceChild(img, node);
+  }
+
+  img.onload = function() {
+    if (img.decode) {
+      img.decode().then(swapInImage).catch(swapInImage);
+    } else {
+      swapInImage();
+    }
+  };
+  img.onerror = swapInImage;
+  img.src = actualSrc;
 }
 
-function installPublicationLazyLoading() {
-  const images = Array.prototype.slice.call(document.querySelectorAll("img.pub-lazy-image[data-src]"));
+function getPublicationLazyObserver() {
+  if (publicationLazyObserver || !("IntersectionObserver" in window)) return publicationLazyObserver;
+  publicationLazyObserver = new IntersectionObserver(function(entries, obs) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting || entry.intersectionRatio > 0) {
+        loadPublicationImage(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: "1100px 0px",
+    threshold: 0.01
+  });
+  return publicationLazyObserver;
+}
+
+function isPublicationImageNearViewport(node) {
+  if (!node || !node.getBoundingClientRect) return false;
+  const rect = node.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+  const margin = 1100;
+  return rect.top < viewportHeight + margin && rect.bottom > -margin;
+}
+
+function installPublicationLazyLoading(scope) {
+  const root = scope || document;
+  const images = Array.prototype.slice.call(root.querySelectorAll(".pub-lazy-image[data-src]"));
   if (!images.length) return;
 
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(function(entries, obs) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting || entry.intersectionRatio > 0) {
-          loadPublicationImage(entry.target);
-          obs.unobserve(entry.target);
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: "900px 0px",
-      threshold: 0.01
+  const observer = getPublicationLazyObserver();
+  if (observer) {
+    images.forEach(function(img) {
+      if (img.dataset.pubObserved === "1" || img.dataset.pubLoaded === "1") return;
+      if (isPublicationImageNearViewport(img)) {
+        loadPublicationImage(img);
+        return;
+      }
+      img.dataset.pubObserved = "1";
+      observer.observe(img);
     });
-    images.forEach(function(img) { observer.observe(img); });
   } else {
     images.forEach(loadPublicationImage);
+  }
+}
+
+function schedulePublicationTask(callback) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, { timeout: 120 });
+  } else {
+    window.setTimeout(callback, 16);
   }
 }
 
@@ -2790,17 +2861,41 @@ function renderPublication(pub) {
 
 (function renderPublicationRecords() {
   const root = document.getElementById("publication-records");
-  let html = "";
+  if (!root) return;
+
+  const initialChunkSize = 18;
+  const laterChunkSize = 28;
+  let index = 0;
   let currentYear = null;
-  publicationRecords.forEach(pub => {
-    if (pub.year !== currentYear) {
-      currentYear = pub.year;
-      html += renderYearHeading(currentYear);
+
+  function appendChunk(chunkSize) {
+    let html = "";
+    let count = 0;
+    while (index < publicationRecords.length && count < chunkSize) {
+      const pub = publicationRecords[index];
+      if (pub.year !== currentYear) {
+        currentYear = pub.year;
+        html += renderYearHeading(currentYear);
+      }
+      html += renderPublication(pub);
+      index += 1;
+      count += 1;
     }
-    html += renderPublication(pub);
-  });
-  root.innerHTML = html;
-  installPublicationLazyLoading();
+
+    if (html) {
+      const beforeCount = root.children.length;
+      root.insertAdjacentHTML("beforeend", html);
+      for (let i = beforeCount; i < root.children.length; i += 1) {
+        installPublicationLazyLoading(root.children[i]);
+      }
+    }
+
+    if (index < publicationRecords.length) {
+      schedulePublicationTask(function() { appendChunk(laterChunkSize); });
+    }
+  }
+
+  appendChunk(initialChunkSize);
 })();
 </script>
 </div></div></div><style class="column_class qfy_style_class">.qfy-column-4-67446ac15d0fa485151 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}}@media only screen and (max-width: 992px){.qfy-column-4-67446ac15d0fa485151 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-overlay,.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>
