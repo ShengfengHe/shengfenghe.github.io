@@ -481,8 +481,6 @@
     background-repeat: no-repeat;
   }
   .pub-image-wrap img { max-width: 100%; }
-  .pub-lazy-image { transition: opacity 0.18s ease; }
-  .pub-lazy-image:not(.pub-lazy-loaded) { opacity: 0.92; }
 
   .pub-info {
     position: relative;
@@ -2678,8 +2676,6 @@ function normalizeImage(image, index) {
   return image || {};
 }
 
-const PUB_IMAGE_PLACEHOLDER = "images/loading.jpg";
-
 function renderPubImage(image, index) {
   const img = normalizeImage(image, index);
   const height = img.height || (index === 0 ? 100 : 30);
@@ -2687,53 +2683,16 @@ function renderPubImage(image, index) {
   const style = img.style || `border-radius: ${radius}px; max-height: ${height}px; object-fit: cover;`;
   const href = img.href ? ` href="${escapeAttr(img.href)}"` : "";
   const target = img.href ? ` target="${escapeAttr(img.target || "_blank")}"` : "";
-  const dataSrcset = img.srcset ? ` data-srcset="${escapeAttr(img.srcset)}"` : "";
+  const srcset = img.srcset ? ` srcset="${escapeAttr(img.srcset)}"` : "";
   const alt = img.alt || (index === 0 ? "snapshot" : "logo");
-  const actualSrc = img.src || PUB_IMAGE_PLACEHOLDER;
-  const placeholderSrc = img.placeholder || PUB_IMAGE_PLACEHOLDER;
   return `
     <div class="pub-image-wrap qfy-element bitImageControlDiv">
       <a class="bitImageAhover"${href}${target}>
         <div class="bitImageParentDiv qfe_single_image qfe_content_element widthfull vc_align_center">
-          <div class="qfe_wrapper"><span></span><img class="front_image ag_image pub-lazy-image" src="${escapeAttr(placeholderSrc)}" data-src="${escapeAttr(actualSrc)}"${dataSrcset} alt="${escapeAttr(alt)}" style="${escapeAttr(style)}" loading="lazy" decoding="async" /></div>
+          <div class="qfe_wrapper"><span></span><img class="front_image ag_image" src="${escapeAttr(img.src)}"${srcset} alt="${escapeAttr(alt)}" style="${escapeAttr(style)}" /></div>
         </div>
       </a>
     </div>`;
-}
-
-
-function loadPublicationImage(img) {
-  if (!img || img.dataset.pubLoaded === "1") return;
-  const actualSrc = img.getAttribute("data-src");
-  if (!actualSrc) return;
-  const actualSrcset = img.getAttribute("data-srcset");
-  if (actualSrcset) img.setAttribute("srcset", actualSrcset);
-  img.setAttribute("src", actualSrc);
-  img.dataset.pubLoaded = "1";
-  img.classList.add("pub-lazy-loaded");
-}
-
-function installPublicationLazyLoading() {
-  const images = Array.prototype.slice.call(document.querySelectorAll("img.pub-lazy-image[data-src]"));
-  if (!images.length) return;
-
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(function(entries, obs) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting || entry.intersectionRatio > 0) {
-          loadPublicationImage(entry.target);
-          obs.unobserve(entry.target);
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: "900px 0px",
-      threshold: 0.01
-    });
-    images.forEach(function(img) { observer.observe(img); });
-  } else {
-    images.forEach(loadPublicationImage);
-  }
 }
 
 function renderLinks(links) {
@@ -2800,7 +2759,6 @@ function renderPublication(pub) {
     html += renderPublication(pub);
   });
   root.innerHTML = html;
-  installPublicationLazyLoading();
 })();
 </script>
 </div></div></div><style class="column_class qfy_style_class">.qfy-column-4-67446ac15d0fa485151 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}}@media only screen and (max-width: 992px){.qfy-column-4-67446ac15d0fa485151 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-overlay,.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>
