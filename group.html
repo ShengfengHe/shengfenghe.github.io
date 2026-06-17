@@ -478,7 +478,7 @@ window.addEventListener('load', function() {
 <section  data-fixheight="" class="qfy-row-7-67446b94dd9bd488390 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_azksc"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
     <style class="row_class qfy_style_class">
         @media only screen and (min-width: 992px){
-        section.section.qfy-row-7-67446b94dd9bd488390{padding-left:0;padding-right:0;padding-top:20px;padding-bottom:0;margin-top:0;margin-bottom:0;}}
+        section.section.qfy-row-7-67446b94dd9bd488390{padding-left:0;padding-right:0;padding-top:20px;padding-bottom:0;margin-top:0;margin-bottom:0;}section.section.qfy-row-7-67446b94dd9bd488390 > .container{max-width:1280px;margin:0 auto;}}
         
         @media only screen and (max-width: 992px){
         .bit-html section.section.qfy-row-7-67446b94dd9bd488390{padding-left:15px;padding-right:15px;padding-top:20px;padding-bottom:;margin-top:0;margin-bottom: !important;}}
@@ -512,7 +512,7 @@ window.addEventListener('load', function() {
 <section  data-fixheight="" class="qfy-row-8-67446b94de42f228715 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_mi1ou"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
     <style class="row_class qfy_style_class">
         @media only screen and (min-width: 992px){
-        section.section.qfy-row-8-67446b94de42f228715{padding-left:0;padding-right:0;padding-top:20px;padding-bottom:0;margin-top:0;margin-bottom:0;}}
+        section.section.qfy-row-8-67446b94de42f228715{padding-left:0;padding-right:0;padding-top:20px;padding-bottom:0;margin-top:0;margin-bottom:0;}section.section.qfy-row-8-67446b94de42f228715 > .container{max-width:1280px;margin:0 auto;}}
         
         @media only screen and (max-width: 992px){
         .bit-html section.section.qfy-row-8-67446b94de42f228715{padding-left:15px;padding-right:15px;padding-top:20px;padding-bottom:;margin-top:0;margin-bottom: !important;}}
@@ -771,6 +771,38 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
   }
 
   @keyframes alumniLoadingSpin { to { transform: rotate(360deg); } }
+
+
+
+  /* Keep the Photos title and gallery aligned with the main 1280px group sections above. */
+  #bit_azksc > .container,
+  #bit_mi1ou > .container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  #bit_mi1ou .qfe_wrapper,
+  #bit_mi1ou .qfe_gallery,
+  #group-light-gallery {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  @media only screen and (max-width: 992px) {
+    #bit_azksc > .container,
+    #bit_mi1ou > .container,
+    #bit_mi1ou .qfe_wrapper,
+    #bit_mi1ou .qfe_gallery,
+    #group-light-gallery {
+      max-width: 100%;
+    }
+  }
 
   .group-light-gallery {
     width: 100%;
