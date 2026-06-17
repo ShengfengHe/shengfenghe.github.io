@@ -57,18 +57,16 @@
 	</style>
 	
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+// Load the Baidu push script after the first render so it does not block initial page interaction.
+window.addEventListener('load', function() {
+    window.setTimeout(function() {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+        bp.async = true;
+        document.head.appendChild(bp);
+    }, 1200);
+});
 </script>    <!-- end of customer header -->
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -134,14 +132,7 @@
 		</script>
 
 		
-<style id="gallery-startup-hide-style">
-  /* Prevent the raw RoyalSlider gallery items/captions from flashing before the gallery plugin initializes. */
-  #vc-gallery-67446b94e48c982304.gallery-start-hidden {
-    visibility: hidden !important;
-  }
-</style>
-
-		</head>
+</head>
 
 
 
@@ -537,19 +528,15 @@
 
 
 	<div  m-padding="0px 0px 0px 0px"  p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_gallery_su7l1"  class="qfy-element qfe_gallery qfe_content_element vc_clearfix" >
-		<div style="" class="qfe_wrapper " ><style>@media only screen and (max-width: 760px) {.thumbnail_text-67446b94dece0943 .head{font-size: 16px !important;}.thumbnail_text-67446b94dece0943 .content{font-size: 16px !important;}}</style><style>#vc-gallery-67446b94e48c982304.rsDefault .rsBullets,#vc-gallery-67446b94e48c982304.rsDefault,#vc-gallery-67446b94e48c982304.rsDefault .rsOverflow,#vc-gallery-67446b94e48c982304.rsDefault .rsSlide,#vc-gallery-67446b94e48c982304.rsDefault .rsVideoFrameHolder,#vc-gallery-67446b94e48c982304.rsDefault .rsThumbs{background-color:transparent}#vc-gallery-67446b94e48c982304.rsDefault.rsFullscreen {background-color:#151515}#vc-gallery-67446b94e48c982304.rsDefault .rsFullscreenIcn,#vc-gallery-67446b94e48c982304.rsDefault .rsArrowIcn{background-color:#151515}#vc-gallery-67446b94e48c982304 .rsFullscreenBtn{display:none;}#vc-gallery-67446b94e48c982304 .rsThumbs  .rsThumb{width:50px;height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsHor{height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsVer{width:50px;}</style><div  id='vc-gallery-67446b94e48c982304'  imageScaleMode='fit-if-smaller' slidesOrientation='horizontal' autoScaleSlider='false' arrowsNavAutoHide='' bgcolor='transparent' g_width='150' g_height='0' g_loop='true' showfullscreen='false' arrowsNav='false' controlNavigation='thumbnails' thumbnails_orientation='horizontal' visiblenearby='false' auto_Play='true' disabledclick='false' class='royalSlider_gallery royalSlider rsDefault royalSlidering gallery-start-hidden'  style='margin:0 auto;width:100%;max-width:100%;position:relative;overflow:hidden;z-index:3;height:800px'>
-			
-      <div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2026. 06. 09 Hiking at MacRitchie Reservoir</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/2026-6-9.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/2026-6-9.jpg"  srcset='images/2026-6-9.jpg 1x,images/2026-6-9.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
-
-			<div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2025. 06. 28 2025 graduation gathering</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/20250629223513.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/20250629223513.jpg"  srcset='images/20250629223513.jpg 1x,images/20250629223513.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
-
-			<div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2025. 06. 28 2025 graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/20250629223653.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/20250629223653.jpg"  srcset='images/20250629223653.jpg 1x,images/20250629223653.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
-
-			<div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2025. 03. 28 Post-ICCV gathering at Singapore</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/20250328.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/20250328.jpg"  srcset='images/20250328.jpg 1x,images/20250328.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
-			
-			<div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2024. 07. 05 SCUT Students Graduation at Guangzhou</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/843fbb81bca482e46f2752aad0a7873c.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/225ebce7471c208d0690bdc6c8de8cbc.jpg"  srcset='images/225ebce7471c208d0690bdc6c8de8cbc.jpg 1x,images/72c87688307f29189781da96289b27d0.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
-		
-		<div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2024. 05. 23 Hao Tang's Graduation at Singapore</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/1b3e90af0c6dd29b859f9965014015de.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/4bca9369a87ef084efd76e83b33cdce6.jpg"  srcset='images/4bca9369a87ef084efd76e83b33cdce6.jpg 1x,images/8206a97324c3a0d83aef59266de65d13.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2024. 02. 24 Yingjie's Graduation at Singapore</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/70b6485c6c9a3d31cc47f2fda930bed2.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/14c7e185048c5847a1b3742e281ac8ef.jpg"  srcset='images/14c7e185048c5847a1b3742e281ac8ef.jpg 1x,images/ded9152395a6cd1ee411ce3f4153ceb2.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2023. 06. 30 SCUT Students Graduation at Guangzhou</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/3e11059dfca925d65dee16792b74143e.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/5306d800dd68dedc3ec5fd580474df81.jpg"  srcset='images/5306d800dd68dedc3ec5fd580474df81.jpg 1x,images/36a90ef8bb83f05032ebfff4c9ab3664.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2023. 06. 30 Students Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/6ae3e3fe801eb9c886373b80a83678ab.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/28ca8ceff3b6a7ee521f1596cce1b628.jpg"  srcset='images/28ca8ceff3b6a7ee521f1596cce1b628.jpg 1x,images/82d37b95a7415b51958810836c0bb41d.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2023. 06. 30 Students Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/d43230600ccedb96ed339a087b55b667.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/bf538c06775f753b305cf6f9eca0cf96.jpg"  srcset='images/bf538c06775f753b305cf6f9eca0cf96.jpg 1x,images/6336f2a871c432b10a8a45b6363b83fa.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2022. 06. 03 Master Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/b642f29dd0c1c741e2ef0e12d05e3a49.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/b594503c9c53128ee1f1dfa25dcae5f3.jpg"  srcset='images/b594503c9c53128ee1f1dfa25dcae5f3.jpg 1x,images/bf903b09b7c3224e304dd6f1e7de324e.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2021. 09. 10, Teacher's Day</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/c062791505ef801d9413dbda3380bab2.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/9f293363bad9cce1b85ce1b1e53a911d.jpg"  srcset='images/9f293363bad9cce1b85ce1b1e53a911d.jpg 1x,images/36f3e57777cb9ae73317bc2308f2fc23.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2021.06.06, Graduation 2021</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/ed1b27948e6971ed4f7de49b8fbcb02a.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/1534b9efc580cabe967384bc5e915637.jpg"  srcset='images/1534b9efc580cabe967384bc5e915637.jpg 1x,images/5fa65af6bb3ed9ea201874a9e56d1655.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2021.06.06, Graduation 2021</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/66d577e25947d478acf56a339883d023.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/7242ea99e755c5f54f04fe51cefcd11b.jpg"  srcset='images/7242ea99e755c5f54f04fe51cefcd11b.jpg 1x,images/166bf62d63abc0dd177673e3e47ef0a7.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2021.02.02</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/1bd5fbcf2320250f2b6c0c250a8c2a48.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/cac5dacb534e70a6f236b0f1a93a79eb.jpg"  srcset='images/cac5dacb534e70a6f236b0f1a93a79eb.jpg 1x,images/6a1875f18013dd0b6ed2af932d5a2b04.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2020. 09. 10, Teacher's Day</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/ea9a24453931d1752521c2c24fd0c8d7.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/66170537c7dbe67beb4f811af7c4c689.jpg"  srcset='images/66170537c7dbe67beb4f811af7c4c689.jpg 1x,images/1b43497ae4c1251f8f4f8e647e3af156.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2020. 08. 17, Qianshu Zhu Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/7b70608b5ceb9b9611cf095b7bb122d4.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/7bda95aff109ad0c1c95e8272de3ca85.jpg"  srcset='images/7bda95aff109ad0c1c95e8272de3ca85.jpg 1x,images/47721f18f6435e261dc0cf36dd40c005.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2020. 08. 05, Yinjie Tan Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/0079c845e3a9f26c2050da703e2e1fd1.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/7461c70da9376dc439ff24b36adb6ade.jpg"  srcset='images/7461c70da9376dc439ff24b36adb6ade.jpg 1x,images/9b2aac92b9f9510e5ccaef67379fac47.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2020. 08. 05, Taizhong Ye Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/acbc2ace673a5ac47bf52cee77cf6ccd.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/703d20ddfc9077648e10f2ecb2bf354a.jpg"  srcset='images/703d20ddfc9077648e10f2ecb2bf354a.jpg 1x,images/5f53fbffd987adda477e47a5b3812661.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2020. 07. 07, Jiaojiao Chen Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/ab4a40036bfe378b301bc0f81773703d.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/b768063b32e2e5628bb2d7245436c62a.jpg"  srcset='images/b768063b32e2e5628bb2d7245436c62a.jpg 1x,images/71c5cb4f17a79879cee27a5d7d4a5568.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019. 12. 30, Yong Du Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/b06ec40872b774a086e77f727ed8012d.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/5c51eab9e724b77bc7e98d34c66a357a.jpg"  srcset='images/5c51eab9e724b77bc7e98d34c66a357a.jpg 1x,images/4c491e14ad4ab87aff1805fa61192cda.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019. 12. 30, Yong Du Graduation</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/36ae63a497cc45306302a54155096e32.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/20071a92d287bd2ef1a680963fecd5fa.jpg"  srcset='images/20071a92d287bd2ef1a680963fecd5fa.jpg 1x,images/4a37558cadc8be249e33f774152e6144.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019.12.04, War Game</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/1ff62a04a30b44a8c66f3062534050ed.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/9e6da447f14145aec9f702bb5916155b.jpg"  srcset='images/9e6da447f14145aec9f702bb5916155b.jpg 1x,images/55297e833ad61fa729aebfd87f7e34e8.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019.12.04, War Game</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/7c60e5dede8f273f92d8b96728d6ee86.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/61597c894dde586b7a07e19713d1f701.jpg"  srcset='images/61597c894dde586b7a07e19713d1f701.jpg 1x,images/ab49512c01261fadba6a06434231b9c5.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019.09.10, Teacher's Day</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/e8ca4e68200516f6ebb6ab3037c9be8e.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/22fadcb531785556ca66aed34bdcc79a.jpg"  srcset='images/22fadcb531785556ca66aed34bdcc79a.jpg 1x,images/1f122cbb2d8790a5fae944f0640a289f.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2019.08.28, Welcome Dinner</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/49f6be6ffab74e9778603366a0db58c0.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/fb9d478e17de359e78327167f301778e.jpg"  srcset='images/fb9d478e17de359e78327167f301778e.jpg 1x,images/26d8ce3af188f58f6caa3e5dd2ba1dce.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.09.10, Teacher's Day</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/f6e2ca09d383671f06374b9722b2c876.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/b6566eb0c32c5334df727a3cfff351a7.jpg"  srcset='images/b6566eb0c32c5334df727a3cfff351a7.jpg 1x,images/75222b48e426d949bcf3c93f2bf6559c.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Guangzhou Tower</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/79a95f543dbb0a43ecd80e59dfa7e99c.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/3853d2c1e3a7b98c88ca48ab55237f5f.jpg"  srcset='images/3853d2c1e3a7b98c88ca48ab55237f5f.jpg 1x,images/6ba1af422a3dc6a0efd49a20d72cb2b5.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Guangzhou Tower</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/26354499559adf592565a43b7e7a29e3.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/288bb88a175239ed218525a1a7b644da.jpg"  srcset='images/288bb88a175239ed218525a1a7b644da.jpg 1x,images/9098f6bc091e836cf7ce9db2f96e7ff0.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Guangzhou Tower</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/74da09e0c089cb00f863bbe601c945f2.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/4e3270b61cda2d7f1cef0cef97cab0af.jpg"  srcset='images/4e3270b61cda2d7f1cef0cef97cab0af.jpg 1x,images/375da4e057729eabf6c07189af692124.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Guangzhou Tower</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/b25c3908fc195eaf9b18e182275f10ce.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/eafd7852567b0b11883c2115e9c4fa81.jpg"  srcset='images/eafd7852567b0b11883c2115e9c4fa81.jpg 1x,images/d56e2830ca30663ac4ec4a21a858949f.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Guangzhou Tower</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/f7223b5a22c70c8a417784db90301c31.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/2b985607a63f01637eff840a97ef6180.jpg"  srcset='images/2b985607a63f01637eff840a97ef6180.jpg 1x,images/2ad35e7f926c3019cfe3d6f37cda0b3c.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2018.08.29, Welcome Dinner</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/1a10033179324e15d5d6f7be971ea90f.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/42d893bea58eb3a4a6fb6df1f357e224.jpg"  srcset='images/42d893bea58eb3a4a6fb6df1f357e224.jpg 1x,images/f2f15c3a0c6b72810f49efec93635c96.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div><div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2017.09.28</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/28f194586b734b2d8e49995c3305497b.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/9a450e230c7b2c122d7ce079914fc207.jpg"  srcset='images/9a450e230c7b2c122d7ce079914fc207.jpg 1x,images/2ee8b1e5027b7a77acba81b7a3403f05.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div></div>
+		<div style="" class="qfe_wrapper " ><style>@media only screen and (max-width: 760px) {.thumbnail_text-67446b94dece0943 .head{font-size: 16px !important;}.thumbnail_text-67446b94dece0943 .content{font-size: 16px !important;}}</style><style>#vc-gallery-67446b94e48c982304.rsDefault .rsBullets,#vc-gallery-67446b94e48c982304.rsDefault,#vc-gallery-67446b94e48c982304.rsDefault .rsOverflow,#vc-gallery-67446b94e48c982304.rsDefault .rsSlide,#vc-gallery-67446b94e48c982304.rsDefault .rsVideoFrameHolder,#vc-gallery-67446b94e48c982304.rsDefault .rsThumbs{background-color:transparent}#vc-gallery-67446b94e48c982304.rsDefault.rsFullscreen {background-color:#151515}#vc-gallery-67446b94e48c982304.rsDefault .rsFullscreenIcn,#vc-gallery-67446b94e48c982304.rsDefault .rsArrowIcn{background-color:#151515}#vc-gallery-67446b94e48c982304 .rsFullscreenBtn{display:none;}#vc-gallery-67446b94e48c982304 .rsThumbs  .rsThumb{width:50px;height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsHor{height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsVer{width:50px;}</style><div id="group-light-gallery" class="group-light-gallery group-gallery-not-loaded" aria-label="Group photos">
+  <div class="group-gallery-stage">
+    <button class="group-gallery-nav group-gallery-prev" type="button" aria-label="Previous photo">&#10094;</button>
+    <img id="group-gallery-main" class="group-gallery-main" src="images/loading.jpg" alt="Group photo" loading="lazy" decoding="async" fetchpriority="low" />
+    <button class="group-gallery-nav group-gallery-next" type="button" aria-label="Next photo">&#10095;</button>
+    <div id="group-gallery-caption" class="group-gallery-caption">Photos will load when this section is visible.</div>
+  </div>
+  <div id="group-gallery-thumbs" class="group-gallery-thumbs" aria-label="Photo thumbnails"></div>
+</div>
 		</div> 
 	</div> 
 
@@ -744,6 +731,151 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
 
 </style>
 <div style='display:none;'></div><script>if(jQuery(document).width()<=1024){jQuery('meta[name="viewport"]').prop('content', 'width=1280');}</script>    
+
+
+
+<style id="group-loading-optimization-style">
+  /* Let Chrome skip layout/paint work for lower sections until they are near the viewport. */
+  #bit_l6kgn,
+  #bit_azksc,
+  #bit_mi1ou {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
+  }
+
+  .people-card-grid[data-progressive="true"] {
+    min-height: 220px;
+  }
+
+  .alumni-loading-indicator {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin: 4px 0 10px;
+    font-family: 微软雅黑, Arial, sans-serif;
+    font-size: 13px;
+    color: #777;
+  }
+
+  .alumni-loading-indicator::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    border-top-color: rgba(0, 0, 0, 0.42);
+    border-radius: 50%;
+    animation: alumniLoadingSpin 0.8s linear infinite;
+  }
+
+  @keyframes alumniLoadingSpin { to { transform: rotate(360deg); } }
+
+  .group-light-gallery {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+  }
+
+  .group-gallery-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 800px;
+    min-height: 360px;
+    overflow: hidden;
+    background: rgba(245, 245, 245, 0.9);
+    border-radius: 14px;
+  }
+
+  .group-gallery-main {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+
+  .group-gallery-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.35em;
+    box-sizing: border-box;
+  }
+
+  .group-gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 38px;
+    height: 56px;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.38);
+    color: #fff;
+    font-size: 24px;
+    line-height: 56px;
+    cursor: pointer;
+  }
+
+  .group-gallery-nav:hover { background: rgba(0, 0, 0, 0.56); }
+  .group-gallery-prev { left: 12px; }
+  .group-gallery-next { right: 12px; }
+
+  .group-gallery-thumbs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px 2px 2px;
+    scrollbar-width: thin;
+  }
+
+  .group-gallery-thumb {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 50px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .group-gallery-thumb.is-active { border-color: rgba(41, 105, 176, 0.86); }
+
+  .group-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .group-gallery-stage { height: 520px; }
+  }
+
+  @media only screen and (max-width: 640px) {
+    .group-gallery-stage { height: 360px; min-height: 280px; }
+    .group-gallery-caption { font-size: 13px; }
+    .group-gallery-nav { width: 32px; height: 46px; line-height: 46px; }
+  }
+</style>
 
 <!-- Editable group member and alumni records. Update this block to edit the cards above. -->
 
@@ -2234,105 +2366,300 @@ function loadGroupAvatar(avatar) {
   img.src = src;
 }
 
-function initGroupLazyAvatars() {
-  const avatars = Array.prototype.slice.call(document.querySelectorAll(".group-lazy-avatar"));
+let groupAvatarObserver = null;
+
+function loadGroupAvatarsNearViewport(root, buffer) {
+  const scope = root || document;
+  const margin = typeof buffer === "number" ? buffer : 800;
+  const avatars = Array.prototype.slice.call(scope.querySelectorAll(".group-lazy-avatar"));
+  avatars.forEach(function(avatar) {
+    if (avatar.getAttribute("data-loaded") === "true") return;
+    const rect = avatar.getBoundingClientRect();
+    if (rect.top < window.innerHeight + margin && rect.bottom > -margin) {
+      loadGroupAvatar(avatar);
+    }
+  });
+}
+
+function observeGroupLazyAvatars(root) {
+  const scope = root || document;
+  const avatars = Array.prototype.slice.call(scope.querySelectorAll(".group-lazy-avatar:not([data-lazy-observed='true'])"));
   if (!avatars.length) return;
 
-  const loadNearViewport = function(buffer) {
-    const margin = typeof buffer === "number" ? buffer : 700;
+  if ("IntersectionObserver" in window) {
+    if (!groupAvatarObserver) {
+      groupAvatarObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            loadGroupAvatar(entry.target);
+            groupAvatarObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "650px 0px", threshold: 0.01 });
+    }
+
     avatars.forEach(function(avatar) {
-      if (avatar.getAttribute("data-loaded") === "true") return;
-      const rect = avatar.getBoundingClientRect();
-      if (rect.top < window.innerHeight + margin && rect.bottom > -margin) {
-        loadGroupAvatar(avatar);
-      }
+      avatar.setAttribute("data-lazy-observed", "true");
+      groupAvatarObserver.observe(avatar);
     });
-  };
+  }
+
+  setTimeout(function() { loadGroupAvatarsNearViewport(scope, 800); }, 0);
+  setTimeout(function() { loadGroupAvatarsNearViewport(scope, 1000); }, 350);
+}
+
+function initGroupLazyAvatars(root) {
+  observeGroupLazyAvatars(root || document);
+}
+
+function renderAlumniCardsProgressively(containerId, alumni) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const autoLabels = buildAlumniLabelMap(alumni);
+  let nextIndex = 0;
+  let rendering = false;
+  const initialChunk = 8;
+  const chunkSize = 10;
+  const loader = document.createElement("div");
+  loader.className = "alumni-loading-indicator";
+  loader.textContent = "Loading more alumni...";
+  container.setAttribute("data-progressive", "true");
+  container.appendChild(loader);
+
+  function renderOne(person, index) {
+    const label = `<span class="alumni-label">${escapeHtml(autoLabels[index])}</span>`;
+    const award = person.award ? `<div class="alumni-award">${escapeHtml(person.award)}</div>` : "";
+    const current = person.current ? `<div class="alumni-current"><span class="alumni-current-label">Now:</span> ${escapeHtml(person.current)}</div>` : "";
+    return `
+      <article class="person-card alumni-card">
+        ${renderAvatar(person, "alumni-avatar")}
+        <div class="alumni-body">
+          <div class="alumni-topline">
+            <div class="alumni-name-block">${renderNameBlock(person)}</div>
+            ${label}
+          </div>
+          <div class="alumni-meta">${escapeHtml(person.graduation)} · ${escapeHtml(person.program)}</div>
+          ${award}
+          ${current}
+        </div>
+      </article>
+    `;
+  }
+
+  function appendChunk(count) {
+    if (rendering || nextIndex >= alumni.length) return;
+    rendering = true;
+    window.setTimeout(function() {
+      const start = nextIndex;
+      const end = Math.min(alumni.length, start + count);
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = alumni.slice(start, end).map(function(person, offset) {
+        return renderOne(person, start + offset);
+      }).join("");
+
+      const fragment = document.createDocumentFragment();
+      while (wrapper.firstElementChild) fragment.appendChild(wrapper.firstElementChild);
+      container.insertBefore(fragment, loader);
+      nextIndex = end;
+      rendering = false;
+      initGroupLazyAvatars(container);
+
+      if (nextIndex >= alumni.length) {
+        loader.remove();
+        container.removeAttribute("data-progressive");
+      } else {
+        checkNeedMoreAlumni();
+      }
+    }, 0);
+  }
+
+  function isContainerNearViewport() {
+    const rect = container.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    return rect.top < viewportHeight + 700 && rect.bottom > -900;
+  }
+
+  function isLoaderNearViewport() {
+    const rect = loader.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    return rect.top < viewportHeight + 900;
+  }
+
+  function checkNeedMoreAlumni() {
+    if (nextIndex >= alumni.length) return;
+    if (nextIndex === 0 && isContainerNearViewport()) appendChunk(initialChunk);
+    else if (nextIndex > 0 && isLoaderNearViewport()) appendChunk(chunkSize);
+  }
 
   if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(function(entries) {
+    const alumniObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          loadGroupAvatar(entry.target);
-          observer.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) checkNeedMoreAlumni();
       });
-    }, { rootMargin: "800px 0px", threshold: 0.01 });
-
-    avatars.forEach(function(avatar) { observer.observe(avatar); });
-    // Fallback for images already close to the initial viewport.
-    setTimeout(function() { loadNearViewport(900); }, 0);
-    setTimeout(function() { loadNearViewport(1200); }, 450);
-  } else {
-    loadNearViewport(1600);
-    window.addEventListener("scroll", function() { loadNearViewport(900); }, { passive: true });
-    window.addEventListener("resize", function() { loadNearViewport(900); });
+    }, { rootMargin: "900px 0px", threshold: 0.01 });
+    alumniObserver.observe(container);
+    alumniObserver.observe(loader);
   }
+
+  ["scroll", "wheel", "touchmove", "resize"].forEach(function(type) {
+    window.addEventListener(type, checkNeedMoreAlumni, { passive: true });
+  });
+  window.addEventListener("keydown", function(event) {
+    const keys = ["PageDown", "End", " ", "ArrowDown"];
+    if (keys.indexOf(event.key) !== -1) window.setTimeout(checkNeedMoreAlumni, 0);
+  });
+
+  const safetyTimer = window.setInterval(function() {
+    if (nextIndex >= alumni.length) window.clearInterval(safetyTimer);
+    else checkNeedMoreAlumni();
+  }, 350);
+
+  checkNeedMoreAlumni();
 }
 
 renderCurrentCards("cvl-members-grid", groupRecords.cvl);
 renderCurrentCards("vug-members-grid", groupRecords.vug);
-renderAlumniCards("alumni-records-grid", groupRecords.alumni);
 initGroupLazyAvatars();
+renderAlumniCardsProgressively("alumni-records-grid", groupRecords.alumni);
 </script>
 
     
-<script id="gallery-startup-hide-script">
+
+<script id="group-light-gallery-script">
+const groupPhotoSlides = [{"src": "images/2026-6-9.jpg", "thumb": "images/2026-6-9.jpg", "srcset": "images/2026-6-9.jpg 1x,images/2026-6-9.jpg 2x", "caption": "2026. 06. 09 Hiking at MacRitchie Reservoir"}, {"src": "images/20250629223513.jpg", "thumb": "images/20250629223513.jpg", "srcset": "images/20250629223513.jpg 1x,images/20250629223513.jpg 2x", "caption": "2025. 06. 28 2025 graduation gathering"}, {"src": "images/20250629223653.jpg", "thumb": "images/20250629223653.jpg", "srcset": "images/20250629223653.jpg 1x,images/20250629223653.jpg 2x", "caption": "2025. 06. 28 2025 graduation"}, {"src": "images/20250328.jpg", "thumb": "images/20250328.jpg", "srcset": "images/20250328.jpg 1x,images/20250328.jpg 2x", "caption": "2025. 03. 28 Post-ICCV gathering at Singapore"}, {"src": "images/843fbb81bca482e46f2752aad0a7873c.jpg", "thumb": "images/225ebce7471c208d0690bdc6c8de8cbc.jpg", "srcset": "images/225ebce7471c208d0690bdc6c8de8cbc.jpg 1x,images/72c87688307f29189781da96289b27d0.jpg 2x", "caption": "2024. 07. 05 SCUT Students Graduation at Guangzhou"}, {"src": "images/1b3e90af0c6dd29b859f9965014015de.jpg", "thumb": "images/4bca9369a87ef084efd76e83b33cdce6.jpg", "srcset": "images/4bca9369a87ef084efd76e83b33cdce6.jpg 1x,images/8206a97324c3a0d83aef59266de65d13.jpg 2x", "caption": "2024. 05. 23 Hao Tang's Graduation at Singapore"}, {"src": "images/70b6485c6c9a3d31cc47f2fda930bed2.jpg", "thumb": "images/14c7e185048c5847a1b3742e281ac8ef.jpg", "srcset": "images/14c7e185048c5847a1b3742e281ac8ef.jpg 1x,images/ded9152395a6cd1ee411ce3f4153ceb2.jpg 2x", "caption": "2024. 02. 24 Yingjie's Graduation at Singapore"}, {"src": "images/3e11059dfca925d65dee16792b74143e.jpg", "thumb": "images/5306d800dd68dedc3ec5fd580474df81.jpg", "srcset": "images/5306d800dd68dedc3ec5fd580474df81.jpg 1x,images/36a90ef8bb83f05032ebfff4c9ab3664.jpg 2x", "caption": "2023. 06. 30 SCUT Students Graduation at Guangzhou"}, {"src": "images/6ae3e3fe801eb9c886373b80a83678ab.jpg", "thumb": "images/28ca8ceff3b6a7ee521f1596cce1b628.jpg", "srcset": "images/28ca8ceff3b6a7ee521f1596cce1b628.jpg 1x,images/82d37b95a7415b51958810836c0bb41d.jpg 2x", "caption": "2023. 06. 30 Students Graduation"}, {"src": "images/d43230600ccedb96ed339a087b55b667.jpg", "thumb": "images/bf538c06775f753b305cf6f9eca0cf96.jpg", "srcset": "images/bf538c06775f753b305cf6f9eca0cf96.jpg 1x,images/6336f2a871c432b10a8a45b6363b83fa.jpg 2x", "caption": "2023. 06. 30 Students Graduation"}, {"src": "images/b642f29dd0c1c741e2ef0e12d05e3a49.jpg", "thumb": "images/b594503c9c53128ee1f1dfa25dcae5f3.jpg", "srcset": "images/b594503c9c53128ee1f1dfa25dcae5f3.jpg 1x,images/bf903b09b7c3224e304dd6f1e7de324e.jpg 2x", "caption": "2022. 06. 03 Master Graduation"}, {"src": "images/c062791505ef801d9413dbda3380bab2.jpg", "thumb": "images/9f293363bad9cce1b85ce1b1e53a911d.jpg", "srcset": "images/9f293363bad9cce1b85ce1b1e53a911d.jpg 1x,images/36f3e57777cb9ae73317bc2308f2fc23.jpg 2x", "caption": "2021. 09. 10, Teacher's Day"}, {"src": "images/ed1b27948e6971ed4f7de49b8fbcb02a.jpg", "thumb": "images/1534b9efc580cabe967384bc5e915637.jpg", "srcset": "images/1534b9efc580cabe967384bc5e915637.jpg 1x,images/5fa65af6bb3ed9ea201874a9e56d1655.jpg 2x", "caption": "2021.06.06, Graduation 2021"}, {"src": "images/66d577e25947d478acf56a339883d023.jpg", "thumb": "images/7242ea99e755c5f54f04fe51cefcd11b.jpg", "srcset": "images/7242ea99e755c5f54f04fe51cefcd11b.jpg 1x,images/166bf62d63abc0dd177673e3e47ef0a7.jpg 2x", "caption": "2021.06.06, Graduation 2021"}, {"src": "images/1bd5fbcf2320250f2b6c0c250a8c2a48.jpg", "thumb": "images/cac5dacb534e70a6f236b0f1a93a79eb.jpg", "srcset": "images/cac5dacb534e70a6f236b0f1a93a79eb.jpg 1x,images/6a1875f18013dd0b6ed2af932d5a2b04.jpg 2x", "caption": "2021.02.02"}, {"src": "images/ea9a24453931d1752521c2c24fd0c8d7.jpg", "thumb": "images/66170537c7dbe67beb4f811af7c4c689.jpg", "srcset": "images/66170537c7dbe67beb4f811af7c4c689.jpg 1x,images/1b43497ae4c1251f8f4f8e647e3af156.jpg 2x", "caption": "2020. 09. 10, Teacher's Day"}, {"src": "images/7b70608b5ceb9b9611cf095b7bb122d4.jpg", "thumb": "images/7bda95aff109ad0c1c95e8272de3ca85.jpg", "srcset": "images/7bda95aff109ad0c1c95e8272de3ca85.jpg 1x,images/47721f18f6435e261dc0cf36dd40c005.jpg 2x", "caption": "2020. 08. 17, Qianshu Zhu Graduation"}, {"src": "images/0079c845e3a9f26c2050da703e2e1fd1.jpg", "thumb": "images/7461c70da9376dc439ff24b36adb6ade.jpg", "srcset": "images/7461c70da9376dc439ff24b36adb6ade.jpg 1x,images/9b2aac92b9f9510e5ccaef67379fac47.jpg 2x", "caption": "2020. 08. 05, Yinjie Tan Graduation"}, {"src": "images/acbc2ace673a5ac47bf52cee77cf6ccd.jpg", "thumb": "images/703d20ddfc9077648e10f2ecb2bf354a.jpg", "srcset": "images/703d20ddfc9077648e10f2ecb2bf354a.jpg 1x,images/5f53fbffd987adda477e47a5b3812661.jpg 2x", "caption": "2020. 08. 05, Taizhong Ye Graduation"}, {"src": "images/ab4a40036bfe378b301bc0f81773703d.jpg", "thumb": "images/b768063b32e2e5628bb2d7245436c62a.jpg", "srcset": "images/b768063b32e2e5628bb2d7245436c62a.jpg 1x,images/71c5cb4f17a79879cee27a5d7d4a5568.jpg 2x", "caption": "2020. 07. 07, Jiaojiao Chen Graduation"}, {"src": "images/b06ec40872b774a086e77f727ed8012d.jpg", "thumb": "images/5c51eab9e724b77bc7e98d34c66a357a.jpg", "srcset": "images/5c51eab9e724b77bc7e98d34c66a357a.jpg 1x,images/4c491e14ad4ab87aff1805fa61192cda.jpg 2x", "caption": "2019. 12. 30, Yong Du Graduation"}, {"src": "images/36ae63a497cc45306302a54155096e32.jpg", "thumb": "images/20071a92d287bd2ef1a680963fecd5fa.jpg", "srcset": "images/20071a92d287bd2ef1a680963fecd5fa.jpg 1x,images/4a37558cadc8be249e33f774152e6144.jpg 2x", "caption": "2019. 12. 30, Yong Du Graduation"}, {"src": "images/1ff62a04a30b44a8c66f3062534050ed.jpg", "thumb": "images/9e6da447f14145aec9f702bb5916155b.jpg", "srcset": "images/9e6da447f14145aec9f702bb5916155b.jpg 1x,images/55297e833ad61fa729aebfd87f7e34e8.jpg 2x", "caption": "2019.12.04, War Game"}, {"src": "images/7c60e5dede8f273f92d8b96728d6ee86.jpg", "thumb": "images/61597c894dde586b7a07e19713d1f701.jpg", "srcset": "images/61597c894dde586b7a07e19713d1f701.jpg 1x,images/ab49512c01261fadba6a06434231b9c5.jpg 2x", "caption": "2019.12.04, War Game"}, {"src": "images/e8ca4e68200516f6ebb6ab3037c9be8e.jpg", "thumb": "images/22fadcb531785556ca66aed34bdcc79a.jpg", "srcset": "images/22fadcb531785556ca66aed34bdcc79a.jpg 1x,images/1f122cbb2d8790a5fae944f0640a289f.jpg 2x", "caption": "2019.09.10, Teacher's Day"}, {"src": "images/49f6be6ffab74e9778603366a0db58c0.jpg", "thumb": "images/fb9d478e17de359e78327167f301778e.jpg", "srcset": "images/fb9d478e17de359e78327167f301778e.jpg 1x,images/26d8ce3af188f58f6caa3e5dd2ba1dce.jpg 2x", "caption": "2019.08.28, Welcome Dinner"}, {"src": "images/f6e2ca09d383671f06374b9722b2c876.jpg", "thumb": "images/b6566eb0c32c5334df727a3cfff351a7.jpg", "srcset": "images/b6566eb0c32c5334df727a3cfff351a7.jpg 1x,images/75222b48e426d949bcf3c93f2bf6559c.jpg 2x", "caption": "2018.09.10, Teacher's Day"}, {"src": "images/79a95f543dbb0a43ecd80e59dfa7e99c.jpg", "thumb": "images/3853d2c1e3a7b98c88ca48ab55237f5f.jpg", "srcset": "images/3853d2c1e3a7b98c88ca48ab55237f5f.jpg 1x,images/6ba1af422a3dc6a0efd49a20d72cb2b5.jpg 2x", "caption": "2018.08.29, Guangzhou Tower"}, {"src": "images/26354499559adf592565a43b7e7a29e3.jpg", "thumb": "images/288bb88a175239ed218525a1a7b644da.jpg", "srcset": "images/288bb88a175239ed218525a1a7b644da.jpg 1x,images/9098f6bc091e836cf7ce9db2f96e7ff0.jpg 2x", "caption": "2018.08.29, Guangzhou Tower"}, {"src": "images/74da09e0c089cb00f863bbe601c945f2.jpg", "thumb": "images/4e3270b61cda2d7f1cef0cef97cab0af.jpg", "srcset": "images/4e3270b61cda2d7f1cef0cef97cab0af.jpg 1x,images/375da4e057729eabf6c07189af692124.jpg 2x", "caption": "2018.08.29, Guangzhou Tower"}, {"src": "images/b25c3908fc195eaf9b18e182275f10ce.jpg", "thumb": "images/eafd7852567b0b11883c2115e9c4fa81.jpg", "srcset": "images/eafd7852567b0b11883c2115e9c4fa81.jpg 1x,images/d56e2830ca30663ac4ec4a21a858949f.jpg 2x", "caption": "2018.08.29, Guangzhou Tower"}, {"src": "images/f7223b5a22c70c8a417784db90301c31.jpg", "thumb": "images/2b985607a63f01637eff840a97ef6180.jpg", "srcset": "images/2b985607a63f01637eff840a97ef6180.jpg 1x,images/2ad35e7f926c3019cfe3d6f37cda0b3c.jpg 2x", "caption": "2018.08.29, Guangzhou Tower"}, {"src": "images/1a10033179324e15d5d6f7be971ea90f.jpg", "thumb": "images/42d893bea58eb3a4a6fb6df1f357e224.jpg", "srcset": "images/42d893bea58eb3a4a6fb6df1f357e224.jpg 1x,images/f2f15c3a0c6b72810f49efec93635c96.jpg 2x", "caption": "2018.08.29, Welcome Dinner"}, {"src": "images/28f194586b734b2d8e49995c3305497b.jpg", "thumb": "images/9a450e230c7b2c122d7ce079914fc207.jpg", "srcset": "images/9a450e230c7b2c122d7ce079914fc207.jpg 1x,images/2ee8b1e5027b7a77acba81b7a3403f05.jpg 2x", "caption": "2017.09.28"}];
+
 (function() {
-  function revealGallery() {
-    var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
-    if (!gallery) return;
-    gallery.classList.remove("gallery-start-hidden");
-    gallery.classList.add("gallery-ready-visible");
+  const placeholder = "images/loading.jpg";
+  let initialized = false;
+  let currentIndex = 0;
+  let thumbObserver = null;
+
+  function loadThumb(img) {
+    if (!img || img.getAttribute("data-loaded") === "true") return;
+    const src = img.getAttribute("data-src");
+    if (!src) return;
+    img.setAttribute("data-loaded", "true");
+    img.src = src;
   }
 
-  function isRoyalSliderReady(gallery) {
-    if (!gallery) return false;
-    if (gallery.querySelector(".rsOverflow") || gallery.querySelector(".rsSlide")) return true;
-    if (window.jQuery) {
-      try {
-        var instance = window.jQuery(gallery).data("royalSlider");
-        if (instance) return true;
-      } catch (e) {}
+  function observeThumbs(root) {
+    const thumbs = Array.prototype.slice.call(root.querySelectorAll("img[data-src]:not([data-thumb-observed='true'])"));
+    if (!thumbs.length) return;
+
+    if ("IntersectionObserver" in window) {
+      if (!thumbObserver) {
+        thumbObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              loadThumb(entry.target);
+              thumbObserver.unobserve(entry.target);
+            }
+          });
+        }, { root: document.getElementById("group-gallery-thumbs"), rootMargin: "260px 0px", threshold: 0.01 });
+      }
+      thumbs.forEach(function(img) {
+        img.setAttribute("data-thumb-observed", "true");
+        thumbObserver.observe(img);
+      });
+    } else {
+      thumbs.slice(0, 8).forEach(loadThumb);
     }
-    return false;
   }
 
-  function waitForGallery() {
-    var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
+  function renderThumbs() {
+    const thumbs = document.getElementById("group-gallery-thumbs");
+    if (!thumbs) return;
+    thumbs.innerHTML = groupPhotoSlides.map(function(slide, index) {
+      const label = slide.caption ? slide.caption.replace(/"/g, '&quot;') : "Group photo";
+      return `<button class="group-gallery-thumb" type="button" data-index="${index}" aria-label="${label}"><img src="${placeholder}" data-src="${slide.thumb || slide.src}" alt="${label}" loading="lazy" decoding="async" /></button>`;
+    }).join("");
+
+    thumbs.addEventListener("click", function(event) {
+      const button = event.target.closest(".group-gallery-thumb");
+      if (!button) return;
+      showSlide(parseInt(button.getAttribute("data-index"), 10) || 0);
+    });
+
+    thumbs.addEventListener("scroll", function() { observeThumbs(thumbs); }, { passive: true });
+    observeThumbs(thumbs);
+  }
+
+  function showSlide(index) {
+    if (!groupPhotoSlides.length) return;
+    currentIndex = (index + groupPhotoSlides.length) % groupPhotoSlides.length;
+    const slide = groupPhotoSlides[currentIndex];
+    const main = document.getElementById("group-gallery-main");
+    const caption = document.getElementById("group-gallery-caption");
+    if (main) {
+      main.alt = slide.caption || "Group photo";
+      main.src = placeholder;
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = function() {
+        main.src = slide.src;
+      };
+      img.src = slide.src;
+    }
+    if (caption) caption.textContent = slide.caption || "";
+
+    Array.prototype.slice.call(document.querySelectorAll(".group-gallery-thumb")).forEach(function(button) {
+      button.classList.toggle("is-active", parseInt(button.getAttribute("data-index"), 10) === currentIndex);
+    });
+
+    const active = document.querySelector(".group-gallery-thumb.is-active");
+    if (active && active.scrollIntoView) active.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }
+
+  function initGallery() {
+    if (initialized) return;
+    const gallery = document.getElementById("group-light-gallery");
     if (!gallery) return;
+    initialized = true;
+    gallery.classList.remove("group-gallery-not-loaded");
+    renderThumbs();
+    showSlide(0);
 
-    var attempts = 0;
-    var timer = window.setInterval(function() {
-      attempts += 1;
-      if (isRoyalSliderReady(gallery)) {
-        window.clearInterval(timer);
-        window.setTimeout(revealGallery, 120);
-      }
-      // Last-resort fallback: do not keep the photos hidden forever if the gallery plugin is delayed.
-      if (attempts >= 80) {
-        window.clearInterval(timer);
-        revealGallery();
-      }
-    }, 100);
+    const prev = gallery.querySelector(".group-gallery-prev");
+    const next = gallery.querySelector(".group-gallery-next");
+    if (prev) prev.addEventListener("click", function() { showSlide(currentIndex - 1); });
+    if (next) next.addEventListener("click", function() { showSlide(currentIndex + 1); });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", waitForGallery);
-  } else {
-    waitForGallery();
+  function isGalleryNearViewport() {
+    const gallery = document.getElementById("group-light-gallery");
+    if (!gallery) return false;
+    const rect = gallery.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    return rect.top < viewportHeight + 900 && rect.bottom > -900;
   }
 
-  window.addEventListener("load", function() {
-    window.setTimeout(function() {
-      var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
-      if (gallery && isRoyalSliderReady(gallery)) revealGallery();
-    }, 400);
+  function checkGallery() {
+    if (!initialized && isGalleryNearViewport()) initGallery();
+  }
+
+  if ("IntersectionObserver" in window) {
+    const gallery = document.getElementById("group-light-gallery");
+    if (gallery) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) { if (entry.isIntersecting) initGallery(); });
+      }, { rootMargin: "900px 0px", threshold: 0.01 });
+      observer.observe(gallery);
+    }
+  }
+
+  ["scroll", "wheel", "touchmove", "resize"].forEach(function(type) {
+    window.addEventListener(type, checkGallery, { passive: true });
   });
+  window.addEventListener("keydown", function(event) {
+    const keys = ["PageDown", "End", " ", "ArrowDown"];
+    if (keys.indexOf(event.key) !== -1) window.setTimeout(checkGallery, 0);
+  });
+  window.addEventListener("load", function() { window.setTimeout(checkGallery, 200); });
+  window.setTimeout(checkGallery, 0);
 })();
 </script>
 
-
-    </body>
+</body>
 
 </html>
