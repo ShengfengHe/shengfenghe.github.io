@@ -50,16 +50,24 @@
 
 <script>
 (function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    function loadBaiduPush(){
+        var bp = document.createElement('script');
+        bp.async = true;
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
     }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    if (window.addEventListener) {
+        window.addEventListener('load', function(){ window.setTimeout(loadBaiduPush, 800); });
+    } else {
+        window.attachEvent && window.attachEvent('onload', loadBaiduPush);
     }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
 })();
 </script>    <!-- end of customer header -->
 
@@ -449,6 +457,16 @@
     border-radius: 0;
     color: #000000;
     padding: 0;
+    /* Let the browser skip layout/paint work for publication rows far outside the viewport. */
+    content-visibility: auto;
+    contain-intrinsic-size: 120px;
+  }
+  .publication-load-sentinel {
+    height: 1px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
   .pub-record > .container { max-width: 1100px; margin: 0 auto; }
   .pub-record .row.qfe_row { display: flex; align-items: center; }
@@ -2772,7 +2790,7 @@ function getPublicationLazyObserver() {
     });
   }, {
     root: null,
-    rootMargin: "1100px 0px",
+    rootMargin: "550px 0px",
     threshold: 0.01
   });
   return publicationLazyObserver;
@@ -2782,7 +2800,7 @@ function isPublicationImageNearViewport(node) {
   if (!node || !node.getBoundingClientRect) return false;
   const rect = node.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-  const margin = 1100;
+  const margin = 550;
   return rect.top < viewportHeight + margin && rect.bottom > -margin;
 }
 
@@ -2871,12 +2889,27 @@ function renderPublication(pub) {
   const root = document.getElementById("publication-records");
   if (!root) return;
 
-  const initialChunkSize = 18;
-  const laterChunkSize = 28;
+  // Render only enough records for the first screen. More records are appended
+  // only when the reader scrolls close to the end of the currently rendered list.
+  const initialChunkSize = 14;
+  const laterChunkSize = 14;
   let index = 0;
   let currentYear = null;
+  let isRendering = false;
+  let finished = false;
+
+  const sentinel = document.createElement("div");
+  sentinel.id = "publication-records-sentinel";
+  sentinel.className = "publication-load-sentinel";
+  sentinel.setAttribute("aria-hidden", "true");
 
   function appendChunk(chunkSize) {
+    if (finished) return;
+
+    if (sentinel.parentNode) {
+      sentinel.parentNode.removeChild(sentinel);
+    }
+
     let html = "";
     let count = 0;
     while (index < publicationRecords.length && count < chunkSize) {
@@ -2898,12 +2931,58 @@ function renderPublication(pub) {
       }
     }
 
-    if (index < publicationRecords.length) {
-      schedulePublicationTask(function() { appendChunk(laterChunkSize); });
+    finished = index >= publicationRecords.length;
+    if (!finished) {
+      root.appendChild(sentinel);
     }
   }
 
+  function requestNextChunk() {
+    if (isRendering || finished) return;
+    isRendering = true;
+    schedulePublicationTask(function() {
+      appendChunk(laterChunkSize);
+      isRendering = false;
+    });
+  }
+
   appendChunk(initialChunkSize);
+
+  if (finished) return;
+
+  if ("IntersectionObserver" in window) {
+    const renderObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting || entry.intersectionRatio > 0) {
+          requestNextChunk();
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: "600px 0px",
+      threshold: 0.01
+    });
+    renderObserver.observe(sentinel);
+  } else {
+    let ticking = false;
+    function maybeLoadMore() {
+      if (ticking || finished) return;
+      ticking = true;
+      window.setTimeout(function() {
+        ticking = false;
+        if (!sentinel.getBoundingClientRect) {
+          requestNextChunk();
+          return;
+        }
+        const rect = sentinel.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        if (rect.top < viewportHeight + 600) requestNextChunk();
+      }, 120);
+    }
+    window.addEventListener("scroll", maybeLoadMore, { passive: true });
+    window.addEventListener("resize", maybeLoadMore);
+    maybeLoadMore();
+  }
 })();
 </script>
 </div></div></div><style class="column_class qfy_style_class">.qfy-column-4-67446ac15d0fa485151 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}}@media only screen and (max-width: 992px){.qfy-column-4-67446ac15d0fa485151 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-overlay,.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>

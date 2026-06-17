@@ -133,6 +133,14 @@
 			
 		</script>
 
+		
+<style id="gallery-startup-hide-style">
+  /* Prevent the raw RoyalSlider gallery items/captions from flashing before the gallery plugin initializes. */
+  #vc-gallery-67446b94e48c982304.gallery-start-hidden {
+    visibility: hidden !important;
+  }
+</style>
+
 		</head>
 
 
@@ -529,7 +537,7 @@
 
 
 	<div  m-padding="0px 0px 0px 0px"  p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_gallery_su7l1"  class="qfy-element qfe_gallery qfe_content_element vc_clearfix" >
-		<div style="" class="qfe_wrapper " ><style>@media only screen and (max-width: 760px) {.thumbnail_text-67446b94dece0943 .head{font-size: 16px !important;}.thumbnail_text-67446b94dece0943 .content{font-size: 16px !important;}}</style><style>#vc-gallery-67446b94e48c982304.rsDefault .rsBullets,#vc-gallery-67446b94e48c982304.rsDefault,#vc-gallery-67446b94e48c982304.rsDefault .rsOverflow,#vc-gallery-67446b94e48c982304.rsDefault .rsSlide,#vc-gallery-67446b94e48c982304.rsDefault .rsVideoFrameHolder,#vc-gallery-67446b94e48c982304.rsDefault .rsThumbs{background-color:transparent}#vc-gallery-67446b94e48c982304.rsDefault.rsFullscreen {background-color:#151515}#vc-gallery-67446b94e48c982304.rsDefault .rsFullscreenIcn,#vc-gallery-67446b94e48c982304.rsDefault .rsArrowIcn{background-color:#151515}#vc-gallery-67446b94e48c982304 .rsFullscreenBtn{display:none;}#vc-gallery-67446b94e48c982304 .rsThumbs  .rsThumb{width:50px;height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsHor{height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsVer{width:50px;}</style><div  id='vc-gallery-67446b94e48c982304'  imageScaleMode='fit-if-smaller' slidesOrientation='horizontal' autoScaleSlider='false' arrowsNavAutoHide='' bgcolor='transparent' g_width='150' g_height='0' g_loop='true' showfullscreen='false' arrowsNav='false' controlNavigation='thumbnails' thumbnails_orientation='horizontal' visiblenearby='false' auto_Play='true' disabledclick='false' class='royalSlider_gallery royalSlider rsDefault royalSlidering   '  style='margin:0 auto;width:100%;max-width:100%;position:relative;overflow:hidden;z-index:3;height:800px'>
+		<div style="" class="qfe_wrapper " ><style>@media only screen and (max-width: 760px) {.thumbnail_text-67446b94dece0943 .head{font-size: 16px !important;}.thumbnail_text-67446b94dece0943 .content{font-size: 16px !important;}}</style><style>#vc-gallery-67446b94e48c982304.rsDefault .rsBullets,#vc-gallery-67446b94e48c982304.rsDefault,#vc-gallery-67446b94e48c982304.rsDefault .rsOverflow,#vc-gallery-67446b94e48c982304.rsDefault .rsSlide,#vc-gallery-67446b94e48c982304.rsDefault .rsVideoFrameHolder,#vc-gallery-67446b94e48c982304.rsDefault .rsThumbs{background-color:transparent}#vc-gallery-67446b94e48c982304.rsDefault.rsFullscreen {background-color:#151515}#vc-gallery-67446b94e48c982304.rsDefault .rsFullscreenIcn,#vc-gallery-67446b94e48c982304.rsDefault .rsArrowIcn{background-color:#151515}#vc-gallery-67446b94e48c982304 .rsFullscreenBtn{display:none;}#vc-gallery-67446b94e48c982304 .rsThumbs  .rsThumb{width:50px;height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsHor{height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsVer{width:50px;}</style><div  id='vc-gallery-67446b94e48c982304'  imageScaleMode='fit-if-smaller' slidesOrientation='horizontal' autoScaleSlider='false' arrowsNavAutoHide='' bgcolor='transparent' g_width='150' g_height='0' g_loop='true' showfullscreen='false' arrowsNav='false' controlNavigation='thumbnails' thumbnails_orientation='horizontal' visiblenearby='false' auto_Play='true' disabledclick='false' class='royalSlider_gallery royalSlider rsDefault royalSlidering gallery-start-hidden'  style='margin:0 auto;width:100%;max-width:100%;position:relative;overflow:hidden;z-index:3;height:800px'>
 			
       <div data-rsDelay="5000"    class='qfy_image_vc_item   ' style='position:relative;' ><div  class="thumbnail_text-67446b94dece0943 Thumbnail_text wf-mobile-hidden" style="overflow:hidden;z-index:1;background-color:rgba(0,0,0,0.8);color: #fff;padding: 10px 10px 10px 10px;" ><div class="" ><div class="content" style="font-size: 16px;">2026. 06. 09 Hiking at MacRitchie Reservoir</div></div></div><i style="z-index:1"></i><a class="rsImg bugaga"  data-rsw="150" data-rsh="0" data-style=""  data-class="" data-rsBigImg="" href="images/2026-6-9.jpg"  ><img  width="96" height="72" class="rsTmb" src="images/2026-6-9.jpg"  srcset='images/2026-6-9.jpg 1x,images/2026-6-9.jpg 2x' loading="lazy" decoding="async" fetchpriority="low" /></a></div>
 
@@ -2267,6 +2275,63 @@ renderCurrentCards("vug-members-grid", groupRecords.vug);
 renderAlumniCards("alumni-records-grid", groupRecords.alumni);
 initGroupLazyAvatars();
 </script>
+
+    
+<script id="gallery-startup-hide-script">
+(function() {
+  function revealGallery() {
+    var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
+    if (!gallery) return;
+    gallery.classList.remove("gallery-start-hidden");
+    gallery.classList.add("gallery-ready-visible");
+  }
+
+  function isRoyalSliderReady(gallery) {
+    if (!gallery) return false;
+    if (gallery.querySelector(".rsOverflow") || gallery.querySelector(".rsSlide")) return true;
+    if (window.jQuery) {
+      try {
+        var instance = window.jQuery(gallery).data("royalSlider");
+        if (instance) return true;
+      } catch (e) {}
+    }
+    return false;
+  }
+
+  function waitForGallery() {
+    var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
+    if (!gallery) return;
+
+    var attempts = 0;
+    var timer = window.setInterval(function() {
+      attempts += 1;
+      if (isRoyalSliderReady(gallery)) {
+        window.clearInterval(timer);
+        window.setTimeout(revealGallery, 120);
+      }
+      // Last-resort fallback: do not keep the photos hidden forever if the gallery plugin is delayed.
+      if (attempts >= 80) {
+        window.clearInterval(timer);
+        revealGallery();
+      }
+    }, 100);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", waitForGallery);
+  } else {
+    waitForGallery();
+  }
+
+  window.addEventListener("load", function() {
+    window.setTimeout(function() {
+      var gallery = document.getElementById("vc-gallery-67446b94e48c982304");
+      if (gallery && isRoyalSliderReady(gallery)) revealGallery();
+    }, 400);
+  });
+})();
+</script>
+
 
     </body>
 
