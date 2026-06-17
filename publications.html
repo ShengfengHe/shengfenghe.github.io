@@ -2826,11 +2826,10 @@ function installPublicationLazyLoading(scope) {
 }
 
 function schedulePublicationTask(callback) {
-  if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(callback, { timeout: 120 });
-  } else {
-    window.setTimeout(callback, 16);
-  }
+  // Use a normal timer instead of requestIdleCallback for rendering new records.
+  // requestIdleCallback can be starved when the user keeps PageDown pressed,
+  // so the page may reach the bottom without appending the next chunk.
+  window.setTimeout(callback, 0);
 }
 
 function renderLinks(links) {
@@ -2950,6 +2949,52 @@ function renderPublication(pub) {
 
   if (finished) return;
 
+  const renderPreloadDistance = 900;
+  let checkScheduled = false;
+
+  function isSentinelNearViewport() {
+    if (finished) return false;
+    if (!sentinel.getBoundingClientRect) return true;
+
+    const rect = sentinel.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const docHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+    const distanceToDocumentBottom = docHeight - (scrollTop + viewportHeight);
+
+    return rect.top < viewportHeight + renderPreloadDistance || distanceToDocumentBottom < renderPreloadDistance;
+  }
+
+  function maybeLoadMore() {
+    checkScheduled = false;
+    if (finished) return;
+    if (isSentinelNearViewport()) requestNextChunk();
+  }
+
+  function scheduleLoadCheck(delay) {
+    if (checkScheduled || finished) return;
+    checkScheduled = true;
+    window.setTimeout(maybeLoadMore, delay || 0);
+  }
+
+  const originalRequestNextChunk = requestNextChunk;
+  requestNextChunk = function() {
+    if (isRendering || finished) return;
+    isRendering = true;
+    schedulePublicationTask(function() {
+      appendChunk(laterChunkSize);
+      isRendering = false;
+      // If the user is still sitting at the bottom after this chunk is appended,
+      // immediately queue another chunk. This fixes held PageDown / End-key jumps.
+      scheduleLoadCheck(0);
+    });
+  };
+
   if ("IntersectionObserver" in window) {
     const renderObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
@@ -2959,30 +3004,40 @@ function renderPublication(pub) {
       });
     }, {
       root: null,
-      rootMargin: "600px 0px",
+      rootMargin: renderPreloadDistance + "px 0px",
       threshold: 0.01
     });
     renderObserver.observe(sentinel);
-  } else {
-    let ticking = false;
-    function maybeLoadMore() {
-      if (ticking || finished) return;
-      ticking = true;
-      window.setTimeout(function() {
-        ticking = false;
-        if (!sentinel.getBoundingClientRect) {
-          requestNextChunk();
-          return;
-        }
-        const rect = sentinel.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        if (rect.top < viewportHeight + 600) requestNextChunk();
-      }, 120);
-    }
-    window.addEventListener("scroll", maybeLoadMore, { passive: true });
-    window.addEventListener("resize", maybeLoadMore);
-    maybeLoadMore();
   }
+
+  function handleScrollIntent(event) {
+    if (!event || !event.key) {
+      scheduleLoadCheck(0);
+      return;
+    }
+    if (event.key === "PageDown" || event.key === "End" || event.key === " " ||
+        event.key === "ArrowDown" || event.key === "ArrowRight") {
+      scheduleLoadCheck(0);
+    }
+  }
+
+  window.addEventListener("scroll", handleScrollIntent, { passive: true });
+  window.addEventListener("resize", function() { scheduleLoadCheck(0); });
+  window.addEventListener("wheel", handleScrollIntent, { passive: true });
+  window.addEventListener("touchmove", handleScrollIntent, { passive: true });
+  window.addEventListener("keydown", handleScrollIntent);
+
+  // A light safety net: while the user is pinned at the bottom, keep appending
+  // small chunks even if the browser skipped an observer/scroll callback.
+  const publicationBottomCheckTimer = window.setInterval(function() {
+    if (finished) {
+      window.clearInterval(publicationBottomCheckTimer);
+      return;
+    }
+    if (isSentinelNearViewport()) scheduleLoadCheck(0);
+  }, 250);
+
+  scheduleLoadCheck(0);
 })();
 </script>
 </div></div></div><style class="column_class qfy_style_class">.qfy-column-4-67446ac15d0fa485151 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}}@media only screen and (max-width: 992px){.qfy-column-4-67446ac15d0fa485151 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-overlay,.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>
