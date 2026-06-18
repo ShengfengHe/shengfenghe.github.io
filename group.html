@@ -528,6 +528,7 @@ window.addEventListener('load', function() {
     { name: "Tencent", src: "images/Tencent_Logo.png", href: "https://www.tencent.com/" },
     { name: "Ensign InfoSecurity", src: "images/ensign-logo.png", href: "https://www.ensigninfosecurity.com/" },
     { name: "DeepBrain AI", src: "images/deepbrain_ai_logo.jpg", href: "https://aistudios.com/" },
+    { name: "ByteDance", src: "images/ByteDance_logo.png", href: "https://www.bytedance.com/en/" },
     { name: "Alibaba", src: "images/Alibaba-Logo.png", href: "https://www.alibaba.com/" },
     { name: "Xiaomi", src: "images/Xiaomi_logo.png", href: "https://www.xiaomi.com/" },
     { name: "SenseTime", src: "images/SenseTime_logo.png", href: "https://www.sensetime.com/" },
@@ -2540,7 +2541,7 @@ function renderAlumniCards(containerId, alumni) {
   container.innerHTML = alumni.map((person, index) => {
     const label = `<span class="alumni-label">${escapeHtml(autoLabels[index])}</span>`;
     const award = person.award ? `<div class="alumni-award">${escapeHtml(person.award)}</div>` : "";
-    const current = person.current ? `<div class="alumni-current"><span class="alumni-current-label">Now:</span> ${escapeHtml(person.current)}</div>` : "";
+    const current = person.current ? `<div class="alumni-current"><span class="alumni-current-label">Placement:</span> ${escapeHtml(person.current)}</div>` : "";
     return `
       <article class="person-card alumni-card">
         ${renderAvatar(person, "alumni-avatar")}
@@ -2655,7 +2656,7 @@ function renderAlumniCardsProgressively(containerId, alumni) {
   function renderOne(person, index) {
     const label = `<span class="alumni-label">${escapeHtml(autoLabels[index])}</span>`;
     const award = person.award ? `<div class="alumni-award">${escapeHtml(person.award)}</div>` : "";
-    const current = person.current ? `<div class="alumni-current"><span class="alumni-current-label">Now:</span> ${escapeHtml(person.current)}</div>` : "";
+    const current = person.current ? `<div class="alumni-current"><span class="alumni-current-label">Placement:</span> ${escapeHtml(person.current)}</div>` : "";
     return `
       <article class="person-card alumni-card">
         ${renderAvatar(person, "alumni-avatar")}
