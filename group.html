@@ -502,6 +502,73 @@ window.addEventListener('load', function() {
 </section>
 
 
+<section data-fixheight="" class="qfy-row-group-support section no section-text-no-shadow section-inner-no-shadow section-normal section-orgi" id="group-support-section" style="margin-bottom:0;border-radius:0px;color:#8c8c8c;">
+  <div class="section-background-overlay background-overlay grid-overlay-0" style="background-color: transparent;"></div>
+  <div class="container">
+    <div class="row qfe_row">
+      <div class="group-support-panel">
+        <div class="group-support-heading">Research Support &amp; Collaborations</div>
+        <div id="group-support-logo-grid" class="group-support-logo-grid" aria-label="Research support and collaboration logos"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="group-support-logo-data-script">
+(function() {
+  // To add a new funder or collaborator logo, add one item below.
+  // Fields: name = alt/title text; src = logo image path; href = optional link.
+  var groupLogoFallback = "images/bf2384852a4f8db795326b6286855916.jpg";
+
+  var groupSupportLogos = [
+    { name: "Ministry of Education (Singapore)", src: "images/MOE_logo.png", href: "https://www.moe.gov.sg/" },
+    { name: "AI Singapore", src: "images/AISG_logo.png", href: "https://aisingapore.org/" },
+    { name: "Google", src: "images/google_logo.png", href: "https://research.google/" },
+    { name: "Adobe", src: "images/Adobe_logo.png", href: "https://www.adobe.com/" },
+    { name: "Tencent", src: "images/Tencent_Logo.png", href: "https://www.tencent.com/" },
+    { name: "Ensign InfoSecurity", src: "images/ensign-logo.png", href: "https://www.ensigninfosecurity.com/" },
+    { name: "DeepBrain AI", src: "images/deepbrain_ai_logo.jpg", href: "https://aistudios.com/" },
+    { name: "Alibaba", src: "images/Alibaba-Logo.png", href: "https://www.alibaba.com/" },
+    { name: "Xiaomi", src: "images/Xiaomi_logo.png", href: "https://www.xiaomi.com/" },
+    { name: "SenseTime", src: "images/SenseTime_logo.png", href: "https://www.sensetime.com/" },
+    { name: "WeRide", src: "images/WeRide_logo.png", href: "https://www.weride.ai/" },
+    { name: "National Natural Science Foundation of China", src: "images/NSFC_logo.jpg", href: "https://www.nsfc.gov.cn/" },
+    { name: "Department of Science and Technology of Guangdong Province", src: "images/GDSTC_logo.jpg", href: "https://gdstc.gd.gov.cn/" },
+    { name: "Guangzhou Municipal Science and Technology Bureau", src: "images/GZST_logo.png", href: "http://kjj.gz.gov.cn/" }
+  ];
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
+
+  function renderGroupSupportLogos() {
+    var container = document.getElementById("group-support-logo-grid");
+    if (!container) return;
+
+    container.innerHTML = groupSupportLogos.map(function(logo) {
+      var name = escapeHtml(logo.name || "");
+      var src = escapeHtml(logo.src || groupLogoFallback);
+      var href = logo.href ? escapeHtml(logo.href) : "";
+      var tag = href ? "a" : "div";
+      var hrefAttr = href ? ' href="' + href + '" target="_blank" rel="noopener"' : "";
+
+      return '<' + tag + ' class="group-support-logo-card"' + hrefAttr + ' title="' + name + '">' +
+        '<img src="' + src + '" alt="' + name + ' logo" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' + groupLogoFallback + '\';">' +
+        '</' + tag + '>';
+    }).join("");
+  }
+
+  renderGroupSupportLogos();
+})();
+</script>
 
 
 <section  data-fixheight="" class="qfy-row-4-67446b94dc3c82006 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_3mv4s"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
@@ -599,73 +666,6 @@ window.addEventListener('load', function() {
 
 
 
-<section data-fixheight="" class="qfy-row-group-support section no section-text-no-shadow section-inner-no-shadow section-normal section-orgi" id="group-support-section" style="margin-bottom:0;border-radius:0px;color:#8c8c8c;">
-  <div class="section-background-overlay background-overlay grid-overlay-0" style="background-color: transparent;"></div>
-  <div class="container">
-    <div class="row qfe_row">
-      <div class="group-support-panel">
-        <div class="group-support-heading">Research Support &amp; Collaborations</div>
-        <div id="group-support-logo-grid" class="group-support-logo-grid" aria-label="Research support and collaboration logos"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script id="group-support-logo-data-script">
-(function() {
-  // To add a new funder or collaborator logo, add one item below.
-  // Fields: name = alt/title text; src = logo image path; href = optional link.
-  var groupLogoFallback = "images/bf2384852a4f8db795326b6286855916.jpg";
-
-  var groupSupportLogos = [
-    { name: "Ministry of Education (Singapore)", src: "images/MOE_logo.png", href: "https://www.moe.gov.sg/" },
-    { name: "AI Singapore", src: "images/AISG_logo.png", href: "https://aisingapore.org/" },
-    { name: "Google", src: "images/google_logo.png", href: "https://research.google/" },
-    { name: "Adobe", src: "images/Adobe_logo.png", href: "https://www.adobe.com/" },
-    { name: "Tencent", src: "images/Tencent_Logo.png", href: "https://www.tencent.com/" },
-    { name: "Ensign InfoSecurity", src: "images/ensign-logo.png", href: "https://www.ensigninfosecurity.com/" },
-    { name: "DeepBrain AI", src: "images/deepbrain_ai_logo.jpg", href: "https://aistudios.com/" },
-    { name: "Alibaba", src: "images/Alibaba-Logo.png", href: "https://www.alibaba.com/" },
-    { name: "Xiaomi", src: "images/Xiaomi_logo.png", href: "https://www.xiaomi.com/" },
-    { name: "SenseTime", src: "images/SenseTime_logo.png", href: "https://www.sensetime.com/" },
-    { name: "WeRide", src: "images/WeRide_logo.png", href: "https://www.weride.ai/" },
-    { name: "National Natural Science Foundation of China", src: "images/NSFC_logo.jpg", href: "https://www.nsfc.gov.cn/" },
-    { name: "Department of Science and Technology of Guangdong Province", src: "images/GDSTC_logo.jpg", href: "https://gdstc.gd.gov.cn/" },
-    { name: "Guangzhou Municipal Science and Technology Bureau", src: "images/GZST_logo.png", href: "http://kjj.gz.gov.cn/" }
-  ];
-
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, function(char) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "\"": "&quot;",
-        "'": "&#039;"
-      }[char];
-    });
-  }
-
-  function renderGroupSupportLogos() {
-    var container = document.getElementById("group-support-logo-grid");
-    if (!container) return;
-
-    container.innerHTML = groupSupportLogos.map(function(logo) {
-      var name = escapeHtml(logo.name || "");
-      var src = escapeHtml(logo.src || groupLogoFallback);
-      var href = logo.href ? escapeHtml(logo.href) : "";
-      var tag = href ? "a" : "div";
-      var hrefAttr = href ? ' href="' + href + '" target="_blank" rel="noopener"' : "";
-
-      return '<' + tag + ' class="group-support-logo-card"' + hrefAttr + ' title="' + name + '">' +
-        '<img src="' + src + '" alt="' + name + ' logo" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' + groupLogoFallback + '\';">' +
-        '</' + tag + '>';
-    }).join("");
-  }
-
-  renderGroupSupportLogos();
-})();
-</script>
 
 
 <section  data-fixheight="" class="qfy-row-7-67446b94dd9bd488390 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_azksc"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
