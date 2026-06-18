@@ -132,6 +132,128 @@ window.addEventListener('load', function() {
 		</script>
 
 		
+
+
+<!-- Research support and collaboration logo grid -->
+<style id="group-support-logo-styles">
+  :root {
+    --group-support-text: #172033;
+    --group-support-muted: #607086;
+    --group-support-border: #e6ebf2;
+  }
+
+  #group-support-section {
+    margin-bottom: 0;
+    border-radius: 0;
+    color: #8c8c8c;
+  }
+
+  @media only screen and (min-width: 992px) {
+    section.section#group-support-section {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      padding-top: 24px !important;
+      padding-bottom: 8px !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    section.section#group-support-section > .container {
+      max-width: 1280px !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  @media only screen and (max-width: 992px) {
+    .bit-html section.section#group-support-section {
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+      padding-top: 22px !important;
+      padding-bottom: 8px !important;
+      margin-top: 0 !important;
+      min-height: 0 !important;
+    }
+  }
+
+  .group-support-panel {
+    background: #ffffff;
+    border: 1px solid var(--group-support-border);
+    border-radius: 20px;
+    padding: 18px 24px;
+    box-shadow: 0 10px 28px rgba(23,32,51,.05);
+    box-sizing: border-box;
+  }
+
+  .group-support-heading {
+    text-align: center;
+    margin: 0 auto 14px auto;
+    color: #7b8798;
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .group-support-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .group-support-logo-card {
+    height: 104px;
+    padding: 12px 18px;
+    box-sizing: border-box;
+    border: 1px solid #edf1f6;
+    border-radius: 16px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+  }
+
+  .group-support-logo-card:hover {
+    transform: translateY(-1px);
+    border-color: #d7e2ef;
+    box-shadow: 0 8px 22px rgba(23,32,51,.08);
+  }
+
+  .group-support-logo-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+    border-radius: 0 !important;
+    filter: grayscale(8%);
+    opacity: .94;
+  }
+
+  .group-support-logo-card:hover img {
+    opacity: 1;
+    filter: none;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .group-support-panel {
+      padding: 16px 14px;
+    }
+    .group-support-logo-grid {
+      grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+      gap: 10px;
+    }
+    .group-support-logo-card {
+      height: 88px;
+      padding: 10px 14px;
+    }
+    .group-support-logo-card img {
+      max-height: 68px;
+    }
+  }
+</style>
+
 </head>
 
 
@@ -473,6 +595,77 @@ window.addEventListener('load', function() {
 </section>
 
 
+
+
+
+
+<section data-fixheight="" class="qfy-row-group-support section no section-text-no-shadow section-inner-no-shadow section-normal section-orgi" id="group-support-section" style="margin-bottom:0;border-radius:0px;color:#8c8c8c;">
+  <div class="section-background-overlay background-overlay grid-overlay-0" style="background-color: transparent;"></div>
+  <div class="container">
+    <div class="row qfe_row">
+      <div class="group-support-panel">
+        <div class="group-support-heading">Research Support &amp; Collaborations</div>
+        <div id="group-support-logo-grid" class="group-support-logo-grid" aria-label="Research support and collaboration logos"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="group-support-logo-data-script">
+(function() {
+  // To add a new funder or collaborator logo, add one item below.
+  // Fields: name = alt/title text; src = logo image path; href = optional link.
+  var groupLogoFallback = "images/bf2384852a4f8db795326b6286855916.jpg";
+
+  var groupSupportLogos = [
+    { name: "Ministry of Education (Singapore)", src: "images/MOE_logo.png", href: "https://www.moe.gov.sg/" },
+    { name: "AI Singapore", src: "images/AISG_logo.png", href: "https://aisingapore.org/" },
+    { name: "Google", src: "images/google_logo.png", href: "https://research.google/" },
+    { name: "Adobe", src: "images/Adobe_logo.png", href: "https://www.adobe.com/" },
+    { name: "Tencent", src: "images/Tencent_Logo.png", href: "https://www.tencent.com/" },
+    { name: "Ensign InfoSecurity", src: "images/ensign-logo.png", href: "https://www.ensigninfosecurity.com/" },
+    { name: "DeepBrain AI", src: "images/deepbrain_ai_logo.jpg", href: "https://aistudios.com/" },
+    { name: "Alibaba", src: "images/Alibaba-Logo.png", href: "https://www.alibaba.com/" },
+    { name: "Xiaomi", src: "images/Xiaomi_logo.png", href: "https://www.xiaomi.com/" },
+    { name: "SenseTime", src: "images/SenseTime_logo.png", href: "https://www.sensetime.com/" },
+    { name: "WeRide", src: "images/WeRide_logo.png", href: "https://www.weride.ai/" },
+    { name: "National Natural Science Foundation of China", src: "images/NSFC_logo.jpg", href: "https://www.nsfc.gov.cn/" },
+    { name: "Department of Science and Technology of Guangdong Province", src: "images/GDSTC_logo.jpg", href: "https://gdstc.gd.gov.cn/" },
+    { name: "Guangzhou Municipal Science and Technology Bureau", src: "images/GZST_logo.png", href: "http://kjj.gz.gov.cn/" }
+  ];
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
+
+  function renderGroupSupportLogos() {
+    var container = document.getElementById("group-support-logo-grid");
+    if (!container) return;
+
+    container.innerHTML = groupSupportLogos.map(function(logo) {
+      var name = escapeHtml(logo.name || "");
+      var src = escapeHtml(logo.src || groupLogoFallback);
+      var href = logo.href ? escapeHtml(logo.href) : "";
+      var tag = href ? "a" : "div";
+      var hrefAttr = href ? ' href="' + href + '" target="_blank" rel="noopener"' : "";
+
+      return '<' + tag + ' class="group-support-logo-card"' + hrefAttr + ' title="' + name + '">' +
+        '<img src="' + src + '" alt="' + name + ' logo" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' + groupLogoFallback + '\';">' +
+        '</' + tag + '>';
+    }).join("");
+  }
+
+  renderGroupSupportLogos();
+})();
+</script>
 
 
 <section  data-fixheight="" class="qfy-row-7-67446b94dd9bd488390 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"  id="bit_azksc"  style='margin-bottom:0;border-radius:0px;color:#8c8c8c;' >
@@ -2691,6 +2884,7 @@ const groupPhotoSlides = [{"src": "images/2026-6-9.jpg", "thumb": "images/2026-6
   window.setTimeout(checkGallery, 0);
 })();
 </script>
+
 
 </body>
 

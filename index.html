@@ -438,10 +438,6 @@
     filter: none;
   }
 
-  body.home .home-logo-grid-support .home-logo-card img {
-    max-height: 80px;
-  }
-
   @media only screen and (max-width: 992px) {
     body.home section#bit_fcfto .row.qfe_row {
       flex-direction: column-reverse;
@@ -807,12 +803,7 @@
             <div class="home-logo-heading">Affiliations &amp; Education</div>
             <div id="affiliation-logo-grid" class="home-logo-grid" aria-label="Affiliations and education logos"></div>
           </div>
-
-          <div class="home-logo-panel">
-            <div class="home-logo-heading">Research Support &amp; Collaborations</div>
-            <div id="support-logo-grid" class="home-logo-grid home-logo-grid-support" aria-label="Research support and collaboration logos"></div>
-          </div>
-        </div>
+</div>
       </div>
     </div>
 </section>
@@ -821,7 +812,6 @@
 (function() {
   // To add a new logo, add one item to the relevant list below.
   // Fields: name = alt/title text; src = logo image path; href = optional link.
-  var smuLogoPlaceholder = "images/bf2384852a4f8db795326b6286855916.jpg";
 
   var affiliationLogos = [
     { name: "Singapore Management University", src: "images/bf2384852a4f8db795326b6286855916.jpg", href: "https://www.smu.edu.sg/" },
@@ -829,18 +819,6 @@
     { name: "Georgia Institute of Technology", src: "images/Georgia_Tech_logo.png", href: "https://www.gatech.edu/" },
     { name: "City University of Hong Kong", src: "images/CityU_logo.svg.png", href: "https://www.cityu.edu.hk/" },
     { name: "Macau University of Science and Technology", src: "images/MUST_logo.png", href: "https://www.must.edu.mo/" }
-  ];
-
-  var supportLogos = [
-    { name: "Ministry of Education (Singapore)", src: "images/MOE_logo.png", href: "https://www.moe.gov.sg/" },
-    { name: "AI Singapore", src: "images/AISG_logo.png", href: "https://aisingapore.org/" },
-    { name: "Google", src: "images/google_logo.png", href: "https://research.google/" },
-    { name: "Adobe", src: "images/Adobe_logo.png", href: "https://www.adobe.com/" },
-    { name: "Tencent", src: "images/Tencent_Logo.png", href: "https://www.tencent.com/" },
-    { name: "Ensign InfoSecurity", src: "images/ensign-logo.png", href: "https://www.ensigninfosecurity.com/" },
-    { name: "National Natural Science Foundation of China", src: "images/NSFC_logo.jpg", href: "https://www.nsfc.gov.cn/" },
-    { name: "Department of Science and Technology of Guangdong Province", src: "images/GDSTC_logo.jpg", href: "https://gdstc.gd.gov.cn/" },
-    { name: "Guangzhou Municipal Science and Technology Bureau", src: "images/GZST_logo.png", href: "http://kjj.gz.gov.cn/" }
   ];
 
   function escapeHtml(value) {
@@ -873,7 +851,6 @@
   }
 
   renderLogoGrid("affiliation-logo-grid", affiliationLogos);
-  renderLogoGrid("support-logo-grid", supportLogos);
 })();
 </script>
 
