@@ -102,6 +102,9 @@ window.addEventListener('load', function() {
 	<style type="text/css" id="static-stylesheet"></style>
 
 	<link rel="stylesheet" href="css/0dbc470d467537459ab4c220e07407ad.css" type="text/css" media="all" /> <!-- Cache! -->
+<link rel="preload" href="css/85f415f9cb9c06c5177e3c5d86b60ca0.css" as="style">
+<link rel="stylesheet" href="css/85f415f9cb9c06c5177e3c5d86b60ca0.css" type="text/css" media="all" />
+
 <style type='text/css'>
 
 
@@ -251,6 +254,281 @@ window.addEventListener('load', function() {
     .group-support-logo-card img {
       max-height: 68px;
     }
+  }
+</style>
+
+
+
+<!-- Critical first-paint layout fixes: prevent FOUC / large-image flash before the full page CSS and JS finish loading. -->
+<style id="group-first-paint-stability-style">
+  :root {
+    --group-card-font-size: 13px;
+    --group-card-small-font-size: 11px;
+    --member-photo-size: 72px;
+    --alumni-photo-size: 50px;
+    --group-card-radius: 14px;
+    --group-card-border: rgba(0, 0, 0, 0.08);
+    --group-card-shadow: 0 6px 18px rgba(0, 0, 0, 0.055);
+  }
+
+  /* Keep all page images constrained from the first paint. */
+  img { max-width: 100%; height: auto; }
+
+  /* The lab logo blocks are visible before the late card CSS is parsed, so reserve the final layout here. */
+  .lab-heading-card {
+    box-sizing: border-box;
+    width: 100%;
+    height: 270px;
+    margin: 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    text-align: center;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .lab-logo-panel {
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 14px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.055);
+  }
+
+  .lab-logo-panel img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: min(570px, 100%);
+    max-height: 186px;
+    object-fit: contain;
+    border-radius: 0 !important;
+  }
+
+  .lab-heading-vug .lab-logo-panel img {
+    max-width: min(585px, 100%);
+    max-height: 198px;
+  }
+
+  .lab-heading-title {
+    font-size: 15px;
+    line-height: 1.25em;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    margin-top: 2px;
+  }
+
+  .lab-heading-cvl .lab-heading-title { color: rgb(0, 128, 102); }
+  .lab-heading-vug .lab-heading-title { color: rgb(41, 105, 176); }
+
+  /* Reserve the final grid/card structure before JS inserts the records. */
+  .people-card-grid {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 8px;
+  }
+
+  .people-card-grid:empty {
+    min-height: 220px;
+  }
+
+  .current-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .alumni-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .person-card {
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid var(--group-card-border);
+    border-radius: var(--group-card-radius);
+    box-shadow: var(--group-card-shadow);
+    overflow: hidden;
+  }
+
+  .member-card {
+    min-height: 146px;
+    padding: 11px 8px 10px;
+    text-align: center;
+  }
+
+  .person-avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background: #f2f4f7;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  .member-avatar {
+    width: var(--member-photo-size);
+    height: var(--member-photo-size);
+    border-radius: 50%;
+    margin: 0 auto 8px;
+  }
+
+  .alumni-avatar {
+    width: var(--alumni-photo-size);
+    height: var(--alumni-photo-size);
+    border-radius: 50%;
+  }
+
+  .person-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .person-name {
+    color: #111111;
+    font-size: var(--group-card-font-size);
+    font-weight: 600;
+    line-height: 1.28em;
+    margin-top: 2px;
+  }
+
+  .person-cn,
+  .person-badge,
+  .member-extra-line,
+  .alumni-meta,
+  .alumni-current,
+  .alumni-award {
+    font-size: var(--group-card-small-font-size);
+    line-height: 1.3em;
+  }
+
+  .person-badge,
+  .member-extra-line {
+    display: inline-block;
+    border-radius: 999px;
+    background: #f3f5f7;
+    color: #444444;
+    padding: 3px 7px;
+    white-space: nowrap;
+  }
+
+  .alumni-card {
+    min-height: 92px;
+    padding: 9px;
+    display: grid;
+    grid-template-columns: var(--alumni-photo-size) minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+  }
+
+  /* Keep the photo gallery at its final size from the start. */
+  #bit_azksc > .container,
+  #bit_mi1ou > .container,
+  #bit_mi1ou .qfe_wrapper,
+  #bit_mi1ou .qfe_gallery,
+  #group-light-gallery {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .group-light-gallery {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    z-index: 3;
+  }
+
+  .group-gallery-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 800px;
+    min-height: 360px;
+    overflow: hidden;
+    background: rgba(245, 245, 245, 0.9);
+    border-radius: 14px;
+  }
+
+  .group-gallery-main {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+
+  .group-gallery-thumbs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    min-height: 60px;
+    padding: 8px 2px 2px;
+  }
+
+  .group-gallery-thumb {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 50px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .group-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .current-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .alumni-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lab-heading-card { height: auto; margin-bottom: 14px; justify-content: center; }
+    .lab-logo-panel { padding: 12px 14px; border-radius: 18px; }
+    .lab-logo-panel img { max-height: 138px; max-width: min(420px, 100%); }
+    .lab-heading-vug .lab-logo-panel img { max-height: 144px; max-width: min(435px, 100%); }
+    #bit_azksc > .container,
+    #bit_mi1ou > .container,
+    #bit_mi1ou .qfe_wrapper,
+    #bit_mi1ou .qfe_gallery,
+    #group-light-gallery { max-width: 100%; }
+    .group-gallery-stage { height: 520px; }
+  }
+
+  @media only screen and (max-width: 640px) {
+    .alumni-card-grid { grid-template-columns: 1fr; }
+    .group-gallery-stage { height: 360px; min-height: 280px; }
   }
 </style>
 
@@ -449,7 +727,7 @@ window.addEventListener('load', function() {
 		<div class="qfe_wrapper ">
 			<div class="lab-heading-card lab-heading-cvl">
               <div class="lab-logo-panel">
-                <img src="images/2939ba15dabe81698fbe4086b7415b5e.png" alt="CVL @ SCUT logo">
+                <img src="images/2939ba15dabe81698fbe4086b7415b5e.png" width="570" height="186" alt="CVL @ SCUT logo">
               </div>
               <div class="lab-heading-title">Group Members at CVL @ SCUT</div>
             </div>
@@ -475,7 +753,7 @@ window.addEventListener('load', function() {
 		<div class="qfe_wrapper ">
 			<div class="lab-heading-card lab-heading-vug">
               <div class="lab-logo-panel">
-                <img src="images/294a36c654320c925518c434ccc8052f.png" alt="VUG Lab @ SMU logo">
+                <img src="images/294a36c654320c925518c434ccc8052f.png" width="585" height="198" alt="VUG Lab @ SMU logo">
               </div>
               <div class="lab-heading-title">Group Members at VUG Lab @ SMU</div>
             </div>
@@ -725,7 +1003,7 @@ window.addEventListener('load', function() {
 		<div style="" class="qfe_wrapper " ><style>@media only screen and (max-width: 760px) {.thumbnail_text-67446b94dece0943 .head{font-size: 16px !important;}.thumbnail_text-67446b94dece0943 .content{font-size: 16px !important;}}</style><style>#vc-gallery-67446b94e48c982304.rsDefault .rsBullets,#vc-gallery-67446b94e48c982304.rsDefault,#vc-gallery-67446b94e48c982304.rsDefault .rsOverflow,#vc-gallery-67446b94e48c982304.rsDefault .rsSlide,#vc-gallery-67446b94e48c982304.rsDefault .rsVideoFrameHolder,#vc-gallery-67446b94e48c982304.rsDefault .rsThumbs{background-color:transparent}#vc-gallery-67446b94e48c982304.rsDefault.rsFullscreen {background-color:#151515}#vc-gallery-67446b94e48c982304.rsDefault .rsFullscreenIcn,#vc-gallery-67446b94e48c982304.rsDefault .rsArrowIcn{background-color:#151515}#vc-gallery-67446b94e48c982304 .rsFullscreenBtn{display:none;}#vc-gallery-67446b94e48c982304 .rsThumbs  .rsThumb{width:50px;height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsHor{height:50px;}#vc-gallery-67446b94e48c982304.rsDefault .rsThumbsVer{width:50px;}</style><div id="group-light-gallery" class="group-light-gallery group-gallery-not-loaded" aria-label="Group photos">
   <div class="group-gallery-stage">
     <button class="group-gallery-nav group-gallery-prev" type="button" aria-label="Previous photo">&#10094;</button>
-    <img id="group-gallery-main" class="group-gallery-main" src="images/loading.jpg" alt="Group photo" loading="lazy" decoding="async" fetchpriority="low" />
+    <img id="group-gallery-main" class="group-gallery-main" src="images/loading.jpg" width="1280" height="800" alt="Group photo" loading="lazy" decoding="async" fetchpriority="low" />
     <button class="group-gallery-nav group-gallery-next" type="button" aria-label="Next photo">&#10095;</button>
     <div id="group-gallery-caption" class="group-gallery-caption">Photos will load when this section is visible.</div>
   </div>
@@ -2480,6 +2758,7 @@ function renderOptionalMemberDetail(person, field, className) {
 function renderCurrentCards(containerId, people) {
   const container = document.getElementById(containerId);
   if (!container) return;
+  container.classList.remove("is-rendered");
   container.innerHTML = people.map(person => {
     const beforeVUG = getBeforeVUG(person);
     const beforeBadge = beforeVUG ? `<span class="person-badge previous-badge">${escapeHtml(beforeVUG)}</span>` : "";
@@ -2503,6 +2782,7 @@ function renderCurrentCards(containerId, people) {
       </article>
     `;
   }).join("");
+  container.classList.add("is-rendered");
 }
 
 function inferAlumniCategory(person) {
@@ -2537,6 +2817,7 @@ function buildAlumniLabelMap(alumni) {
 function renderAlumniCards(containerId, alumni) {
   const container = document.getElementById(containerId);
   if (!container) return;
+  container.classList.remove("is-rendered");
   const autoLabels = buildAlumniLabelMap(alumni);
   container.innerHTML = alumni.map((person, index) => {
     const label = `<span class="alumni-label">${escapeHtml(autoLabels[index])}</span>`;
@@ -2557,6 +2838,7 @@ function renderAlumniCards(containerId, alumni) {
       </article>
     `;
   }).join("");
+  container.classList.add("is-rendered");
 }
 
 function loadGroupAvatar(avatar) {
@@ -2689,6 +2971,7 @@ function renderAlumniCardsProgressively(containerId, alumni) {
       container.insertBefore(fragment, loader);
       nextIndex = end;
       rendering = false;
+      container.classList.add("is-rendered");
       initGroupLazyAvatars(container);
 
       if (nextIndex >= alumni.length) {
