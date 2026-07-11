@@ -1605,6 +1605,27 @@ var thickboxL10n = {"next":"\u4e0b\u4e00\u5f20 >","prev":"< \u4e0a\u4e00\u5f20",
     color: #9a6700;
   }
 
+
+  /* Allow long award badges to wrap within the card instead of overflowing. */
+  .member-extra-lines .member-extra-line.award-line {
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.25em;
+    border-radius: 10px;
+  }
+
+  .alumni-award {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
   .member-extra-line.internship-line {
     background: rgba(99, 102, 241, 0.10);
     color: #4f46e5;
@@ -1994,7 +2015,7 @@ const groupRecords = {
       program: "PhD",
       homepage: "https://scholar.google.com/citations?user=7wVcyQwAAAAJ&hl",
       beforeVUG: "MSc (SCUT)",
-      award: "Presidential Doctoral Fellowship (2024)",
+      award: "Presidential Fellowship (2024)",
       internship: ""
     },
     {
@@ -2005,7 +2026,7 @@ const groupRecords = {
       program: "PhD",
       homepage: "https://scholar.google.com/citations?user=sNtkntwAAAAJ&hl",
       beforeVUG: "MSc (ECNU)",
-      award: "Presidential Doctoral Fellowship (2026)",
+      award: "Presidential Fellowship (2026)",
       internship: ""
     },
     {
