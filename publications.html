@@ -461,13 +461,6 @@
     content-visibility: auto;
     contain-intrinsic-size: 120px;
   }
-  .publication-load-sentinel {
-    height: 1px;
-    width: 100%;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
   .pub-record > .container { max-width: 1100px; margin: 0 auto; }
   .pub-record .row.qfe_row { display: flex; align-items: center; }
   /* Stronger selectors are needed because the original site CSS also styles .qfe_row .vc_span_class. */
@@ -583,13 +576,75 @@
 <div id="publication-records"></div>
 
 <script id="publication-record-template-script">
+// -----------------------------------------------------------------------------
+// Publication venue labels
+// -----------------------------------------------------------------------------
+// Normal records can use a short venue key, e.g. venue: "TPAMI" or "CVPR".
+// The renderer expands it to: Full Venue Name (<strong>SHORT</strong>), YEAR.
+//
+// Repeated special cases can inherit from a base venue.  For example,
+// CVPR_FINDINGS reuses CVPR's full name but changes its suffix and short label.
+// One-off cases can use the same mechanism inline:
+//   venue: { base: "CVPR", suffix: " Workshop", short: "CVPR Workshop" }
+// Any legacy/manual string that is not a key below is rendered unchanged.
+const VENUES = {
+  TPAMI:  { name: "IEEE Transactions on Pattern Analysis and Machine Intelligence", short: "TPAMI" },
+  IJCV:   { name: "International Journal of Computer Vision", short: "IJCV" },
+  TVCG:   { name: "IEEE Transactions on Visualization and Computer Graphics", short: "TVCG" },
+  TIP:    { name: "IEEE Transactions on Image Processing", short: "TIP" },
+  TMM:    { name: "IEEE Transactions on Multimedia", short: "TMM" },
+  TCSVT:  { name: "IEEE Transactions on Circuits and Systems for Video Technology", short: "TCSVT" },
+  TNNLS:  { name: "IEEE Transactions on Neural Networks and Learning Systems", short: "TNNLS" },
+  TIFS:   { name: "IEEE Transactions on Information Forensics and Security", short: "TIFS" },
+  TMLR:   { name: "Transactions on Machine Learning Research", short: "TMLR" },
+  TMC:    { name: "IEEE Transactions on Mobile Computing", short: "TMC" },
+  TETCI:  { name: "IEEE Transactions on Emerging Topics in Computational Intelligence", short: "TETCI" },
+  TOMM:   { name: "ACM Transactions on Multimedia Computing, Communications, and Applications", short: "TOMM" },
+  TCDS:   { name: "IEEE Transactions on Cognitive and Developmental Systems", short: "TCDS" },
+  TCYB:   { name: "IEEE Transactions on Cybernetics", short: "TCYB" },
+  TCBB:   { name: "IEEE/ACM Transactions on Computational Biology and Bioinformatics", short: "TCBB" },
+  TITS:   { name: "IEEE Transactions on Intelligent Transportation Systems", short: "TITS" },
+  PR:     { name: "Pattern Recognition", short: "PR" },
+  CVMJ:   { name: "Computational Visual Media", short: "CVMJ" },
+  CVIU:   { name: "Computer Vision and Image Understanding", short: "CVIU" },
+  CGF:    { name: "Computer Graphics Forum", short: "CGF" },
+  TOG:    { name: "ACM Transactions on Graphics", short: "TOG" },
+
+  CVPR:       { name: "IEEE/CVF Conference on Computer Vision and Pattern Recognition", short: "CVPR" },
+  CVPR_IEEE:  { name: "IEEE Conference on Computer Vision and Pattern Recognition", short: "CVPR" },
+  ICCV:       { name: "International Conference on Computer Vision", short: "ICCV" },
+  ICCV_IEEE:  { name: "IEEE International Conference on Computer Vision", short: "ICCV" },
+  ECCV:       { name: "European Conference on Computer Vision", short: "ECCV" },
+  ICML:       { name: "International Conference on Machine Learning", short: "ICML" },
+  ICLR:       { name: "International Conference on Learning Representations", short: "ICLR" },
+  NEURIPS:    { name: "Annual Conference on Neural Information Processing Systems", short: "NeurIPS" },
+  AAAI:       { name: "AAAI Conference on Artificial Intelligence", short: "AAAI" },
+  IJCAI:      { name: "International Joint Conference on Artificial Intelligence", short: "IJCAI" },
+  ACMMM:      { name: "ACM International Conference on Multimedia", short: "ACM MM" },
+  WACV:       { name: "IEEE Winter Conference on Applications of Computer Vision", short: "WACV" },
+  I3D:        { name: "ACM SIGGRAPH Symposium on Interactive 3D Graphics and Games", short: "I3D" },
+  ICME:       { name: "IEEE International Conference on Multimedia and Expo", short: "ICME" },
+  MICCAI:     { name: "Medical Image Computing and Computer-Assisted Intervention", short: "MICCAI" },
+  PERCOM:     { name: "IEEE International Conference on Pervasive Computing and Communications", short: "PerCom" },
+
+  // Reusable special-case labels built from the base definitions above.
+  CVPR_FINDINGS:      { base: "CVPR", suffix: " Findings Track", short: "CVPR Findings" },
+  ACMMM_DATASET:      { base: "ACMMM", suffix: " Dataset Track", short: "ACM MM" },
+  PG_ISSUE:            { base: "CGF", short: "Pacific Graphics {year} issue" },
+  PG_FAST_TRACK:       { base: "CGF", short: "Pacific Graphics {year}", labelSuffix: "&nbsp;Fast Track" },
+  SIGGRAPH_ASIA_ISSUE: { base: "TOG", short: "SIGGRAPH Asia {year} issue" },
+  TOG_SIGGRAPH:        { base: "TOG", short: "SIGGRAPH {year}", labelPrefix: "Presented at " },
+  CVPR_NTIRE:          { base: "CVPR_IEEE", suffix: " NTIRE Workshop", short: "CVPRW" },
+  CVPR_WORKSHOP:       { base: "CVPR_IEEE", suffix: " Workshop", short: "CVPR Workshop" }
+};
+
 const publicationRecords = [
   {
     year: "2026",
     image: ["images/TPAMI2026A.jpg"],
     title: "How Far Are We from Generating Missing Modalities with Foundation Models?",
     authors: "Guanzhou Ke, Bo Wang, Guoqing Chao, Weiming Hu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2026",
+    venue: "TPAMI",
     links: [["PDF", "https://github.com/Guanzhou-Ke/AFM2"], ["Code", "https://github.com/Guanzhou-Ke/AFM2"], ["Supp", "https://github.com/Guanzhou-Ke/AFM2"]]
   },
   {
@@ -597,15 +652,14 @@ const publicationRecords = [
     image: ["images/ijcv25B.jpg"],
     title: "Invert Your Prompt: Editing-Aware Diffusion Inversion",
     authors: "Yangyang Xu, Wenqi Shao, Yong Du, Haiming Zhu, Yang Zhou, Jiayuan Xie, Ping Luo, and <strong>Shengfeng He</strong>",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "IJCV",
   },
   {
     year: "2026",
     image: ["images/IJCV26B.jpg"],
     title: "You Only Look Intensity Once: Event-Driven Long-Term High-Speed Object Detection",
     authors: "Wen Dong, Haiyang Mei, Yinglian Ji, Yutong Jiang, Ziqi Wei, <strong>Shengfeng He</strong>, and Xin Yang.",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2026",
+    venue: "IJCV",
     links: [["PDF", "https://github.com/wind1117/YOLIO.git"], ["Code", "https://github.com/wind1117/YOLIO.git"]]
   },
   {
@@ -613,15 +667,14 @@ const publicationRecords = [
     image: ["images/IJCV26A.jpg"],
     title: "CylindFormer: Image-to-Point Cloud Registration with Cylindrical Transformer",
     authors: "Jingtao Wang, Hao Tang, Yanpeng Sun, <strong>Shengfeng He</strong>, and Zechao Li",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "IJCV",
   },  
   {
     year: "2026",
     image: ["images/TVCG26D.jpg"],
     title: "AvatarVTON: 4D Virtual Try-On for Animatable Avatars",
     authors: "Zicheng Jiang, Jixin Gao,  <strong>Shengfeng He</strong>, Xinzhe Li, Yulong Zheng, Zhaotong Yang, Junyu Dong, and Yong Du",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2026",
+    venue: "TVCG",
     links: [["PDF", "https://arxiv.org/pdf/2510.04822"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -629,15 +682,14 @@ const publicationRecords = [
     image: ["images/TVCG26C.jpg"],
     title: "GranSSG: Correlating Volumetric Granularities for 3D Semantic Scene Graph Prediction",
     authors: "Kaixiang Huang, Qifeng Zhang, Jin Wang, Jingru Yang, Yang Zhou, Jiao Yi, Guodong Lu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2026",
     image: ["images/TVCG26B.jpg"],
     title: "Think2Sing: Orchestrating Structured Motion Subtitles for Singing-Driven 3D Head Animation",
     authors: "Zikai Huang, Yihan Zhou, Xuemiao Xu, Cheng Xu, Xiaofen Xing, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2026",
+    venue: "TVCG",
     links: [["PDF", "https://arxiv.org/abs/2509.02278"], ["Code", "https://zikaihuangscut.github.io/Think2Sing/"]]
   },
   {
@@ -645,55 +697,49 @@ const publicationRecords = [
     image: ["images/TVCG26A.jpg"],
     title: "Zero-Shot Video Translation via Token Warping",
     authors: "Haiming Zhu, Yangyang Xu, Jun Yu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2026",
     image: ["images/TMLR26A.jpg"],
     title: "Let Your Light Shine: Foreground Portrait Matting via Deep Flash Priors",
     authors: "Tianyi Xiang, Yangyang Xu, Qingxuan Hu, Chenyi Zi, Nanxuan Zhao, Junle Wang, and <strong>Shengfeng He</strong>",
-    venue: "Transactions on Machine Learning Research (<strong>TMLR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMLR",
   },
   {
     year: "2026",
     image: ["images/cvpr26d.jpg", "images/CVPR-2026.png"],
     title: "FlashMesh: Faster and Better Autoregressive Mesh Synthesis via Structured Speculation",
     authors: "Tingrui Shen, Yiheng Zhang, Chen Tang, Chuan Ping, Zixing Zhao, Le Wan, Yuwang Wang, Ronggang Wang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR",
   },
   {
     year: "2026",
     image: ["images/cvpr26c.jpg", "images/CVPR-2026.png"],
     title: "Self-Corrected Image Generation with Explainable Latent Rewards",
     authors: "Yinyi Luo, Hrishikesh Gokhale, Marios Savvides, Jindong Wang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR",
   },
   {
     year: "2026",
     image: ["images/cvpr26b.jpg", "images/CVPR-2026.png"],
     title: "Modeling the Visual Ambiguity of Human Sketches",
     authors: "Yang Zhou, Ping Ni, Jin Wang, Senyun Jia, Jingdan Yan, Kaixiang Huang, Guodong Lu, Jingru Yang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR",
   },
   {
     year: "2026",
     image: ["images/cvpr26a.jpg", "images/CVPR-2026.png"],
     title: "NimbusGS: Unified 3D Scene Reconstruction under Hybrid Weather",
     authors: "Yanying Li, Jinyang Li, <strong>Shengfeng He</strong>, Yangyang Xu, Junyu Dong, and Yong Du",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR",
   },
   {
     year: "2026",
     image: ["images/cvpr26f.jpg", "images/CVPR-2026.png"],
     title: "Asymmetric Collaborative Distillation for Asymmetric Image Retrieval",
     authors: "Yi Xie, Huaidong Zhang, Xuandi Luo, Yan Zhou, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition Findings Track (<strong>CVPR Findings</strong>), 2026",
+    venue: "CVPR_FINDINGS",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://github.com/SCY-X/Asymmetric_Collaborative_Distillation"]]
   },
   {
@@ -701,31 +747,28 @@ const publicationRecords = [
     image: ["images/cvpr26g.jpg", "images/CVPR-2026.png"],
     title: "OKGraph: Online Knowledge Graph Probing for Open-vocabulary Recognition",
     authors: "Junhui Yin, Zhizhen Cai, Puze Wang, Guanzhou Ke, Jianhua Yang, Man Zhang, Qiang Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition Findings Track (<strong>CVPR Findings</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR_FINDINGS",
   },
   {
     year: "2026",
     image: ["images/cvpr26e.jpg", "images/CVPR-2026.png"],
     title: "SCOPE: Spatially Ordered Continual Learning for 3D Segmentation",
     authors: "Wenhao Xu, Huaidong Zhang, Weipeng Zhang, Qianle Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition Findings Track (<strong>CVPR Findings</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "CVPR_FINDINGS",
   },
   {
     year: "2026",
     image: ["images/ECCV26B.jpg", "images/ECCV26_LOGO.jpg"],
     title: "Learning to Tessellate: Point Cloud Generation via Recursive Spectral Partitioning",
     authors: "Monan Sun, Bangzhen Liu, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ECCV",
   },  
   {
     year: "2026",
     image: ["images/ECCV26A.jpg", "images/ECCV26_LOGO.jpg"],
     title: "MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics",
     authors: "Haofeng Liu, Yang Zhou, Ziheng Wang, Zhengbo Xu, Zhan Peng, Jie Ma, Jun Liang, <strong>Shengfeng He</strong>, and Jing Li",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2026",
+    venue: "ECCV",
     links: [["PDF", "https://arxiv.org/abs/2605.12119"], ["Project", "https://orange-3dv-team.github.io/MoCam/"]]
   },  
   {
@@ -733,23 +776,21 @@ const publicationRecords = [
     image: ["images/ICML26a.jpg", "images/icml_logo.png"],
     title: "PolarDepth: Monocular Transparent Object Depth from Polar-Physics Priors",
     authors: "Wen Dong, Haiyang Mei, Yinglian Ji, Zijun Zhang, Wenyuan Zhang, Pengwei Luo, Bo Dong, <strong>Shengfeng He</strong>, and Xin Yang",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICML",
   },
   {
     year: "2026",
     image: ["images/ICML26b.jpg", "images/icml_logo.png"],
     title: "SABER: Continual Learning with Representation Conflict Management",
     authors: "Xuandi Luo, Huaidong Zhang, Yi Xie, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICML",
   },
   {
     year: "2026",
     image: ["images/ICLR26A.jpg", "images/ICLR_logo.png"],
     title: "Latent Wavelet Diffusion For Ultra High-Resolution Image Synthesis",
     authors: "Luigi Sigillo, <strong>Shengfeng He</strong>, and Danilo Comminiello",
-    venue: "International Conference on Learning Representations (<strong>ICLR</strong>), 2026",
+    venue: "ICLR",
     links: [["PDF", "https://arxiv.org/abs/2506.00433"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -757,7 +798,7 @@ const publicationRecords = [
     image: ["images/ICLR26B.jpg", "images/ICLR_logo.png"],
     title: "M<sup>3</sup>E: Continual Vision-and-Language Navigation via Mixture of Macro and Micro Experts",
     authors: "Yongliang Jiang, Huaidong Zhang, Xuandi Luo, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Learning Representations (<strong>ICLR</strong>), 2026",
+    venue: "ICLR",
     links: [["PDF", "https://openreview.net/pdf?id=pFh5ygjN3V"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -765,7 +806,7 @@ const publicationRecords = [
     image: ["images/ICLR26C.jpg", "images/ICLR_logo.png"],
     title: "Healthcare Insurance Fraud Detection via Continual Fiedler Vector Graph Model",
     authors: "Yehan Zhang, Huaidong Zhang, Xuandi Luo, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Learning Representations (<strong>ICLR</strong>), 2026",
+    venue: "ICLR",
     links: [["PDF", "https://openreview.net/pdf/81a0f8133f264a8cd209ce795cb83d4619fa598b.pdf"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -773,7 +814,7 @@ const publicationRecords = [
     image: ["images/ICLR26D.jpg", "images/ICLR_logo.png"],
     title: "ProstaTD: Bridging Surgical Triplet from Classification to Fully Supervised Detection",
     authors: "Yiliang Chen, Zhixi Li, Cheng Xu, Alex Qinyang Liu, Ruize Cui, Xuemiao Xu, Jeremy Yuen-Chun Teoh, <strong>Shengfeng He</strong>, and Jing Qin",
-    venue: "International Conference on Learning Representations (<strong>ICLR</strong>), 2026",
+    venue: "ICLR",
     links: [["PDF", "https://arxiv.org/abs/2506.01130"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -781,103 +822,91 @@ const publicationRecords = [
     image: ["images/AAAI26.jpg", "images/aaai26_logo.jpg"],
     title: "Cross-modal Proxy Evolving for OOD Detection with Vision-Language Models",
     authors: "Hao Tang, Yu Liu, Shuanglin Yan, Fei Shen, <strong>Shengfeng He</strong>, and Jing Qin",
-    venue: "AAAI Conference on Artificial Intelligence (<strong>AAAI</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "AAAI",
   },
   {
     year: "2026",
     image: ["images/acmmm26.jpg", "images/LOGO-ACM-2026-V2.jpg"],
     title: "Learning to Curate What You Generate for Generalizable Few-Shot Class-Incremental Learning",
     authors: "Junhui Yin, Yuchen Yang, Yilin Yin, Shuai Na, Haoran Xi, Jianhua Yang, Muyi Sun, Man Zhang, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ACMMM",
   },
   {
     year: "2026",
     image: [],
     title: "Repurposing CLIP to Localize at Pixel Level",
     authors: "Jiaxiang Fang, Shiqiang Ma, Jing Wang, Siyu Chen, <strong>Shengfeng He</strong>, and Fei Guo",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2026",
     image: [],
     title: "Evolving Task-Agnostic Features from Task-Specific Priors for Multi-Task Dense Prediction",
     authors: "Qi Li, Jiexin Luo, Wenqi Deng, Wenjie Yang, Fei Chen, Yuanlong Yu, Jia Pan, <strong>Shengfeng He</strong>, and Wenxi Liu",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2026",
     image: [],
     title: "GeoEdgeFormer: 3D Point Cloud Saliency Detection via Edge-Enhanced Graph-Transformer Network",
     authors: "Zihao Tian, Pengjie Wang, Xuan Qi, Pingping Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2026",
     image: [],
     title: "Purified Zero-Shot Sketch-Based Image Retrieval",
     authors: "Yang Zhou, Jingru Yang, Jin Wang, Kaixiang Huang, Guodong Lu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2026",
     image: [],
     title: "Continuous Semantics and Intent Normalization Network for Human Pose Forecasting",
     authors: "Peng Xiao, Bangzhen Liu, Weihong Chen, Cheng Xu, Xuemiao Xu, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TCSVT",
   },
   {
     year: "2026",
     image: [],
     title: "ReAlign: Re-Aligning Intra-Class Misalignment for Few-Shot Segmentation",
     authors: "Jiaxiang Fang, Shiqiang Ma, Guihua Duan, Fei Guo, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TCSVT",
   },
   {
     year: "2026",
     image: [],
     title: "Deep Semi-Supervised Learning via Tensor Label Propagation for High-Dimension-Low-Sample-Size Data",
     authors: "Hongmin Cai, Jiali Sun, Fei Qi, Chuhua Xian, <strong>Shengfeng He</strong>, and Ye Liu",
-    venue: "IEEE Transactions on Neural Networks and Learning Systems (<strong>TNNLS</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TNNLS",
   },  
   {
     year: "2026",
     image: [],
     title: "Unveiling Silent Hill with HeteroDiff: Dense Haze Removal via Heterogeneous Diffusion",
     authors: "Xiao Lv, Tao Xiang, Ying Yang, Chuan Ma, <strong>Shengfeng He</strong>, and Bin Zhu",
-    venue: "Computer Graphics Forum (<strong>Pacific Graphics 2026 issue</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "PG_ISSUE",
   },  
   {
     year: "2026",
     image: [],
     title: "Hierarchical Visual Feature Fusion for Robust Out-of-Distribution Detection under Semantic and Image-Level Covariate Shifts",
     authors: "Chao Hou, Chuan Ma, Ziyong Du, Xiao Lv, Keke Tang, Bin Zhu, <strong>Shengfeng He</strong>, and Tao Xiang",
-    venue: "Computer Graphics Forum (<strong>Pacific Graphics 2026 issue</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "PG_ISSUE",
   },  
   {
     year: "2026",
     image: [],
     title: "Test-time Zero-shot Recognition with Good Attributes",
     authors: "Junhui Yin, Nan Pu, Huixing Jiang, Chen Wei, Xiaojie Wang, <strong>Shengfeng He</strong>, and Zhun Zhong",
-    venue: "Pattern Recognition (<strong>PR</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "PR",
   },
   {
     year: "2026",
     image: [],
     title: "VideoSketcher: A Training-Free Approach for Coherent Video Sketch Transfer",
     authors: "Huining Li, Bangzhen Liu, Rui Yang, Yang Zhou, Chenshu Xu, Xufang Pang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Winter Conference on Applications of Computer Vision (<strong>WACV</strong>), 2026",
+    venue: "WACV",
     notes: ["(Oral Presentation, Award Finalist)"],
     links: [["PDF", "https://openaccess.thecvf.com/content/WACV2026/papers/Li_VideoSketcher_A_Training-Free_Approach_for_Coherent_Video_Sketch_Transfer_WACV_2026_paper.pdf"], ["Code", "https://github.com/lihuining/VideoSketcher"]]
   },
@@ -886,15 +915,14 @@ const publicationRecords = [
     image: [],
     title: "Canvas3D: Translating 2D Edits into Implicit Neural Instance Field",
     authors: "Yuqin Lu, Yihua Dai, Yutao Jiang, Tianyi Xiang, Chuhua Xian, and <strong>Shengfeng He</strong>",
-    venue: "ACM SIGGRAPH Symposium on Interactive 3D Graphics and Games (<strong>I3D</strong>), 2026",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "I3D",
   },
   {
     year: "2025",
     image: ["images/TPAMI2025F.jpg"],
     title: "Lagrangian Motion Fields for Long-term Motion Generation",
     authors: "Yifei Yang, Zikai Huang, Chenshu Xu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://plyfager.github.io/LaMoG/"], ["Code", "https://plyfager.github.io/LaMoG/"], ["Supp", "https://plyfager.github.io/LaMoG/"]]
   },
   {
@@ -902,7 +930,7 @@ const publicationRecords = [
     image: ["images/GenPoly.jpg"],
     title: "GenPoly: Learning Generalized and Tessellated Shape Priors via 3D Polymorphic Evolving",
     authors: "Bangzhen Liu, Yuyang Yu, Xuemiao Xu, Cheng Xu, Chenxi Zheng, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://bang2hen1iu.github.io/GenPoly/"], ["Supp", "https://bang2hen1iu.github.io/GenPoly/"]]
   },
   {
@@ -910,7 +938,7 @@ const publicationRecords = [
     image: ["images/tpami25D.jpg"],
     title: "Gaussian Prompter: Linking 2D Prompts for 3D Gaussian Segmentation",
     authors: "Honghan Pan, Bangzhen Liu, Xuemiao Xu, Chenxi Zheng, Yongwei Nie, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://github.com/chansey0529/GaussianPrompter"], ["Supp", "https://chansey0529.github.io/GaussianPrompter_proj/"]]
   },
   {
@@ -918,7 +946,7 @@ const publicationRecords = [
     image: ["images/TPAMI2025C.jpg"],
     title: "Rotation-Adaptive Point Cloud Domain Generalization via Intricate Orientation Learning",
     authors: "Bangzhen Liu, Chenxi Zheng, Xuemiao Xu, Cheng Xu, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://www.computer.org/csdl/journal/tp/5555/01/10856415/23SaiabOZ2M"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -926,7 +954,7 @@ const publicationRecords = [
     image: ["images/TPAMI2025B.jpg"],
     title: "One-for-All: Towards Universal Domain Translation with a Single StyleGAN",
     authors: "Yong Du, Jiahui Zhan, Xinzhe Li, Junyu Dong, Sheng Chen, Ming-Hsuan Yang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://arxiv.org/pdf/2310.14222"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -934,7 +962,7 @@ const publicationRecords = [
     image: ["images/TPAMI2025A.jpg"],
     title: "Divide-and-Conquer: Confluent Triple-Flow Network for RGB-T Salient Object Detection",
     authors: "Hao Tang, Zechao Li, Dong Zhang, <strong>Shengfeng He</strong>, and Jinhui Tang",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2025",
+    venue: "TPAMI",
     links: [["PDF", "https://arxiv.org/pdf/2412.01556"], ["Code", "https://cser-tang-hao.github.io/contrinet.html"]]
   },
   {
@@ -942,7 +970,7 @@ const publicationRecords = [
     image: ["images/2a4d551b529557771a90a1cc5347159c.jpg"],
     title: "RIGID: Recurrent GAN Inversion and Editing of Real Face Videos and Beyond",
     authors: "Yangyang Xu, <strong>Shengfeng He</strong>, Kwan-Yee Wong, and Ping Luo",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2025",
+    venue: "IJCV",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Demo", "https://youtu.be/x_bUe6HxDeo"], ["Code", "https://github.com/cnnlstm/RIGID"]]
   },
   {
@@ -950,39 +978,35 @@ const publicationRecords = [
     image: ["images/TVCG25D.jpg"],
     title: "Upright-Net+: Enhanced Learning of Upright Orientation for 3D Point Clouds",
     authors: "Xufang Pang, Feng Li, Hongjie Zhuang, Ning Ding, Xiaopin Zhong, <strong>Shengfeng He</strong>, Wenxi Liu, and Bo Jiang",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2025",
     image: ["images/TVCG25C.jpg"],
     title: "Delving into Invisible Semantics for Generalized One-shot Neural Human Rendering",
     authors: "Yihong Lin, Xuemiao Xu, Huaidong Zhang, Cheng Xu, Weijie Li, Yi Xie, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2025",
     image: ["images/TVCG25B.jpg"],
     title: "StyleGAN-∞: Extending StyleGAN to Arbitrary-Ratio Translation with StyleBook",
     authors: "Yihua Dai, Tianyi Xiang, Bailin Deng, Yong Du, Hongmin Cai, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2025",
     image: ["images/TVCG25A.jpg"],
     title: "MixSA: Training-free Reference-based Sketch Extraction via Mixture-of-Self-Attention",
     authors: "Rui Yang, Xiaojun Wu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TVCG",
   },
   {
     year: "2025",
     image: ["images/TIP25A.jpg"],
     title: "Multi-Granularity Distribution Alignment for Cross-Domain Crowd Counting",
     authors: "Xian Zhong, Lingyue Qiu, Huilin Zhu, Jingling Yuan, <strong>Shengfeng He</strong>, and Zheng Wang",
-    venue: "IEEE Transactions on Image Processing (<strong>TIP</strong>), 2025",
+    venue: "TIP",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://github.com/HopooLinZ/MGOT"]]
   },
   {
@@ -990,7 +1014,7 @@ const publicationRecords = [
     image: ["images/tmlr25A.jpg"],
     title: "Teaching Diffusion Models to Ground Alpha Matte",
     authors: "Tianyi Xiang, Weiying Zheng, Yutao Jiang, Tingrui Shen, Hewei Yu, Yangyang Xu, and <strong>Shengfeng He</strong>",
-    venue: "Transactions on Machine Learning Research (<strong>TMLR</strong>), 2025",
+    venue: "TMLR",
     links: [["PDF", "https://github.com/xty435768/TeachDiffusionMatting"], ["Code", "https://github.com/xty435768/TeachDiffusionMatting"], ["Demo", "https://youtu.be/7IOBf-pzk1w"]]
   },
   {
@@ -1001,9 +1025,8 @@ const publicationRecords = [
     ],
     title: "Neptune-X: Active X-to-Maritime Generation for Universal Maritime Object Detection",
     authors: "Yu Guo, <strong>Shengfeng He</strong>, Yuxu Lu, Haonan An, Yihang Tao, Huilin Zhu, Jingxian Liu, and Yuguang Fang",
-    venue: "Annual Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>), 2025",
+    venue: "NEURIPS",
     notes: ["(Spotlight Presentation, Acceptance Rate 3.2%)"],
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
     year: "2025",
@@ -1013,8 +1036,7 @@ const publicationRecords = [
     ],
     title: "Registration is a Powerful Rotation-Invariance Learner for 3D Anomaly Detection",
     authors: "Yuyang Yu, Zhengwei Chen, Xuemiao Xu, Lei Zhang, Haoxin Yang, Yongwei Nie, and <strong>Shengfeng He</strong>",
-    venue: "Annual Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "NEURIPS",
   },
   {
     year: "2025",
@@ -1024,8 +1046,7 @@ const publicationRecords = [
     ],
     title: "StableGuard: Towards Unified Copyright Protection and Tamper Localization in Latent Diffusion Models",
     authors: "Haoxin Yang, Bangzhen Liu, Xuemiao Xu, Cheng Xu, Yuyang Yu, Zikai Huang, Yi Wang, and <strong>Shengfeng He</strong>",
-    venue: "Annual Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "NEURIPS",
   },
   {
     year: "2025",
@@ -1035,8 +1056,7 @@ const publicationRecords = [
     ],
     title: "Safe-Sora: Safe Text-to-Video Generation via Graphical Watermarking",
     authors: "Zihan Su, Xuerui Qiu, Hongbin Xu, Tangyu Jiang, Jun-hao Zhuang, Chun Yuan, Ming Li, <strong>Shengfeng He</strong>, and Fei Yu",
-    venue: "Annual Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "NEURIPS",
   },
   {
     year: "2025",
@@ -1046,8 +1066,7 @@ const publicationRecords = [
     ],
     title: "Jury-and-Judge Chain-of-Thought for Uncovering Toxic Data in 3D Visual Grounding",
     authors: "Kaixiang Huang, Qifeng Zhang, Jin Wang, Jingru Yang, Yang Zhou, Huan Yu, Guodong Lu, and <strong>Shengfeng He</strong>",
-    venue: "Annual Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "NEURIPS",
   },
   {
     year: "2025",
@@ -1057,8 +1076,7 @@ const publicationRecords = [
     ],
     title: "Stable Score Distillation",
     authors: "Haiming Zhu, Yangyang Xu, Chenshu Xu, Tingrui Shen, Wenxi Liu, Yong Du, Jun Yu, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1068,8 +1086,7 @@ const publicationRecords = [
     ],
     title: "Stroke2Sketch: Harnessing Stroke Attributes for Training-Free Sketch Generation",
     authors: "Rui Yang, Huining Li, Yiyi Long, Xiaojun Wu, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1079,8 +1096,7 @@ const publicationRecords = [
     ],
     title: "Instance-Level Video Depth in Groups Beyond Occlusions",
     authors: "Yuan Liang, Yang Zhou, Ziming Sun, Tianyi Xiang, Guiqing Li, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1090,8 +1106,7 @@ const publicationRecords = [
     ],
     title: "Seeing 3D Through 2D Lenses: 3D Few-Shot Class-Incremental Learning via Cross-Modal Geometric Rectification",
     authors: "Tuo Xiang, Xuemiao Xu, Bangzhen Liu, Jinyi Li, Yong Li, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1101,8 +1116,7 @@ const publicationRecords = [
     ],
     title: "ViewSRD: 3D Visual Grounding via Structured Multi-View Decomposition",
     authors: "Ronggang Huang, Haoxin Yang, Yan Cai, Xuemiao Xu, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1112,8 +1126,7 @@ const publicationRecords = [
     ],
     title: "Cross-Subject Mind Decoding from Inaccurate Representations",
     authors: "Yangyang Xu, Bangzhen Liu, Wenqi Shao, Yong Du, <strong>Shengfeng He</strong>, and Tingting Zhu",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
@@ -1123,15 +1136,14 @@ const publicationRecords = [
     ],
     title: "OmniVTON: Training-Free Universal Virtual Try-On",
     authors: "Zhaotong Yang, Yuhui Li, <strong>Shengfeng He</strong>, Xinzhe Li, Yangyang Xu, Junyu Dong, and Yong Du",
-    venue: "International Conference on Computer Vision (<strong>ICCV</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICCV",
   },
   {
     year: "2025",
     image: ["images/cvpr25c.jpg", "images/cvpr_2025_logo.jpg"],
     title: "NexusGS: Sparse View Synthesis with Epipolar Depth Priors in 3D Gaussian Splatting",
     authors: "Yulong Zheng, Zicheng Jiang, <strong>Shengfeng He</strong>, Yandu Sun, Junyu Dong, Huaidong Zhang, and Yong Du",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2025",
+    venue: "CVPR",
     notes: ["(Highlight Presentation, Acceptance Rate 13.5%)"],
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2025/papers/Zheng_NexusGS_Sparse_View_Synthesis_with_Epipolar_Depth_Priors_in_3D_CVPR_2025_paper.pdf"], ["Code", "https://usmizuki.github.io/NexusGS/"]]
   },
@@ -1140,7 +1152,7 @@ const publicationRecords = [
     image: ["images/cvpr25a.jpg", "images/cvpr_2025_logo.jpg"],
     title: "MODfinity: Unsupervised Domain Adaptation with Multimodal Information Flow Intertwining",
     authors: "Shanglin Liu, Jianming Lv, Jingdan Kang, Huaidong Zhang, Zequan Liang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2025",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2025/papers/Liu_MODfinity_Unsupervised_Domain_Adaptation_with_Multimodal_Information_Flow_Intertwining_CVPR_2025_paper.pdf"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -1148,7 +1160,7 @@ const publicationRecords = [
     image: ["images/cvpr25b.jpg", "images/cvpr_2025_logo.jpg"],
     title: "Knowledge Bridger: Towards Training-free Missing Multi-Modality Completion",
     authors: "Guanzhou Ke, <strong>Shengfeng He</strong>, Xiao-Li Wang, Bo Wang, Guoqing Chao, Yuanyang Zhang, Yi Xie, and Hexing Su",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2025",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2025/papers/Ke_Knowledge_Bridger_Towards_Training-Free_Missing_Modality_Completion_CVPR_2025_paper.pdf"], ["Code", "https://github.com/Guanzhou-Ke/Knowledge-Bridger"]]
   },
   {
@@ -1156,7 +1168,7 @@ const publicationRecords = [
     image: ["images/cvpr25d.jpg", "images/cvpr_2025_logo.jpg"],
     title: "Keep the Balance: A Parameter-Efficient Symmetrical Framework for RGB+X Semantic Segmentation",
     authors: "Jiaxin Cai, Jingze Su, Qi Li, Wenjie Yang, Shu Wang, Tiesong Zhao, <strong>Shengfeng He</strong>, and Wenxi Liu",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2025",
+    venue: "CVPR",
     notes: ["(Oral Presentation, Acceptance Rate 3.3%)"],
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2025/papers/Cai_Keep_the_Balance_A_Parameter-Efficient_Symmetrical_Framework_for_RGBX_Semantic_CVPR_2025_paper.pdf"], ["Code", "https://github.com/imcjx/KLB"]]
   },
@@ -1165,7 +1177,7 @@ const publicationRecords = [
     image: ["images/icml25a.jpg", "images/icml_logo.png"],
     title: "Action Dubber: Timing Audible Actions via Inflectional Flow",
     authors: "Wenlong Wan, Weiying Zheng, Tianyi Xiang, Guiqing Li, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2025",
+    venue: "ICML",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://github.com/WenlongWan/Audible623"]]
   },
   {
@@ -1173,15 +1185,14 @@ const publicationRecords = [
     image: ["images/icml25b.jpg", "images/icml_logo.png"],
     title: "Instruct2See: Learning to Remove Any Obstructions Across Distributions",
     authors: "Junhang Li, Yu Guo, Chuhua Xian, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Machine Learning (<strong>ICML</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ICML",
   },
   {
     year: "2025",
     image: ["images/ICLR2025.jpg", "images/ICLR_logo.png"],
     title: "RecDreamer: Consistent Text-to-3D Generation via Uniform Score Distillation",
     authors: "Chenxi Zheng, Yihong Lin, Bangzhen Liu, Xuemiao Xu, Yongwei Nie, and <strong>Shengfeng He</strong>",
-    venue: "International Conference on Learning Representations (<strong>ICLR</strong>), 2025",
+    venue: "ICLR",
     links: [["PDF", "https://arxiv.org/abs/2502.12640"], ["Code", "https://github.com/chansey0529/RecDreamer"]]
   },
   {
@@ -1189,55 +1200,49 @@ const publicationRecords = [
     image: ["images/aaai-25a.jpg", "images/AAAI-25.jpg"],
     title: "Occlusion-Insensitive Talking Head Video Generation via Facelet Compensation",
     authors: "Yuhui Deng, Yuqin Lu, Yangyang Xu, Yongwei Nie, and <strong>Shengfeng He</strong>",
-    venue: "AAAI Conference on Artificial Intelligence (<strong>AAAI</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "AAAI",
   },
   {
     year: "2025",
     image: ["images/aaai-25c.jpg", "images/AAAI-25.jpg"],
     title: "PersonaMagic: Stage-Regulated High-Fidelity Face Customization with Tandem Equilibrium",
     authors: "Xinzhe Li, Jiahui Zhan, <strong>Shengfeng He</strong>, Yangyang Xu, Junyu Dong, Huaidong Zhang, and Yong Du",
-    venue: "AAAI Conference on Artificial Intelligence (<strong>AAAI</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "AAAI",
   },
   {
     year: "2025",
     image: ["images/aaai-25d.jpg", "images/AAAI-25.jpg"],
     title: "Adversarial Attacks on Event-Based Pedestrian Detectors: A Physical Approach",
     authors: "Guixu Lin, Muyao Niu, Qingtian Zhu, Zhengwei Yin, Zhuoxiao Li, <strong>Shengfeng He</strong>, and Yinqiang Zheng",
-    venue: "AAAI Conference on Artificial Intelligence (<strong>AAAI</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "AAAI",
   },
   {
     year: "2025",
     image: ["images/aaai-25b.jpg", "images/AAAI-25.jpg"],
     title: "Dr. Tongue: Sign-Oriented Multi-label Detection for Remote Tongue Diagnosis",
     authors: "Yiliang Chen, Steven SC Ho, Cheng Xu, Yao Jie Xie, Wing Fai Yeung, <strong>Shengfeng He</strong>, and Jing Qin",
-    venue: "AAAI Conference on Artificial Intelligence (<strong>AAAI</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "AAAI",
   },
   {
     year: "2025",
     image: ["images/ijcai25.jpg", "images/ijcai_logo.png"],
     title: "Connecting Giants: Synergistic Knowledge Transfer of Large Multimodal Models for Few-Shot Learning",
     authors: "Hao Tang, <strong>Shengfeng He</strong>, and Jing Qin",
-    venue: "International Joint Conference on Artificial Intelligence (<strong>IJCAI</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "IJCAI",
   },
   {
     year: "2025",
     image: ["images/MM25A.png", "images/acmmm2025.png"],
     title: "Art4Math: Handwritten Mathematical Expression Recognition via Multimodal Sketch Grounding",
     authors: "Yang Zhou, Jin Wang, Yuxiao Zhang, Kaixiang Huang, Guodong Lu, Jingru Yang, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ACMMM",
   },
   {
     year: "2025",
     image: ["images/MM25B.png", "images/acmmm2025.png"],
     title: "DiffusionMat: Alpha Matting as Deterministic Sequential Refinement Learning",
     authors: "Yangyang Xu, <strong>Shengfeng He</strong>, Wenqi Shao, Yong Du, Kwan-Yee K. Wong, Yu Qiao, Jun Yu, and Ping Luo",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2025",
+    venue: "ACMMM",
     links: [["PDF", "https://arxiv.org/abs/2311.13535"], ["Code", "https://cnnlstm.github.io/DiffusionMat/"]]
   },
   {
@@ -1245,7 +1250,7 @@ const publicationRecords = [
     image: ["images/acmmm25data.jpg", "images/acmmm2025.png"],
     title: "Language-Driven 3D Human Pose Estimation in Multi-Person Scenarios: A New Dataset and Approach",
     authors: "Tingrui Shen, Bangzhen Liu, Zhirun Fan, Shiting Zhang, Weifeng Pan, Sun Fan, Dan Cao, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia Dataset Track (<strong>ACM MM</strong>), 2025",
+    venue: "ACMMM_DATASET",
     links: [["PDF", "https://languagedriven3dposeestimation.github.io/"], ["Code", "https://github.com/LanguageDriven3DPoseEstimation/Panoptic-L3D"]]
   },
   {
@@ -1253,15 +1258,14 @@ const publicationRecords = [
     image: [],
     title: "Modality-Specific Interactive Attack for Vision-Language Pre-Training Models",
     authors: "Haiqi Zhang, Hao Tang, Yanpeng Sun, <strong>Shengfeng He</strong>, and Zechao Li",
-    venue: "IEEE Transactions on Information Forensics and Security (<strong>TIFS</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TIFS",
   },
   {
     year: "2025",
     image: [],
     title: "SITA: Structurally Imperceptible and Transferable Adversarial Attacks for Stylized Image Generation",
     authors: "Jingdan Kang, Haoxin Yang, Yan Cai, Huaidong Zhang, Xuemiao Xu, Yong Du, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Information Forensics and Security (<strong>TIFS</strong>), 2025",
+    venue: "TIFS",
     links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://github.com/A-raniy-day/SITA"]]
   },
   {
@@ -1269,48 +1273,42 @@ const publicationRecords = [
     image: [],
     title: "Category-Contrastive Fine-grained Crowd Counting and Beyond",
     authors: "Wenxi Liu, Mengxue Chen, Qi Li, Yanchen Chen, Rui Lin, Xiaolian Li, Meijing Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2025",
     image: [],
     title: "Attribute-Centric Cross-Modal Alignment for Weakly Supervised Text-Based Person Re-ID",
     authors: "Jiajia Xu, Weiwei Cai, Xuemiao Xu, Yi Xie, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMM",
   },
   {
     year: "2025",
     image: [],
     title: "StarPose: 3D Human Pose Estimation via Spatial-Temporal Autoregressive Diffusion",
     authors: "Haoxin Yang, Weihong Chen, Xuemiao Xu, Cheng Xu, Peng Xiao, Cuifeng Sun, Shaoyu Huang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TCSVT",
   },
   {
     year: "2025",
     image: [],
     title: "Open-set Mixed Domain Adaptation via Visual-Linguistic Focal Evolving",
     authors: "Bangzhen Liu, Yangyang Xu, Cheng Xu, Xuemiao Xu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TCSVT",
   },
   {
     year: "2025",
     image: [],
     title: "EdgeCLIP: Injecting Edge-Awareness into Visual-Language Models for Zero-Shot Semantic Segmentation",
     authors: "Jiaxiang Fang, Shiqiang Ma, Guihua Duan, Fei Guo, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TCSVT",
   },
   {
     year: "2025",
     image: [],
     title: "Towards Diverse Tiny-Model Selection for Microcontrollers",
     authors: "Xiao Ma, <strong>Shengfeng He</strong>, Hezhe Qiao, and Dong Ma",
-    venue: "IEEE Transactions on Mobile Computing (<strong>TMC</strong>), 2025",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TMC",
   },
   {
     year: "2024",
@@ -1319,8 +1317,7 @@ const publicationRecords = [
     ],
     title: "3D Snapshot: Invertible Embedding of 3D Neural Representations in a Single Image",
     authors: "Yuqin Lu, Bailin Deng, Zhixuan Zhong, Tianle Zhang, Yuhui Quan, Hongmin Cai, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2024",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TPAMI",
   },
   {
     year: "2024",
@@ -1329,8 +1326,7 @@ const publicationRecords = [
     ],
     title: "Monocular BEV Perception of Road Scenes via Front-to-Top View Projection",
     authors: "Wenxi Liu, Qi Li, Weixiang Yang, Jiaxin Cai, Yuanlong Yu, Yuexin Ma,&nbsp;<strong>Shengfeng He, </strong>and Jia Pan",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2024",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "TPAMI",
   },
   {
     year: "2024",
@@ -1339,8 +1335,7 @@ const publicationRecords = [
     ],
     title: "Ultra-high Resolution Image Segmentation via Locality-aware Context Fusion and Alternating Local Enhancement",
     authors: "Wenxi Liu, Qi Li, Xindai Lin, Weixiang Yang,&nbsp;<strong>Shengfeng He, </strong>and Yuanlong Yu",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2024",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "IJCV",
   },
   {
     year: "2024",
@@ -1350,9 +1345,8 @@ const publicationRecords = [
     ],
     title: "Portrait Shadow Removal via Self-Exemplar Illumination Equalization",
     authors: "Qian Huang,&nbsp;Cheng Xu, Guiqing Li, Ziheng Wu, Shengxin Liu, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>),2024",
+    venue: "ACMMM",
     notes: ["(Oral Presentation, Acceptance Rate 3.97%)"],
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
     year: "2024",
@@ -1362,8 +1356,7 @@ const publicationRecords = [
     ],
     title: "DenseTrack: Drone-based Crowd Tracking via Density-aware Motion-appearance Synergy",
     authors: "Yi Lei, Huilin Zhu, Jingling Yuan, Guangli Xiang, Xian Zhong, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>),2024",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ACMMM",
   },
   {
     year: "2024",
@@ -1373,8 +1366,7 @@ const publicationRecords = [
     ],
     title: "VrdONE: One-stage Video Visual Relation Detection",
     authors: "Xinjie Jiang, Chenxi Zheng, Xuemiao Xu, Bangzhen Liu, Weiying Zheng, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>),2024",
-    links: [["PDF", "https://shengfenghe.github.io/publications"], ["Code", "https://shengfenghe.github.io/publications"]]
+    venue: "ACMMM",
   },
   {
     year: "2024",
@@ -1384,7 +1376,7 @@ const publicationRecords = [
     ],
     title: "Beat-It: Beat-Synchronized Multi-Condition 3D&nbsp;Dance Generation",
     authors: "Zikai Huang, Xuemiao Xu, Cheng Xu, Huaidong Zhang, Chenxi Zheng, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2024",
+    venue: "ECCV",
     notes: ["(Oral Presentation, Acceptance Rate 2.0%)"],
     links: [["Code", "https://zikaihuangscut.github.io/Beat-It/"], ["Demo", "https://www.youtube.com/watch?v=9BeQmj3YIv0"]]
   },
@@ -1396,7 +1388,7 @@ const publicationRecords = [
     ],
     title: "OneRestore: A Universal Restoration Framework for Composite Degradation",
     authors: "Yu Guo, Yuan Gao, Yuxu Lu, Huilin Zhu, Ryan Wen Liu, and <strong>Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2024",
+    venue: "ECCV",
     links: [["Code", "https://github.com/gy65896/OneRestore"]]
   },
   {
@@ -1407,7 +1399,7 @@ const publicationRecords = [
     ],
     title: "Zero-shot Object Counting with Good Exemplars&nbsp;",
     authors: "Huilin Zhu, Jingling Yuan, Zhengwei Yang, Yu Guo, Xian Zhong, Zheng Wang, and <strong>Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2024",
+    venue: "ECCV",
     links: [["Code", "https://github.com/HopooLinZ/VA-Count"]]
   },
   {
@@ -1418,7 +1410,7 @@ const publicationRecords = [
     ],
     title: "RePOSE: 3D Human Pose Estimation via Spatio-Temporal Depth Relational Consistency",
     authors: "Ziming Sun, Yuan Liang, Zejun Ma, Tianle Zhang, Linchao Bao, Guiqing Li, and <strong>Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2024",
+    venue: "ECCV",
     links: [["Code", "https://github.com/StupidAdam/RePOSE"], ["Demo", "https://www.youtube.com/watch?v=MhL7GTVT-Zk"]]
   },
   {
@@ -1429,7 +1421,7 @@ const publicationRecords = [
     ],
     title: "Drag Your Noise: Interactive Point-based Editing via Diffusion Semantic Propagation",
     authors: "Haofeng Liu, Chenshu Xu, Yifei Yang, Lihua Zeng, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2024",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2024/papers/Liu_Drag_Your_Noise_Interactive_Point-based_Editing_via_Diffusion_Semantic_Propagation_CVPR_2024_paper.pdf"], ["Code", "https://github.com/haofengl/DragNoise"], ["Demo", "https://youtu.be/gKq0s_CvCAg"]]
   },
   {
@@ -1440,7 +1432,7 @@ const publicationRecords = [
     ],
     title: "Beyond Textual Constraints: Learning Novel Diffusion Conditions with Fewer Examples",
     authors: "Yuyang Yu, Bangzhen Liu, Chenxi Zheng, Xuemiao Xu, Huaidong Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2024",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2024/papers/Yu_Beyond_Textual_Constraints_Learning_Novel_Diffusion_Conditions_with_Fewer_Examples_CVPR_2024_paper.pdf"], ["Code", "https://github.com/Yuyan9Yu/BeyondTextConstraint"]]
   },
   {
@@ -1451,7 +1443,7 @@ const publicationRecords = [
     ],
     title: "Learning with Unreliability: Fast Few-shot Voxel Radiance Fields with Relative Geometric Consistency",
     authors: "Yingjie Xu, Bangzhen Liu, Hao Tang, Bailin Deng, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2024",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2024/papers/Xu_Learning_with_Unreliability_Fast_Few-shot_Voxel_Radiance_Fields_with_Relative_CVPR_2024_paper.pdf"], ["Code", "https://github.com/HKCLynn/ReVoRF"], ["Demo", "https://www.youtube.com/watch?v=bqbnCkkGAKM"]]
   },
   {
@@ -1462,7 +1454,7 @@ const publicationRecords = [
     ],
     title: "D3still: Decoupled Differential Distillation for Asymmetric Image Retrieval",
     authors: "Yi Xie, Yihong Lin, Wenjie Cai, Xuemiao Xu, Huaidong Zhang, Yong Du, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2024",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2024/papers/Xie_D3still_Decoupled_Differential_Distillation_for_Asymmetric_Image_Retrieval_CVPR_2024_paper.pdf"], ["Code", "https://github.com/SCY-X/D3still"]]
   },
   {
@@ -1473,7 +1465,7 @@ const publicationRecords = [
     ],
     title: "Rethinking Multi-view Representation Learning via Distilled Disentangling",
     authors: "Guanzhou Ke, Bo Wang, Xiao-Li Wang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2024",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2024/papers/Ke_Rethinking_Multi-view_Representation_Learning_via_Distilled_Disentangling_CVPR_2024_paper.pdf"], ["Code", "https://github.com/Guanzhou-Ke/MRDD"]]
   },
   {
@@ -1494,7 +1486,7 @@ const publicationRecords = [
     ],
     title: "DreamAnime: Learning Style-Identity Textual Disentanglement for Anime and Beyond",
     authors: "Chenshu Xu, Yangyang Xu, Huaidong Zhang, Xuemiao Xu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2024",
+    venue: "TVCG",
     links: [["Code", "https://github.com/chnshx/DreamAnime"]]
   },
   {
@@ -1504,7 +1496,7 @@ const publicationRecords = [
     ],
     title: "Learning an Interpretable Stylized Subspace for 3D-aware Animatable Artforms",
     authors: "Chenxi Zheng, Bangzhen Liu, Xuemiao Xu, Huaidong Zhang, and&nbsp;<strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2024",
+    venue: "TVCG",
     links: [["Demo", "https://youtu.be/y8ECSu7wBqs"]]
   },
   {
@@ -1512,7 +1504,7 @@ const publicationRecords = [
     image: ["images/4518c987357d579ec17e941ab9271e4f.jpg"],
     title: "DiTMoS: Delving into Diverse Tiny-Model Selection on Microcontrollers",
     authors: "Xiao Ma, <strong>Shengfeng He</strong>, Hezhe Qiao, and Dong Ma",
-    venue: "IEEE International Conference on Pervasive Computing and Communications (<strong>PerCom</strong>), 2024.",
+    venue: "PERCOM",
     notes: ["Mark Weiser Best Paper Award"],
     links: [["PDF", "https://arxiv.org/abs/2403.09035"], ["Code", "https://github.com/TheMaXiao/DiTMoS"]]
   },
@@ -1521,56 +1513,56 @@ const publicationRecords = [
     image: [],
     title: "G2Face: High-Fidelity Reversible Face Anonymization via Generative and Geometric Priors",
     authors: "Haoxin Yang, Xuemiao Xu, Cheng Xu, Huaidong Zhang, Jing Qin, Yi Wang, Pheng-Ann Heng, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Information Forensics and Security (<strong>TIFS</strong>), 2024."
+    venue: "TIFS"
   },
   {
     year: "2024",
     image: [],
     title: "Modality-Aware Discriminative Fusion Network for Integrated Analysis of Brain Imaging Genomics",
     authors: "Xiaoqi Sheng, Hongmin Cai, Yongwei Nie, <strong>Shengfeng He</strong>, Yiu-Ming Cheung, and Jiazhou Chen",
-    venue: "IEEE Transactions on Neural Networks and Learning Systems (<strong>TNNLS</strong>), 2024."
+    venue: "TNNLS"
   },
   {
     year: "2024",
     image: [],
     title: "Delving into Multi-illumination Monocular Depth Estimation: A New Dataset and Method",
     authors: "Yuan Liang, Zitian Zhang, Chuhua Xian, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2024."
+    venue: "TMM"
   },
   {
     year: "2024",
     image: [],
     title: "Delving into Important Samples of Semi-Supervised Old Photo Restoration: A New Dataset and Method",
     authors: "Weiwei Cai, Huaidong Zhang, Xuemiao Xu, Chenshu Xu, Kun Zhang, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2024."
+    venue: "TMM"
   },
   {
     year: "2024",
     image: [],
     title: "DRFER: Discriminative and Robust Representation Learning for Facial Expression Recognition",
     authors: "Ming Li, Huazhou Fu, <strong>Shengfeng He</strong>, Hehe Fan, Jun Liu, Jussi Keppo, and Mike Shou",
-    venue: "IEEE Transactions on Multimedia (<strong>TMM</strong>), 2024."
+    venue: "TMM"
   },
   {
     year: "2024",
     image: [],
     title: "Question Type-Aware Debiasing for Test-time Visual Question Answering Model Adaptation",
     authors: "Jin Liu, Jialong Xie, Fengyu Zhou, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2024"
+    venue: "TCSVT"
   },
   {
     year: "2024",
     image: [],
     title: "Identity-Aware Variational Autoencoder for Face Swapping",
     authors: "Zonglin Li, Zhaoxin Zhang, <strong>Shengfeng He</strong>, Shengpeng Zhang, Bineng Zhong, and Rongrong Ji",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2024"
+    venue: "TCSVT"
   },
   {
     year: "2024",
     image: [],
     title: "Unifying Global-Local Representations in Salient Object Detection with Transformers",
     authors: "Sucheng Ren, Nanxuan Zhao, Qiang Wen, Guoqiang Han, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Emerging Topics in Computational Intelligence (<strong>TETCI</strong>), 2024",
+    venue: "TETCI",
     links: [["PDF", ""], ["Code", "https://github.com/OliverRensu/GLSTR"]]
   },
   {
@@ -1578,7 +1570,7 @@ const publicationRecords = [
     image: [],
     title: "Learning Nighttime Semantic Segmentation the Hard Way",
     authors: "Wenxi Liu, Jiaxin Cai, Qi Li, Chenyang Liao, Jingjing Cao, <strong>Shengfeng He</strong>, and Yuanlong Yu",
-    venue: "ACM Transactions on Multimedia Computing, Communications, and Applications (<strong>TOMM</strong>), 2024"
+    venue: "TOMM"
   },
   {
     year: "2024",
@@ -1592,28 +1584,28 @@ const publicationRecords = [
     image: [],
     title: "Learning Coherent Portrait-to-Anime Translation via Latent Cyclic Transformation",
     authors: "Yangyang Xu, <strong>Shengfeng He</strong>, Kwan-Yee K.Wong, and Ping Luo",
-    venue: "Computational Visual Media (<strong>CVMJ</strong>), 2024"
+    venue: "CVMJ"
   },
   {
     year: "2024",
     image: [],
     title: "Triadic Temporal-Semantic Alignment for Weakly Supervised Video Moment Retrieval",
     authors: "Jin Liu, Jialong Xie, Fengyu Zhou, and <strong>Shengfeng He</strong>",
-    venue: "Pattern Recognition (<strong>PR</strong>), 2024"
+    venue: "PR"
   },
   {
     year: "2024",
     image: [],
     title: "Granular3D: Delving into Multi-Granularity 3D Scene Graph Prediction",
     authors: "Kaixiang Huang, Jingru Yang, JinWang, <strong>Shengfeng He</strong>, ZhanWang, Haiyan He, Qifeng Zhang, and Guodong Lu",
-    venue: "Pattern Recognition (<strong>PR</strong>), 2024"
+    venue: "PR"
   },
   {
     year: "2024",
     image: [],
     title: "Glance to Count: Learning to Rank with Anchors for Weakly-supervised Crowd Counting",
     authors: "Zheng Xiong, Liangyu Chai, Wenxi Liu, Yongtuo Liu, Sucheng Ren, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Winter Conference on Applications of Computer Vision (<strong>WACV</strong>), 2024",
+    venue: "WACV",
     links: [["PDF", "https://openaccess.thecvf.com/content/WACV2024/papers/Xiong_Glance_To_Count_Learning_To_Rank_With_Anchors_for_Weakly-Supervised_WACV_2024_paper.pdf"], ["Code", "https://github.com/pandaszzzzz/CCRanking"]]
   },
   {
@@ -1623,7 +1615,7 @@ const publicationRecords = [
     ],
     title: "Monocular Depth Estimation for Glass Walls with Context: A New Dataset and Method",
     authors: "Yuan Liang, Bailin Deng, Wenxi Liu, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2023",
+    venue: "TPAMI",
     links: [["PDF", "https://orca.cardiff.ac.uk/id/eprint/161953/1/paper.pdf"], ["Dataset & Code", "https://github.com/ViktorLiang/GW-Depth"]]
   },
   {
@@ -1634,7 +1626,7 @@ const publicationRecords = [
     ],
     title: "NPF-200: A Multi-Modal Eye Fixation Dataset and Method for Non-Photorealistic Videos",
     authors: "Ziyu Yang, Sucheng Ren, Zongwei Wu, Nanxuan Zhao, Junle Wang, Jing Qin, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2023.",
+    venue: "ACMMM",
     links: [["PDF", "https://arxiv.org/pdf/2308.12163.pdf"], ["Video", "https://youtu.be/r4XWogTQEzc"], ["Code", "https://github.com/Yangziyu/NPF200"], ["Dataset", "https://figshare.com/s/9b45d1bdc790db3ee843"]]
   },
   {
@@ -1645,7 +1637,7 @@ const publicationRecords = [
     ],
     title: "DAOT: Domain-Agnostically Aligned Optimal Transport for Domain-Adaptive Crowd Counting",
     authors: "Huilin Zhu, Jingling Yuan, Xian Zhong, Zhengwei Yang, Zheng Wang, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2023.",
+    venue: "ACMMM",
     links: [["PDF", "https://arxiv.org/pdf/2308.05311.pdf"], ["Code", "https://github.com/HopooLinZ/DAOT/"]]
   },
   {
@@ -1656,7 +1648,7 @@ const publicationRecords = [
     ],
     title: "Disentangling Multi-view Representations Beyond Inductive Bias",
     authors: "Guanzhou Ke, Yang Yu, Guoqing Chao, Xiao-Li Wang, Chenyang Xu, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2023.",
+    venue: "ACMMM",
     links: [["PDF", "https://arxiv.org/pdf/2308.01634.pdf"], ["Code", "https://github.com/Guanzhou-Ke/DMRIB"]]
   },
   {
@@ -1667,7 +1659,7 @@ const publicationRecords = [
     ],
     title: "Diffuse3D: Wide-Angle 3D Photography via Bilateral Diffusion",
     authors: "Yutao Jiang, Yang Zhou, Yuan Liang , Wenxi Liu, Jianbo Jiao, Yuhui Quan, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2023.",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/ICCV2023/papers/Jiang_Diffuse3D_Wide-Angle_3D_Photography_via_Bilateral_Diffusion_ICCV_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/ICCV2023/supplemental/Jiang_Diffuse3D_Wide-Angle_3D_ICCV_2023_supplemental.zip"], ["Demo", "https://youtu.be/5mL6AMEvPSQ"], ["Code", "https://github.com/yutaojiang1/Diffuse3D"]]
   },
   {
@@ -1678,7 +1670,7 @@ const publicationRecords = [
     ],
     title: "CIRI: Curricular Inactivation for Residue-aware One-shot Video Inpainting",
     authors: "Weiying Zheng, Cheng Xu, Xuemiao Xu, Wenxi Liu, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2023.",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/ICCV2023/papers/Zheng_CIRI_Curricular_Inactivation_for_Residue-aware_One-shot_Video_Inpainting_ICCV_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/ICCV2023/supplemental/Zheng_CIRI_Curricular_Inactivation_ICCV_2023_supplemental.zip"], ["Demo", "https://youtu.be/Wc4ddkPCFlY"], ["Code", "https://github.com/Arise-zwy/CIRI"]]
   },
   {
@@ -1689,7 +1681,7 @@ const publicationRecords = [
     ],
     title: "RIGID: Recurrent GAN Inversion and Editing of Real Face Videos",
     authors: "Yangyang Xu,&nbsp;<strong>Shengfeng He, </strong>Kwan-Yee Wong, and Ping Luo",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2023.",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://arxiv.org/pdf/2308.06097.pdf"], ["Demo", "https://youtu.be/x_bUe6HxDeo"], ["Code", "https://github.com/cnnlstm/RIGID"]]
   },
   {
@@ -1700,7 +1692,7 @@ const publicationRecords = [
     ],
     title: "Deep Video Demoiréing via Compact Invertible Dyadic Decomposition",
     authors: "Yuhui Quan, Haoran Huang, <strong>Shengfeng He</strong>, and Ruotao Xu",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2023.",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/ICCV2023/papers/Quan_Deep_Video_Demoireing_via_Compact_Invertible_Dyadic_Decomposition_ICCV_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/ICCV2023/supplemental/Quan_Deep_Video_Demoireing_ICCV_2023_supplemental.pdf"], ["Code", "https://github.com/HerryHuang1/CIDNet"]]
   },
   {
@@ -1711,7 +1703,7 @@ const publicationRecords = [
     ],
     title: "Where is My Spot? Few-shot Image Generation via Latent Subspace Optimization",
     authors: "Chenxi Zheng, Bangzhen Liu, Huaidong Zhang, Xuemiao Xu, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2023.",
+    venue: "CVPR_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2023/papers/Zheng_Where_Is_My_Spot_Few-Shot_Image_Generation_via_Latent_Subspace_CVPR_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/CVPR2023/supplemental/Zheng_Where_Is_My_CVPR_2023_supplemental.pdf"], ["Code", "https://github.com/chansey0529/LSO"]]
   },
   {
@@ -1722,7 +1714,7 @@ const publicationRecords = [
     ],
     title: "Towards a Smaller Student: Capacity Dynamic Distillation for Efficient Image Retrieval",
     authors: "Yi Xie, Huaidong Zhang, Xuemiao Xu, Jianqing Zhu, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2023.",
+    venue: "CVPR_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2023/papers/Xie_Towards_a_Smaller_Student_Capacity_Dynamic_Distillation_for_Efficient_Image_CVPR_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/CVPR2023/supplemental/Xie_Towards_a_Smaller_CVPR_2023_supplemental.pdf"], ["Code", "https://github.com/SCY-X/Capacity_Dynamic_Distillation"]]
   },
   {
@@ -1733,7 +1725,7 @@ const publicationRecords = [
     ],
     title: "Curricular Contrastive Regularization for Physics-aware Single Image Dehazing",
     authors: "Yu Zheng, Jiahui Zhan, <strong>Shengfeng He</strong>, Junyu Dong, and Yong Du",
-    venue: "IEEE Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2023.",
+    venue: "CVPR_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2023/papers/Zheng_Curricular_Contrastive_Regularization_for_Physics-Aware_Single_Image_Dehazing_CVPR_2023_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/CVPR2023/supplemental/Zheng_Curricular_Contrastive_Regularization_CVPR_2023_supplemental.pdf"], ["Code", "https://github.com/YuZheng9/C2PNet"]]
   },
   {
@@ -1741,7 +1733,7 @@ const publicationRecords = [
     image: [],
     title: "SCANet: Self-Paced Semi-Curricular Attention Network for Non-Homogeneous Image Dehazing",
     authors: "Yu Guo, Yuan Gao, Ryan Wen Liu, Yuxu Lu, Jingxiang Qu, <strong>Shengfeng He</strong>, and Wenqi Ren",
-    venue: "IEEE Conference on Computer Vision and Pattern Recognition NTIRE Workshop (CVPRW), 2023",
+    venue: "CVPR_NTIRE",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2023W/NTIRE/papers/Guo_SCANet_Self-Paced_Semi-Curricular_Attention_Network_for_Non-Homogeneous_Image_Dehazing_CVPRW_2023_paper.pdf"], ["Code", "https://github.com/gy65896/SCANet"]]
   },
   {
@@ -1763,7 +1755,7 @@ const publicationRecords = [
     ],
     title: "Parsing-Conditioned Anime Translation: A New Dataset and Method",
     authors: "Zhansheng Li, Yangyang Xu, Nanxuan Zhao, Yang Zhou, Yongtuo Liu, Dahua Lin, and <strong>Shengfeng He</strong>",
-    venue: "ACM Transactions on Graphics (Presented at <strong>SIGGRAPH 2023</strong>), 2023",
+    venue: "TOG_SIGGRAPH",
     links: [["PDF", "?attachment_id=27473&download=1"], ["Supp", "?attachment_id=27475&download=1"], ["Code", "https://github.com/zsl2018/StyleAnime"], ["Dataset", "https://drive.google.com/file/d/13C7Jphi8dYkY_0HoqIZeXAIkppyKlzmQ/view?usp=share_link"]]
   },
   {
@@ -1773,7 +1765,7 @@ const publicationRecords = [
     ],
     title: "Reducing Spatial Labeling Redundancy for Active Semi-supervised Crowd Counting",
     authors: "Yongtuo Liu, Sucheng Ren, Liangyu Chai, Hanjie Wu, Dan Xu, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2023",
+    venue: "TPAMI",
     links: [["PDF", "https://arxiv.org/abs/2108.02970"], ["Code", "https://shengfenghe.github.io/publications"]]
   },
   {
@@ -1783,7 +1775,7 @@ const publicationRecords = [
     ],
     title: "Single-View View Synthesis with Self-Rectified Pseudo-Stereo",
     authors: "Yang Zhou, Hanjie Wu, Wenxi Liu, Zheng Xiong, Jing Qin, and <strong>Shengfeng He</strong>",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2023",
+    venue: "IJCV",
     links: [["PDF", "https://arxiv.org/abs/2304.09527"], ["Demo", "https://youtu.be/Uw-EImZIvQ4"]]
   },
   {
@@ -1793,7 +1785,7 @@ const publicationRecords = [
     ],
     title: "Appearance-preserved Portrait-to-anime Translation via Proxy-guided Domain Adaptation",
     authors: "Wenpeng Xiao, Cheng Xu, Jiajie Mai, Xuemiao Xu, Yue Li, Chengze Li, Xueting Liu, and <strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Visualization and Computer Graphics (<strong>TVCG</strong>), 2023",
+    venue: "TVCG",
     links: [["Code", "https://github.com/NeverGiveU/PDA-Translation"]]
   },
   {
@@ -1812,7 +1804,7 @@ const publicationRecords = [
     ],
     title: "Anchor-regularized GAN Priors",
     authors: "Yang Zhou, Huiting Yang, Zhansheng Li, Liangyu Chai, Qiang Wen, Panan Wu, Zixun Sun, and <strong>Shengfeng He</strong>",
-    venue: "Computational Visual Media (<strong>CVMJ</strong>), 2023",
+    venue: "CVMJ",
     links: [["PDF", ""], ["Code", ""]]
   },
   {
@@ -1820,7 +1812,7 @@ const publicationRecords = [
     image: [],
     title: "Contextual-assisted Scratched Photo Restoration",
     authors: "Weiwei Cai, Huaidong Zhang, Xuemiao Xu, <strong>Shengfeng He</strong>, Kun Zhang, and Jing Qin",
-    venue: "IEEE Transactions on Circuits and Systems for Video Technology (<strong>TCSVT</strong>), 2023"
+    venue: "TCSVT"
   },
   {
     year: "2023",
@@ -1834,7 +1826,7 @@ const publicationRecords = [
     image: [],
     title: "DSDNet: Toward Single Image Deraining with Self-paced Curricular Dual Stimulations",
     authors: "Yong Du, Junjie Deng, Yulong Zheng, Junyu Dong, and, and <strong>Shengfeng He</strong>",
-    venue: "Computer Vision and Image Understanding (<strong>CVIU</strong>), 2023"
+    venue: "CVIU"
   },
   {
     year: "2023",
@@ -1848,7 +1840,7 @@ const publicationRecords = [
     image: [],
     title: "Fine-grained Domain Adaptive Crowd Counting via Point-derived Segmentation",
     authors: "Yongtuo Liu, Dan Xu, Sucheng Ren, Hanjie Wu, Hongmin Cai, and <strong>Shengfeng He</strong>",
-    venue: "IEEE International Conference on Multimedia and Expo (<strong>ICME</strong>), 2023",
+    venue: "ICME",
     notes: ["(Oral Presentation)"],
     links: [["PDF", "https://arxiv.org/pdf/2108.02980.pdf"]]
   },
@@ -1857,7 +1849,7 @@ const publicationRecords = [
     image: [],
     title: "Surgical Activity Triplet Recognition via Triplet Disentanglement",
     authors: "Yiliang Chen, <strong>Shengfeng He</strong>, Yueming Jin, and Jing Qin",
-    venue: "Medical Image Computing and Computer-Assisted Intervention (<strong>MICCAI</strong>), 2023"
+    venue: "MICCAI"
   },
   {
     year: "2022",
@@ -1878,7 +1870,7 @@ const publicationRecords = [
     ],
     title: "Editing Out-of-domain GAN Inversion via Differential Activations",
     authors: "Haorui Song, Yong Du, Tianyi Xiang, Junyu Dong, Jing Qin,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "European Conference on Computer Vision (<strong>ECCV</strong>), 2022",
+    venue: "ECCV",
     links: [["PDF", "https://arxiv.org/abs/2207.08134"], ["Video Demo", "https://youtu.be/aEM6mah60lc"], ["Code", "https://github.com/HaoruiSong622/Editing-Out-of-Domain"]]
   },
   {
@@ -1889,7 +1881,7 @@ const publicationRecords = [
     ],
     title: "Faithful Extreme Rescaling via Generative Prior Reciprocated Invertible Representations",
     authors: "Zhixuan Zhong, Liangyu Chai, Yang Zhou, Bailin Deng, Jia Pan,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2022",
+    venue: "CVPR",
     notes: ["(Oral Presentation)"],
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2022/papers/Zhong_Faithful_Extreme_Rescaling_via_Generative_Prior_Reciprocated_Invertible_Representations_CVPR_2022_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/CVPR2022/supplemental/Zhong_Faithful_Extreme_Rescaling_CVPR_2022_supplemental.pdf"], ["Code", "https://github.com/cszzx/GRAIN"]]
   },
@@ -1901,7 +1893,7 @@ const publicationRecords = [
     ],
     title: "Shunted Self-Attention via Multi-Scale Token Aggregation",
     authors: "Sucheng Ren, Daquan Zhou, <strong>Shengfeng He</strong>, Jiashi Feng, and Xinchao Wang",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2022",
+    venue: "CVPR",
     notes: ["(Oral Presentation)"],
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2022/papers/Ren_Shunted_Self-Attention_via_Multi-Scale_Token_Aggregation_CVPR_2022_paper.pdf"], ["Code", "https://github.com/OliverRensu/Shunted-Transformer"]]
   },
@@ -1913,7 +1905,7 @@ const publicationRecords = [
     ],
     title: "High-resolution Face Swapping via Latent Semantics Disentanglement",
     authors: "Yangyang Xu, Bailin Deng, Junle Wang, Yanqing Jing, Jia Pan,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2022",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2022/papers/Xu_High-Resolution_Face_Swapping_via_Latent_Semantics_Disentanglement_CVPR_2022_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/CVPR2022/supplemental/Xu_High-Resolution_Face_Swapping_CVPR_2022_supplemental.pdf"], ["Code", "https://github.com/cnnlstm/FSLSD_HiRes"]]
   },
   {
@@ -1924,7 +1916,7 @@ const publicationRecords = [
     ],
     title: "Co-advise: Cross Inductive Bias Distillation",
     authors: "Sucheng Ren, Zhengqi Gao, Tianyu Hua, Zihui Xue, Yonglong Tian,&nbsp;<strong>Shengfeng He</strong>, and Hang Zhao",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2022",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2022/papers/Ren_Co-Advise_Cross_Inductive_Bias_Distillation_CVPR_2022_paper.pdf"], ["Code", "https://github.com/OliverRensu/co-advise"]]
   },
   {
@@ -1935,7 +1927,7 @@ const publicationRecords = [
     ],
     title: "A Simple Data Mixing Prior for Improving Self-Supervised Learning",
     authors: "Sucheng Ren, Huiyu Wang, Zhengqi Gao,&nbsp;<strong>Shengfeng He</strong>, Alan Yuille, Yuyin Zhou, Cihang Xie",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2022",
+    venue: "CVPR",
     links: [["PDF", "https://openaccess.thecvf.com/content/CVPR2022/papers/Ren_A_Simple_Data_Mixing_Prior_for_Improving_Self-Supervised_Learning_CVPR_2022_paper.pdf"], ["Code", "https://github.com/OliverRensu/SDMP"]]
   },
   {
@@ -1945,7 +1937,7 @@ const publicationRecords = [
     ],
     title: "Self-supervised Matting-specific Portrait Enhancement and Generation",
     authors: "Yangyang Xu, Zeyang Zhou,&nbsp;and&nbsp;<strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Image Processing (<strong>TIP</strong>), 2022",
+    venue: "TIP",
     links: [["PDF", "?attachment_id=26512&download=1"], ["Code", "https://github.com/cnnlstm/stylegan_matting"], ["Demo", "https://youtu.be/P94HU3Q-8Es"]]
   },
   {
@@ -1955,7 +1947,7 @@ const publicationRecords = [
     ],
     title: "Pro-PULSE: Learning Progressive Encoders of Latent Semantics in GANs for Photo Upsampling",
     authors: "Yang Zhou, Yangyang Xu, Yong Du, Qiang Wen,&nbsp;and&nbsp;<strong>Shengfeng He</strong>",
-    venue: "IEEE Transactions on Image Processing (<strong>TIP</strong>), 2022",
+    venue: "TIP",
     links: [["PDF", "?attachment_id=26459&download=1"], ["Code", "https://github.com/youngAt19/Pro-PULSE"]]
   },
   {
@@ -1970,7 +1962,7 @@ const publicationRecords = [
     image: [],
     title: "Pose and Attribute Consistent Person Image Synthesis",
     authors: "Cheng Xu, Zejun Chen, Jiajie Mai, Xuemiao Xu, and <strong>Shengfeng He</strong>",
-    venue: "ACM Transactions on Multimedia Computing, Communications, and Applications (<strong>TOMM</strong>), 2022"
+    venue: "TOMM"
   },
   {
     year: "2022",
@@ -2002,7 +1994,7 @@ const publicationRecords = [
     ],
     title: "From Continuity to Editability: Inverting GANs with Consecutive Images",
     authors: "Yangyang Xu, Yong Du, Wenpeng Xiao, Xuemiao Xu,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2021",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/ICCV2021/papers/Xu_From_Continuity_to_Editability_Inverting_GANs_With_Consecutive_Images_ICCV_2021_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/ICCV2021/supplemental/Xu_From_Continuity_to_ICCV_2021_supplemental.pdf"], ["Code", "https://github.com/Qingyang-Xu/InvertingGANs_with_ConsecutiveImgs"]]
   },
   {
@@ -2013,7 +2005,7 @@ const publicationRecords = [
     ],
     title: "From Contexts to Locality: Ultra-high Resolution Image Segmentation via Locality-aware Contextual Correlation",
     authors: "Qi Li, Weixiang Yang, Wenxi Liu, Yuanlong Yu, and<strong> Shengfeng He</strong>",
-    venue: "IEEE International Conference on Computer Vision (<strong>ICCV</strong>), 2021",
+    venue: "ICCV_IEEE",
     links: [["PDF", "https://openaccess.thecvf.com/content/ICCV2021/papers/Li_From_Contexts_to_Locality_Ultra-High_Resolution_Image_Segmentation_via_Locality-Aware_ICCV_2021_paper.pdf"], ["Supp", "https://openaccess.thecvf.com/content/ICCV2021/supplemental/Li_From_Contexts_to_ICCV_2021_supplemental.zip"], ["Code", "https://github.com/liqiokkk/FCtL"]]
   },
   {
@@ -2024,7 +2016,7 @@ const publicationRecords = [
     ],
     title: "Discovering Interpretable Latent Space Directions of GANs Beyond Binary Attributes",
     authors: "Huiting Yang, Liangyu Chai, <a href=\"https://csqiangwen.github.io/\" target=\"_blank\">Qiang Wen</a>, Shuang Zhao, Zixun Sun,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2021/06/68ff074eef5439f1e89d349e4771221c.pdf"], ["Supp", "qfy-content/uploads/2021/06/dd61a3afebb18a2dd452e62f3528a29c.pdf"], ["Video", "https://youtu.be/_yDeGrfc_0s"], ["Code", "https://github.com/BERYLSHEEP/AdvStyle"]]
   },
   {
@@ -2035,7 +2027,7 @@ const publicationRecords = [
     ],
     title: "Spatially-invariant Style-codes Controlled Makeup Transfer",
     authors: "Han Deng, <a href=\"https://chuhan89.com/\" target=\"_blank\">Chu Han</a>, Hongmin Cai, Guoqiang Han,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2021/06/52d6cdf3915929e56aee43ad66d86b28.pdf"], ["Video", "https://youtu.be/F7smlKLvbGw"], ["Code", "https://github.com/makeuptransfer/SCGAN"]]
   },
   {
@@ -2046,7 +2038,7 @@ const publicationRecords = [
     ],
     title: "Delving Deep into Many-to-many Attention for Few-shot Video Object Segmentation",
     authors: "Haoxin Chen, Hanjie Wu, <a href=\"http://nxzhao.com/\" target=\"_blank\">Nanxuan Zhao</a>, Sucheng Ren,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2023/09/e3aa3bfd7f3e34a17d22320a09ce5d1d.pdf"], ["Supp", "qfy-content/uploads/2021/06/57a2fdeece773b1d29fa3430c1b117c4.pdf"], ["Code", "https://github.com/scutpaul/DANet"]]
   },
   {
@@ -2057,7 +2049,7 @@ const publicationRecords = [
     ],
     title: "Reciprocal Transformations for Unsupervised Video Object Segmentation",
     authors: "Sucheng Ren, <a href=\"https://wenxiliu.github.io/\" target=\"_blank\">Wenxi Liu</a>,&nbsp;<a href=\"https://yongtuoliu.github.io/\" target=\"_blank\">Yongtuo Liu</a>, Haoxin Chen, Guoqiang Han,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2021/06/65615f8b9a94be15f92dfc436fc22fc3.pdf"], ["Supp", "qfy-content/uploads/2021/06/851488f0035ceab502b210fcc49e2138.pdf"], ["Code", "https://github.com/OliverRensu/RTNet"]]
   },
   {
@@ -2068,7 +2060,7 @@ const publicationRecords = [
     ],
     title: "Learning from the Master: Distilling Cross-modal Advanced Knowledge for Lip Reading",
     authors: "Sucheng Ren, Yong Du, Jianming Lv, Guoqiang Han,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2021/06/1df767522a7511725a705f90d393ad98.pdf"]]
   },
   {
@@ -2079,7 +2071,7 @@ const publicationRecords = [
     ],
     title: "Projecting Your View Attentively: Monocular Road Scene Layout Estimation via Cross-view Transformation",
     authors: "Weixiang Yang, Qi Li, <a href=\"https://wenxiliu.github.io/\" target=\"_blank\">Wenxi Liu</a>, Yuanlong Yu, <a href=\"http://yuexinma.me/aboutme.html\" target=\"_blank\">Yuexin Ma</a>,<strong> Shengfeng He</strong>, and <a href=\"https://sites.google.com/site/panjia/home\" target=\"_blank\">Jia Pan</a>",
-    venue: "IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>), 2021",
+    venue: "CVPR",
     links: [["PDF", "qfy-content/uploads/2021/06/f50c4b8074bf71e88799f0e91a1277d0.pdf"], ["Supp", "qfy-content/uploads/2021/06/28378f11023c152061f7468c7f4711a7.pdf"], ["Code", "https://github.com/JonDoe-297/cross-view"]]
   },
   {
@@ -2090,7 +2082,7 @@ const publicationRecords = [
     ],
     title: "Differentiated Learning for Multi-Modal Domain Adaptation",
     authors: "Jianming Lv, Kaijie Liu,&nbsp;and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "ACM International Conference on Multimedia (<strong>ACM MM</strong>), 2021",
+    venue: "ACMMM",
     notes: ["(Oral)"],
     links: [["PDF", "https://dl.acm.org/doi/10.1145/3474085.3475660"], ["Slides", "https://blog.so-link.org/team/paper/ppt.pdf"], ["Poster", "https://blog.so-link.org/team/paper/poster.pdf"]]
   },
@@ -2215,7 +2207,7 @@ const publicationRecords = [
     ],
     title: "Two-stage Photograph Cartoonization via Line Tracing",
     authors: "Simin Li, Qiang Wen, Shuang Zhao, Zixun Sun, Guoqiang Han, and<strong>&nbsp;Shengfeng He</strong>",
-    venue: "Computer Graphics Forum (<strong>Pacific Graphics 2020 issue</strong>), Wellington, 2020",
+    venue: { base: "PG_ISSUE", tail: ", Wellington" },
     links: [["PDF", "https://onlinelibrary.wiley.com/doi/full/10.1111/cgf.14170"], ["Code & Data", "https://github.com/biubiulsm/Two-stage-Photograph-Cartoonization-via-Line-Tracing/"], ["Cover of PG 2020 trailer", "https://www.pg2021.org/images/Teaser-720-1.m4v"], ["Video Presentation", "https://pg2021.org/wp-content/uploads/2020/11/1033-Two-Stage-Cartoonization-Via-Line-Tracing-9.m4v"]]
   },
   {
@@ -2425,7 +2417,7 @@ const publicationRecords = [
     ],
     title: "Joint Face Hallucination and Deblurring via Structure Generation and Detail Enhancement",
     authors: "Yibing Song, Jiawei Zhang, Lijun Gong, <strong>Shengfeng He</strong>, Linchao Bao, Jinshan Pan, Qingxiong Yang, and Ming-Hsuan Yang",
-    venue: "International Journal of Computer Vision (<strong>IJCV</strong>), 2019",
+    venue: "IJCV",
     links: [["PDF", "https://arxiv.org/abs/1811.09019"]]
   },
   {
@@ -2447,7 +2439,7 @@ const publicationRecords = [
     ],
     title: "Deep Unsupervised Pixelization",
     authors: "Chu Han^, Qiang Wen^, <strong>Shengfeng He</strong>, Qianshu Zhu, Yinjie Tan, Guoqiang Han, and Tien-Tsin Wong",
-    venue: "ACM Transactions on Graphics (<strong>SIGGRAPH Asia 2018 issue</strong>), 2018",
+    venue: "SIGGRAPH_ASIA_ISSUE",
     notes: ["(^joint first authors)"],
     links: [["PDF", "qfy-content/uploads/2019/12/2b59c0e0757f0629c12ff604ddc259af.pdf"], ["Supp", "qfy-content/uploads/2019/12/271ea9b5525ed864428182ba60efdd40.pdf"], ["Source Code", "https://github.com/csqiangwen/Deep-Unsupervised-Pixelization"]]
   },
@@ -2458,7 +2450,7 @@ const publicationRecords = [
     ],
     title: "Example-based Colorization via Dense Encoding Pyramids",
     authors: "Chufeng Xiao, <a href=\"https://chuhan89.com/\" target=\"_blank\">Chu Han</a>, <strong>&nbsp;</strong>Zhuming Zhang,&nbsp;<a href=\"https://sn.polyu.edu.hk/en/people/academic_staff/index.html#harry.qin\" target=\"_blank\">Jing Qin</a>, <a href=\"https://www.cse.cuhk.edu.hk/~ttwong/\" target=\"_blank\">Tien-Tsin Wong</a>,&nbsp;<a href=\"http://cs.scut.edu.cn/szdw/js/xn/1bjpdevk2ahps.xhtml\" target=\"_blank\">Guoqiang Han</a>, and&nbsp;<strong>Shengfeng</strong><strong>&nbsp;He</strong>",
-    venue: "Computer Graphics Forum (<strong>Pacific Graphics 2018</strong>&nbsp;Fast Track), 2018",
+    venue: "PG_FAST_TRACK",
     links: [["PDF", "qfy-content/uploads/2019/12/5ff6bcbd53d5fe3f99baff895e5e69a6.pdf"], ["Source Code", "https://github.com/chufengxiao/Example-based-Colorization-via-Dense-Encoding-pyramids"]]
   },
   {
@@ -2532,7 +2524,7 @@ const publicationRecords = [
     ],
     title: "FormResNet: Formatted Residual Learning for Image Restoration",
     authors: "<a href=\"https://jianbojiao.com/\" target=\"_blank\">Jianbo Jiao</a>, <a href=\"https://sites.google.com/site/wctu1009/\" target=\"_blank\">Wei-Chih Tu</a>, <strong>Shengfeng He,</strong> and <a href=\"http://www.cs.cityu.edu.hk/~rynson/\" target=\"_blank\">Rynson W.H. Lau</a>",
-    venue: "IEEE Conference on Computer Vision and Pattern Recognition Workshop (<strong>CVPR Workshop</strong>), Hawaii, 2017 (Oral)",
+    venue: { base: "CVPR_WORKSHOP", tail: ", Hawaii", afterYear: " (Oral)" },
     notes: ["(Oral)"],
     links: [["PDF", "qfy-content/uploads/2019/12/a18b185e964f5538c57c7a0b55341c17.pdf"]]
   },
@@ -2868,14 +2860,6 @@ function getPublicationLazyObserver() {
   return publicationLazyObserver;
 }
 
-function isPublicationImageNearViewport(node) {
-  if (!node || !node.getBoundingClientRect) return false;
-  const rect = node.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-  const margin = 550;
-  return rect.top < viewportHeight + margin && rect.bottom > -margin;
-}
-
 function installPublicationLazyLoading(scope) {
   const root = scope || document;
   const images = Array.prototype.slice.call(root.querySelectorAll(".pub-lazy-image[data-src]"));
@@ -2885,37 +2869,110 @@ function installPublicationLazyLoading(scope) {
   if (observer) {
     images.forEach(function(img) {
       if (img.dataset.pubObserved === "1" || img.dataset.pubLoaded === "1") return;
-      if (isPublicationImageNearViewport(img)) {
-        loadPublicationImage(img);
-        return;
-      }
       img.dataset.pubObserved = "1";
       observer.observe(img);
     });
   } else {
+    // Fallback for very old browsers without IntersectionObserver.
     images.forEach(loadPublicationImage);
   }
 }
 
-function schedulePublicationTask(callback) {
-  // Use a normal timer instead of requestIdleCallback for rendering new records.
-  // requestIdleCallback can be starved when the user keeps PageDown pressed,
-  // so the page may reach the bottom without appending the next chunk.
-  window.setTimeout(callback, 0);
-}
+const DEFAULT_PUBLICATION_URL = "https://shengfenghe.github.io/publications";
+const DEFAULT_PUBLICATION_LINKS = [["PDF"], ["Code"]];
 
 function renderLinks(links) {
-  if (!links) return "";
-  const entries = Array.isArray(links) ? links : Object.entries(links);
+  // Omit `links` to get the default [PDF] [Code] links.
+  // Use `links: []` when a record should intentionally display no links.
+  // A link entry without a URL, e.g. ["PDF"], also uses the default URL.
+  const source = links == null ? DEFAULT_PUBLICATION_LINKS : links;
+  const entries = Array.isArray(source) ? source : Object.entries(source);
   if (!entries.length) return "";
+
   return entries
     .map(link => {
       const label = link[0];
-      const url = link[1];
-      if (!url) return `[<span class="pub-link-label">${label}</span>]`;
+      const url = link[1] || DEFAULT_PUBLICATION_URL;
       return `[<a class="pub-link" href="${escapeAttr(url)}" rel="" target="_blank">${label}</a>]`;
     })
-    .join(" ");
+    .join(" " );
+}
+
+function highlightMyName(authors) {
+  if (!authors) return "";
+
+  let html = String(authors);
+
+  // Existing records contain several generations of manual <strong> markup.
+  // Protect those segments first so old entries are not double-bolded.  New
+  // records can simply paste the normal author list from the CV.
+  const protectedStrong = [];
+  html = html.replace(/<strong\b[^>]*>[\s\S]*?<\/strong>/gi, function(segment) {
+    if (!/Shengfeng|(?:^|[>&;\s])He(?:[<&,;\s]|$)/i.test(segment)) return segment;
+    const token = `@@PUB_STRONG_${protectedStrong.length}@@`;
+    protectedStrong.push(segment);
+    return token;
+  });
+
+  html = html.replace(/Shengfeng(?:\s|&nbsp;)+He/g, "<strong>Shengfeng He</strong>");
+
+  protectedStrong.forEach(function(segment, index) {
+    html = html.replace(`@@PUB_STRONG_${index}@@`, segment);
+  });
+
+  return html;
+}
+
+function applyVenueTemplate(value, pub) {
+  return String(value == null ? "" : value).replace(/\{year\}/g, pub.year || "");
+}
+
+function resolveVenue(spec, pub) {
+  if (!spec) return null;
+
+  let venue = spec;
+  if (typeof venue === "string") {
+    if (!Object.prototype.hasOwnProperty.call(VENUES, venue)) return null;
+    venue = VENUES[venue];
+  }
+
+  if (!venue || typeof venue !== "object") return null;
+
+  let resolved = {};
+  if (venue.base) {
+    const base = resolveVenue(venue.base, pub);
+    if (!base) return null;
+    resolved = Object.assign({}, base);
+  }
+
+  if (venue.name != null) resolved.name = venue.name;
+  if (venue.prefix) resolved.name = (resolved.name || "") + venue.prefix;
+  if (venue.suffix) resolved.name = (resolved.name || "") + venue.suffix;
+  if (venue.short != null) resolved.short = venue.short;
+  if (venue.labelPrefix != null) resolved.labelPrefix = venue.labelPrefix;
+  if (venue.labelSuffix != null) resolved.labelSuffix = venue.labelSuffix;
+  if (venue.tail != null) resolved.tail = venue.tail;
+  if (venue.afterYear != null) resolved.afterYear = venue.afterYear;
+  if (venue.showYear != null) resolved.showYear = venue.showYear;
+
+  return resolved;
+}
+
+function renderVenue(pub) {
+  const resolved = resolveVenue(pub.venue, pub);
+
+  // Backward-compatible escape hatch for detailed historical/manual strings.
+  if (!resolved) return pub.venue || "";
+
+  const name = applyVenueTemplate(resolved.name, pub);
+  const short = applyVenueTemplate(resolved.short, pub);
+  const labelPrefix = applyVenueTemplate(resolved.labelPrefix || "", pub);
+  const labelSuffix = applyVenueTemplate(resolved.labelSuffix || "", pub);
+  const tail = applyVenueTemplate(resolved.tail || "", pub);
+  const year = resolved.showYear === false ? "" : `, ${pub.year}`;
+  const afterYear = applyVenueTemplate(resolved.afterYear || "", pub);
+
+  return `${name} (${labelPrefix}<strong>${short}</strong>${labelSuffix})${tail}${year}${afterYear}`;
 }
 
 function renderPublicationInfo(pub) {
@@ -2925,8 +2982,8 @@ function renderPublicationInfo(pub) {
     : "";
   return `
     <h2 class="pub-title">${pub.title}</h2>
-    <div class="pub-authors"><em>${pub.authors}</em></div>
-    <div class="pub-venue">${pub.venue}</div>
+    <div class="pub-authors"><em>${highlightMyName(pub.authors)}</em></div>
+    <div class="pub-venue">${renderVenue(pub)}</div>
     ${noteHtml}
     ${linkHtml ? `<div class="pub-links">${linkHtml}</div>` : ""}`;
 }
@@ -2960,156 +3017,27 @@ function renderPublication(pub) {
   const root = document.getElementById("publication-records");
   if (!root) return;
 
-  // Render only enough records for the first screen. More records are appended
-  // only when the reader scrolls close to the end of the currently rendered list.
-  const initialChunkSize = 14;
-  const laterChunkSize = 14;
-  let index = 0;
+  // Render every publication's text immediately so browser Find/Ctrl+F can
+  // search the complete publication list. Publication figures remain lazy:
+  // renderPubImage() stores their real URLs in data-src, and the observer below
+  // requests them only when their placeholders approach the viewport.
+  let html = "";
   let currentYear = null;
-  let isRendering = false;
-  let finished = false;
 
-  const sentinel = document.createElement("div");
-  sentinel.id = "publication-records-sentinel";
-  sentinel.className = "publication-load-sentinel";
-  sentinel.setAttribute("aria-hidden", "true");
-
-  function appendChunk(chunkSize) {
-    if (finished) return;
-
-    if (sentinel.parentNode) {
-      sentinel.parentNode.removeChild(sentinel);
+  publicationRecords.forEach(function(pub) {
+    if (pub.year !== currentYear) {
+      currentYear = pub.year;
+      html += renderYearHeading(currentYear);
     }
+    html += renderPublication(pub);
+  });
 
-    let html = "";
-    let count = 0;
-    while (index < publicationRecords.length && count < chunkSize) {
-      const pub = publicationRecords[index];
-      if (pub.year !== currentYear) {
-        currentYear = pub.year;
-        html += renderYearHeading(currentYear);
-      }
-      html += renderPublication(pub);
-      index += 1;
-      count += 1;
-    }
+  root.innerHTML = html;
 
-    if (html) {
-      const beforeCount = root.children.length;
-      root.insertAdjacentHTML("beforeend", html);
-      for (let i = beforeCount; i < root.children.length; i += 1) {
-        installPublicationLazyLoading(root.children[i]);
-      }
-    }
-
-    finished = index >= publicationRecords.length;
-    if (!finished) {
-      root.appendChild(sentinel);
-    }
-  }
-
-  function requestNextChunk() {
-    if (isRendering || finished) return;
-    isRendering = true;
-    schedulePublicationTask(function() {
-      appendChunk(laterChunkSize);
-      isRendering = false;
-    });
-  }
-
-  appendChunk(initialChunkSize);
-
-  if (finished) return;
-
-  const renderPreloadDistance = 900;
-  let checkScheduled = false;
-
-  function isSentinelNearViewport() {
-    if (finished) return false;
-    if (!sentinel.getBoundingClientRect) return true;
-
-    const rect = sentinel.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    const docHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight
-    );
-    const distanceToDocumentBottom = docHeight - (scrollTop + viewportHeight);
-
-    return rect.top < viewportHeight + renderPreloadDistance || distanceToDocumentBottom < renderPreloadDistance;
-  }
-
-  function maybeLoadMore() {
-    checkScheduled = false;
-    if (finished) return;
-    if (isSentinelNearViewport()) requestNextChunk();
-  }
-
-  function scheduleLoadCheck(delay) {
-    if (checkScheduled || finished) return;
-    checkScheduled = true;
-    window.setTimeout(maybeLoadMore, delay || 0);
-  }
-
-  const originalRequestNextChunk = requestNextChunk;
-  requestNextChunk = function() {
-    if (isRendering || finished) return;
-    isRendering = true;
-    schedulePublicationTask(function() {
-      appendChunk(laterChunkSize);
-      isRendering = false;
-      // If the user is still sitting at the bottom after this chunk is appended,
-      // immediately queue another chunk. This fixes held PageDown / End-key jumps.
-      scheduleLoadCheck(0);
-    });
-  };
-
-  if ("IntersectionObserver" in window) {
-    const renderObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting || entry.intersectionRatio > 0) {
-          requestNextChunk();
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: renderPreloadDistance + "px 0px",
-      threshold: 0.01
-    });
-    renderObserver.observe(sentinel);
-  }
-
-  function handleScrollIntent(event) {
-    if (!event || !event.key) {
-      scheduleLoadCheck(0);
-      return;
-    }
-    if (event.key === "PageDown" || event.key === "End" || event.key === " " ||
-        event.key === "ArrowDown" || event.key === "ArrowRight") {
-      scheduleLoadCheck(0);
-    }
-  }
-
-  window.addEventListener("scroll", handleScrollIntent, { passive: true });
-  window.addEventListener("resize", function() { scheduleLoadCheck(0); });
-  window.addEventListener("wheel", handleScrollIntent, { passive: true });
-  window.addEventListener("touchmove", handleScrollIntent, { passive: true });
-  window.addEventListener("keydown", handleScrollIntent);
-
-  // A light safety net: while the user is pinned at the bottom, keep appending
-  // small chunks even if the browser skipped an observer/scroll callback.
-  const publicationBottomCheckTimer = window.setInterval(function() {
-    if (finished) {
-      window.clearInterval(publicationBottomCheckTimer);
-      return;
-    }
-    if (isSentinelNearViewport()) scheduleLoadCheck(0);
-  }, 250);
-
-  scheduleLoadCheck(0);
+  // Defer observer registration until the initial text DOM has been committed.
+  window.requestAnimationFrame(function() {
+    installPublicationLazyLoading(root);
+  });
 })();
 </script>
 </div></div></div><style class="column_class qfy_style_class">.qfy-column-4-67446ac15d0fa485151 > .column_inner {padding-left:0;padding-right:0;padding-top:0;padding-bottom:0;}@media only screen and (min-width: 992px){.qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}}@media only screen and (max-width: 992px){.qfy-column-4-67446ac15d0fa485151 > .column_inner{margin:0 auto 0 !important;padding-left:0;padding-right:0;padding-top:;padding-bottom:;}.display_entire .qfe_row .vc_span_class.qfy-column-4-67446ac15d0fa485151 {}.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-overlay,.qfy-column-4-67446ac15d0fa485151 > .column_inner> .background-media{width:100% !important;left:0 !important;right:auto !important;}}</style>
